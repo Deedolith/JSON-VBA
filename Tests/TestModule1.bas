@@ -229,3 +229,21 @@ TestFail:
     Resume TestExit
 End Sub
 
+
+'@TestMethod("Non-catégorisés")
+Private Sub TestMethod1()                        'TODO Renommer le test
+    On Error GoTo TestFail
+    
+    'Arrange:
+
+    'Act:
+
+    'Assert:
+    Assert.Succeed
+
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Le test a produit une erreur: #" & Err.Number & " - " & Err.Description
+    Resume TestExit
+End Sub

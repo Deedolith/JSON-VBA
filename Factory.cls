@@ -86,3 +86,16 @@ Public Function CreateNumber(ByVal Value As Double) As JSON.JNumber
     JNumber.Value = Value
     Set CreateNumber = JNumber
 End Function
+
+Public Function CreateString(ByVal Value As String) As JSON.JString
+#If DEV Then
+    Const FunctionName As String = "CreateString"
+    Dim Logger As JSON.Logger
+    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
+#End If
+
+    Dim JString As JSON.JString
+    Set JString = New JSON.JString
+    JString.Value = Value
+    Set CreateString = JString
+End Function

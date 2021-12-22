@@ -63,6 +63,7 @@ End Sub
 
 '@Description "Return the numeric value of the object."
 Public Property Get Value() As Double
+Attribute Value.VB_Description = "Return the numeric value of the object."
 #If DEV Then
     Const FunctionName As String = "Value"
     Dim Logger As JSON.Logger

@@ -30,7 +30,7 @@ End Sub
 
 '@Description "Class's data type."
 Public Property Get DataType() As JSON.JType
-Attribute DataType.VB_Description = "Abstract class's data type."
+Attribute DataType.VB_Description = "Class's data type."
 #If DEV Then
     Const FunctionName As String = "DataType"
     Dim Logger As JSON.Logger
@@ -60,6 +60,7 @@ End Function
 
 '@Description "Return string representation of the class."
 Public Function ToJSONString() As String
+Attribute ToJSONString.VB_Description = "Return string representation of the class."
 #If DEV Then
     Const FunctionName As String = "DataType"
     Dim Logger As JSON.Logger

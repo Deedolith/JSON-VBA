@@ -28,6 +28,7 @@ End Sub
 
 '@Description "Class's data type."
 Public Function DataType() As JSON.JType
+Attribute DataType.VB_Description = "Class's data type."
 #If DEV Then
     Const FunctionName As String = "DataType"
     Dim Logger As JSON.Logger

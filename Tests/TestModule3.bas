@@ -17,19 +17,19 @@ End Sub
 
 '@ModuleCleanup
 Private Sub ModuleCleanup()
-    'cette proc?dure s'ex?cute une seule fois par module.
+    'cette procédure s'exécute une seule fois par module.
     Set Assert = Nothing
     Set Fakes = Nothing
 End Sub
 
 '@TestInitialize
 Private Sub TestInitialize()
-    'cette proc?dure s'ex?cute avant chaque test dans le module..
+    'cette procédure s'exécute avant chaque test dans le module..
 End Sub
 
 '@TestCleanup
 Private Sub TestCleanup()
-    'cette proc?dure s'ex?cute apr?s chaque test dans le module.
+    'cette procédure s'exécute après chaque test dans le module.
 End Sub
 
 '@TestMethod("JNumber")

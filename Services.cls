@@ -216,3 +216,19 @@ Friend Function CreateNumber(ByRef SS As JSON.StringStream) As JSON.JNumber
     Number.Create SS
     Set CreateNumber = Number
 End Function
+
+Friend Function CreateString(ByRef SS As JSON.StringStream) As JSON.JString
+    Debug.Assert Not (SS Is Nothing)
+
+#If DEV Then
+    Const FunctionName As String = "CreateString"
+    Dim Logger As JSON.Logger
+    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
+#End If
+
+    Dim JString As JSON.JString
+    Set JString = New JSON.JString
+
+    JString.Create SS
+    Set CreateString = JString
+End Function
