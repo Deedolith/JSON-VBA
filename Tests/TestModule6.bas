@@ -108,80 +108,72 @@ TestFail:
     Resume TestExit
 End Sub
 
-''@TestMethod("Factory")
-'Private Sub CreateArray()
-'    On Error GoTo TestFail
-'
-'    'Arrange:
-'        Dim JValue As Object
-'        Set JValue = Factory.CreateArray
-'    'Act:
-'
-'    'Assert:
-'    Assert.IsTrue TypeOf JValue Is JSON.JArray
-'
-'TestExit:
-'    Exit Sub
-'TestFail:
-'    Assert.Fail "Le test a produit une erreur: #" & Err.Number & " - " & Err.Description
-'    Resume TestExit
-'End Sub
+'@TestMethod("Factory")
+Private Sub CreateBoolean_2()
+    Const ExpectedError As Long = 13        '// type mismatch
+    On Error GoTo TestFail
+    
+    'Arrange:
+        Dim JBoolean As JSON.JBoolean
+        Set JBoolean = Factory.CreateBoolean("incorrect value")
+    'Act:
 
-''@TestMethod("Factory")
-'Private Sub CreateObject()
-'    On Error GoTo TestFail
-'
-'    'Arrange:
-'        Dim JValue As Object
-'        Set JValue = Factory.CreateObject
-'    'Act:
-'
-'    'Assert:
-'    Assert.IsTrue TypeOf JValue Is JSON.JObject
-'
-'TestExit:
-'    Exit Sub
-'TestFail:
-'    Assert.Fail "Le test a produit une erreur: #" & Err.Number & " - " & Err.Description
-'    Resume TestExit
-'End Sub
+Assert:
+    Assert.Fail "L'erreur attendue ne s'est pas produite"
 
-''@TestMethod("Factory")
-'Private Sub CreateMember()
-'    On Error GoTo TestFail
-'
-'    'Arrange:
-'        Dim JValue As Object
-'        Set JValue = Factory.CreateMember("Name", Factory.CreateNull)
-'    'Act:
-'
-'    'Assert:
-'    Assert.IsTrue TypeOf JValue Is JSON.Member
-'
-'TestExit:
-'    Exit Sub
-'TestFail:
-'    Assert.Fail "Le test a produit une erreur: #" & Err.Number & " - " & Err.Description
-'    Resume TestExit
-'End Sub
+TestExit:
+    Exit Sub
+TestFail:
+    If Err.Number = ExpectedError Then
+        Resume TestExit
+    Else
+        Resume Assert
+    End If
+End Sub
 
-''@TestMethod("Factory")
-'Private Sub CreateDocument()
-'    On Error GoTo TestFail
-'
-'    'Arrange:
-'        Dim JValue As Object
-'        Set JValue = Factory.CreateDocument
-'    'Act:
-'
-'    'Assert:
-'    Assert.IsTrue TypeOf JValue Is JSON.JDocument
-'
-'TestExit:
-'    Exit Sub
-'TestFail:
-'    Assert.Fail "Le test a produit une erreur: #" & Err.Number & " - " & Err.Description
-'    Resume TestExit
-'End Sub
+'@TestMethod("Factory")
+Private Sub CreateNull_2()
+    Const ExpectedError As Long = 438        '// Propriété ou méthode non gérée par cet objet
+    On Error GoTo TestFail
+    
+    'Arrange:
+        Dim JNull As JSON.JNull
+        Set JNull = Factory.CreateNull("incorrect value")
+    'Act:
 
+Assert:
+    Assert.Fail "L'erreur attendue ne s'est pas produite"
+
+TestExit:
+    Exit Sub
+TestFail:
+    If Err.Number = ExpectedError Then
+        Resume TestExit
+    Else
+        Resume Assert
+    End If
+End Sub
+
+'@TestMethod("Factory")
+Private Sub CreateNumber_2()
+    Const ExpectedError As Long = 13        '// type mismatch
+    On Error GoTo TestFail
+    
+    'Arrange:
+        Dim JNumber As JSON.JNumber
+        Set JNumber = Factory.CreateNumber("incorrect value")
+    'Act:
+
+Assert:
+    Assert.Fail "L'erreur attendue ne s'est pas produite"
+
+TestExit:
+    Exit Sub
+TestFail:
+    If Err.Number = ExpectedError Then
+        Resume TestExit
+    Else
+        Resume Assert
+    End If
+End Sub
 

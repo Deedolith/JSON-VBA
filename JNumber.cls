@@ -46,7 +46,11 @@ Private Sub Parse()
 
     Dim Value As String
     Value = mData.GetStringFromRegEx("^(?:-?(?:0|[1-9][0-9]*)(?:\.[0-9]+)?(?:[eE][+-]?[0-9]+)?)")
-    mData.EatString Value
+    If (Value <> vbNullString) Then
+        mData.EatString Value
+    Else
+        Err.Raise JSON.JSException.JSUnexpectedToken, "JNumber.Parse", "Numeric character expected."
+    End If
 On Error GoTo RegionalError
     mNumber = CDbl(Value)
 Exit Sub

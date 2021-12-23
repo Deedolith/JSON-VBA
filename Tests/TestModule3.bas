@@ -234,3 +234,73 @@ TestFail:
     Resume TestExit
 End Sub
 
+'@TestMethod("JNumber")
+Private Sub Assignation_2()
+    Const ExpectedError As Long = 13        '// type mismatch
+    On Error GoTo TestFail
+    
+    'Arrange:
+        Dim JNumber As JSON.JNumber
+        Set JNumber = Factory.CreateNumber(10)
+    'Act:
+        JNumber.Value = "incorrect value"
+
+Assert:
+    Assert.Fail "L'erreur attendue ne s'est pas produite"
+
+TestExit:
+    Exit Sub
+TestFail:
+    If Err.Number = ExpectedError Then
+        Resume TestExit
+    Else
+        Resume Assert
+    End If
+End Sub
+
+'@TestMethod("JNumber")
+Private Sub Parsing_5()
+    Const ExpectedError As Long = JSON.JSException.JSUnexpectedToken
+    On Error GoTo TestFail
+    
+    'Arrange:
+        Dim SS As JSON.StringStream
+        Set SS = Services.CreateStringStream("incorrect value")
+    'Act:
+        Dim JNumber As JSON.JNumber
+        Set JNumber = Services.CreateNumber(SS)
+Assert:
+    Assert.Fail "L'erreur attendue ne s'est pas produite"
+
+TestExit:
+    Exit Sub
+TestFail:
+    If Err.Number = ExpectedError Then
+        Resume TestExit
+    Else
+        Resume Assert
+    End If
+End Sub
+
+'@TestMethod("JNumber")
+Private Sub Instanciation_2()
+    Const ExpectedError As Long = 13        '// Type mismatch
+    On Error GoTo TestFail
+    
+    'Arrange:
+        Dim JNumber As JSON.JNumber
+        Set JNumber = Factory.CreateNumber("incorrect value")
+    'Act:
+
+Assert:
+    Assert.Fail "L'erreur attendue ne s'est pas produite"
+
+TestExit:
+    Exit Sub
+TestFail:
+    If Err.Number = ExpectedError Then
+        Resume TestExit
+    Else
+        Resume Assert
+    End If
+End Sub

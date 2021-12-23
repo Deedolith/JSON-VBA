@@ -134,11 +134,9 @@ Private Sub Parsing()
     'Arrange:
         Dim SS As JSON.StringStream
         Set SS = Services.CreateStringStream("null")
-
+    'Act:
         Dim JNull As JSON.JNull
         Set JNull = Services.CreateNull(SS)
-    'Act:
-
     'Assert:
         Assert.IsTrue IsNull(JNull.Value)
 
@@ -147,4 +145,28 @@ TestExit:
 TestFail:
     Assert.Fail "Le test a produit une erreur: #" & Err.Number & " - " & Err.Description
     Resume TestExit
+End Sub
+
+'@TestMethod("JNull")
+Private Sub Parsing_2()
+    Const ExpectedError As Long = JSON.JSException.JSUnexpectedToken
+    On Error GoTo TestFail
+    
+    'Arrange:
+        Dim SS As JSON.StringStream
+        Set SS = Services.CreateStringStream("incorrect value")
+    'Act:
+        Dim JNull As JSON.JNull
+        Set JNull = Services.CreateNull(SS)
+Assert:
+    Assert.Fail "L'erreur attendue ne s'est pas produite"
+
+TestExit:
+    Exit Sub
+TestFail:
+    If Err.Number = ExpectedError Then
+        Resume TestExit
+    Else
+        Resume Assert
+    End If
 End Sub

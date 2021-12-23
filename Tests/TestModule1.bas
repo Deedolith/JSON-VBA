@@ -109,6 +109,25 @@ TestFail:
 End Sub
 
 '@TestMethod("JBoolean")
+Private Sub Assignation_2()
+    On Error GoTo TestFail
+    
+    'Arrange:
+        Dim JBoolean As JSON.JBoolean
+        Set JBoolean = Factory.CreateBoolean(True)
+    'Act:
+        JBoolean.Value = True
+    'Assert:
+        Assert.AreEqual True, JBoolean.Value
+
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Le test a produit une erreur: #" & Err.Number & " - " & Err.Description
+    Resume TestExit
+End Sub
+
+'@TestMethod("JBoolean")
 Private Sub ToString_1()
     On Error GoTo TestFail
     
@@ -229,21 +248,73 @@ TestFail:
     Resume TestExit
 End Sub
 
-
-'@TestMethod("Non-catégorisés")
-Private Sub TestMethod1()                        'TODO Renommer le test
+'@TestMethod("JBoolean")
+Private Sub Assignation_3()
+    Const ExpectedError As Long = 13        '// type mismatch
     On Error GoTo TestFail
     
     'Arrange:
-
+        Dim JBoolean As JSON.JBoolean
+        Set JBoolean = Factory.CreateBoolean(True)
     'Act:
+        JBoolean.Value = "incorrect value"
 
-    'Assert:
-    Assert.Succeed
+Assert:
+    Assert.Fail "L'erreur attendue ne s'est pas produite"
 
 TestExit:
     Exit Sub
 TestFail:
-    Assert.Fail "Le test a produit une erreur: #" & Err.Number & " - " & Err.Description
-    Resume TestExit
+    If Err.Number = ExpectedError Then
+        Resume TestExit
+    Else
+        Resume Assert
+    End If
+End Sub
+
+'@TestMethod("JBoolean")
+Private Sub Instanciation_2()
+    Const ExpectedError As Long = 13        '// type mismatch
+    On Error GoTo TestFail
+    
+    'Arrange:
+        Dim JBoolean As JSON.JBoolean
+        Set JBoolean = Factory.CreateBoolean("incorrect value")
+    'Act:
+
+Assert:
+    Assert.Fail "L'erreur attendue ne s'est pas produite"
+
+TestExit:
+    Exit Sub
+TestFail:
+    If Err.Number = ExpectedError Then
+        Resume TestExit
+    Else
+        Resume Assert
+    End If
+End Sub
+
+'@TestMethod("JBoolean")
+Private Sub Parsing_3()
+    Const ExpectedError As Long = JSON.JSException.JSUnexpectedToken
+    On Error GoTo TestFail
+    
+    'Arrange:
+        Dim SS As JSON.StringStream
+        Set SS = Services.CreateStringStream("incorrect value")
+    'Act:
+        Dim JBoolean As JSON.JBoolean
+        Set JBoolean = Services.CreateBoolean(SS)
+Assert:
+    Assert.Fail "L'erreur attendue ne s'est pas produite"
+
+TestExit:
+    Exit Sub
+TestFail:
+    If Err.Number = ExpectedError Then
+        Resume TestExit
+    Else
+        Resume Assert
+    End If
 End Sub

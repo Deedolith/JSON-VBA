@@ -47,7 +47,11 @@ Private Sub Parse()
 
     Dim Value As String
     Value = mData.GetStringFromRegEx("^null")
-    mData.EatString Value
+    If (Value = "null") Then
+        mData.EatString Value
+    Else
+        Err.Raise JSON.JSException.JSUnexpectedToken, "JNull.Parse", """null"" expected."
+    End If
 End Sub
 
 '@Description return a Null value

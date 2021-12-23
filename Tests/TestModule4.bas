@@ -428,7 +428,6 @@ TestFail:
     Resume TestExit
 End Sub
 
-
 '@TestMethod("JString")
 Private Sub Parsing_7()
     Const ExpectedError As Long = JSON.JSException.JSUnexpectedCharacter
