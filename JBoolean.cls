@@ -44,7 +44,7 @@ End Property
 Public Function ToString(Optional ByVal IndentMultiplier As Long = 0) As String
 Attribute ToString.VB_Description = "Return a human readable string representation of the class."
 #If DEV Then
-    Const FunctionName As String = "DataType"
+    Const FunctionName As String = "ToString"
     Dim Logger As JSON.Logger
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
 #End If
@@ -62,7 +62,7 @@ End Function
 Public Function ToJSONString() As String
 Attribute ToJSONString.VB_Description = "Return string representation of the class."
 #If DEV Then
-    Const FunctionName As String = "DataType"
+    Const FunctionName As String = "ToJSONString"
     Dim Logger As JSON.Logger
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
 #End If

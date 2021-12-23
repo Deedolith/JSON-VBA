@@ -16,13 +16,15 @@ Option Explicit
 Implements JSON.IWriter
 
 Private mPath As String
+Private Const ModuleName As String = "FileReader"
 
 Friend Sub Create(ByVal Path As String)
     Debug.Assert Path <> vbNullString   '// path must not be empty
 
 #If DEV Then
+    Const FunctionName As String = "Create"
     Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger("FileWriter", "Create")
+    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
 #End If
 
     mPath = Path
@@ -32,8 +34,9 @@ Private Sub IWriter_Execute(Data As String)
     Const ForWriting As Long = 2
 
 #If DEV Then
+    Const FunctionName As String = "IWriter_Execute"
     Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger("FileWriter", "IWriter_Execute")
+    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
 #End If
 
     Dim fso As Object       '// Scripting.FileSystemObject

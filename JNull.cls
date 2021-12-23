@@ -53,7 +53,7 @@ End Sub
 '@Description return a Null value
 Public Property Get Value() As Variant
 #If DEV Then
-    Const FunctionName As String = "Value"
+    Const FunctionName As String = "Value (Get)"
     Dim Logger As JSON.Logger
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
 #End If

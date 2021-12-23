@@ -16,6 +16,13 @@ Private Const ModuleName As String = "JString"
 
 Friend Sub Create(ByRef SS As JSON.StringStream)
     Debug.Assert Not SS Is Nothing
+
+#If DEV Then
+    Const FunctionName As String = "Create"
+    Dim Logger As JSON.Logger
+    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
+#End If
+
     Set mData = SS
     Parse
 End Sub
@@ -23,6 +30,12 @@ End Sub
 '@Description "Class's data type."
 Public Property Get DataType() As JSON.JType
 Attribute DataType.VB_Description = "Class's data type."
+#If DEV Then
+    Const FunctionName As String = "DataType"
+    Dim Logger As JSON.Logger
+    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
+#End If
+
     DataType = JSON.JType.JSString
 End Property
 
@@ -45,7 +58,7 @@ End Sub
 '@Description "Return the string value of the object."
 Public Property Get Value() As String
 #If DEV Then
-    Const FunctionName As String = "Value"
+    Const FunctionName As String = "Value (Get)"
     Dim Logger As JSON.Logger
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
 #End If
@@ -55,7 +68,7 @@ End Property
 
 Public Property Let Value(ByVal Data As String)
 #If DEV Then
-    Const FunctionName As String = "Value"
+    Const FunctionName As String = "Value (Let)"
     Dim Logger As JSON.Logger
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
 #End If
@@ -81,7 +94,7 @@ Public Function ToString(Optional ByVal IndentMultiplier As Long = 0) As String
     Debug.Assert IndentMultiplier >= 0
 
 #If DEV Then
-    Const FunctionName As String = "JValue_ToString"
+    Const FunctionName As String = "ToString"
     Dim Logger As JSON.Logger
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
 #End If

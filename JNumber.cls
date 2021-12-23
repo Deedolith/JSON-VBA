@@ -29,7 +29,7 @@ End Sub
 
 Public Function DataType() As JSON.JType
 #If DEV Then
-    Const FunctionName As String = "JValue_DataType"
+    Const FunctionName As String = "DataType"
     Dim Logger As JSON.Logger
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
 #End If
@@ -65,7 +65,7 @@ End Sub
 Public Property Get Value() As Double
 Attribute Value.VB_Description = "Return the numeric value of the object."
 #If DEV Then
-    Const FunctionName As String = "Value"
+    Const FunctionName As String = "Value (Get)"
     Dim Logger As JSON.Logger
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
 #End If
@@ -75,7 +75,7 @@ End Property
 
 Public Property Let Value(ByVal Data As Double)
 #If DEV Then
-    Const FunctionName As String = "Value"
+    Const FunctionName As String = "Value (Let)"
     Dim Logger As JSON.Logger
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
 #End If
