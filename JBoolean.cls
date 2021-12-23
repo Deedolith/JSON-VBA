@@ -106,6 +106,10 @@ Private Sub Parse()
 
     Dim Value As String
     Value = mData.GetStringFromRegEx("^(?:true|false)")
-    mData.EatString Value
-    mValue = Value = "true"
+    If ((Value = "true") Or (Value = "false")) Then
+        mData.EatString Value
+        mValue = Value = "true"
+    Else
+        Err.Raise JSON.JSException.JSUnexpectedToken, "JBoolean.Parse", "Expecting true or false."
+    End If
 End Sub
