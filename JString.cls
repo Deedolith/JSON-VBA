@@ -7,6 +7,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
+'@Exposed
 '@Folder("JSON")
 Option Explicit
 
@@ -57,6 +58,7 @@ End Sub
 
 '@Description "Return the string value of the object."
 Public Property Get Value() As String
+Attribute Value.VB_Description = "Return the string value of the object."
 #If DEV Then
     Const FunctionName As String = "Value (Get)"
     Dim Logger As JSON.Logger

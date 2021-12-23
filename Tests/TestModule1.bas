@@ -1,4 +1,5 @@
 Attribute VB_Name = "TestModule1"
+'@IgnoreModule
 Option Explicit
 Option Private Module
 

@@ -73,7 +73,7 @@ Private Function UnescapeUnicode(ByVal Data As String) As String
     Value = Data
     Dim Match As Object     '// VBScript_RegExp_55.Match
     For Each Match In Matchs
-        rx.Pattern = "(\" & Match & ")"
+        rx.Pattern = "(\" & Match.Value & ")"
         Value = rx.Replace(Value, ChrW$(Val("&H" & Match.SubMatches(0))))
     Next
     UnescapeUnicode = Value
@@ -232,3 +232,21 @@ Friend Function CreateString(ByRef SS As JSON.StringStream) As JSON.JString
     JString.Create SS
     Set CreateString = JString
 End Function
+
+Friend Function CreateArray(ByRef SS As JSON.StringStream) As JSON.Jarray
+    Debug.Assert Not (SS Is Nothing)    '// SS must be a valid instance
+    Debug.Assert Not (SS.EOF)           '// SS must not be empty
+
+#If DEV Then
+    Const FunctionName As String = "CreateArray"
+    Dim Logger As JSON.Logger
+    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
+#End If
+    
+    Dim Table As JSON.Jarray
+    Set Table = New JSON.Jarray
+
+    Table.Create SS
+    Set CreateArray = Table
+End Function
+

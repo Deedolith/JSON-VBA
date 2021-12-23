@@ -93,7 +93,7 @@ Public Function GetStringFromRegEx(ByVal RegEx As String) As String
     Set Matchs = rx.Execute(mData)
     If Not (Matchs Is Nothing) Then
         If (Matchs.Count) Then
-            GetStringFromRegEx = Matchs(0).Value
+            GetStringFromRegEx = Matchs.Item(0).Value
         End If
     End If
 End Function

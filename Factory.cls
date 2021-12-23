@@ -99,3 +99,15 @@ Public Function CreateString(ByVal Value As String) As JSON.JString
     JString.Value = Value
     Set CreateString = JString
 End Function
+
+Public Function CreateArray() As JSON.Jarray
+#If DEV Then
+    Const FunctionName As String = "CreateArray"
+    Dim Logger As JSON.Logger
+    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
+#End If
+
+    Dim Jarray As JSON.Jarray
+    Set Jarray = New JSON.Jarray
+    Set CreateArray = Jarray
+End Function
