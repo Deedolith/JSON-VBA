@@ -431,7 +431,7 @@ End Sub
 
 '@TestMethod("JString")
 Private Sub Parsing_7()
-    Const ExpectedError As Long = JSON.JSException.JSUnexpectedCharacter
+    Const ExpectedError As Long = JSON.JException.JUnexpectedCharacter
     On Error GoTo TestFail
     
     'Arrange:

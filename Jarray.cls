@@ -18,7 +18,9 @@ Private mData As JSON.StringStream
 Private mValues As Collection
 Private Const ModuleName As String = "JArray"
 
+'@Description "Constructor"
 Friend Sub Create(ByRef SS As JSON.StringStream)
+Attribute Create.VB_Description = "Constructor"
     Debug.Assert Not (SS Is Nothing)      '// Data must be a valid instance
 
 #If DEV Then
@@ -41,7 +43,9 @@ Private Sub Class_Initialize()
     Set mValues = New Collection
 End Sub
 
+'@Description "Stream parsing"
 Private Sub Parse()
+Attribute Parse.VB_Description = "Stream parsing"
 #If DEV Then
     Const FunctionName As String = "Parse"
     Dim Logger As JSON.Logger
@@ -66,7 +70,9 @@ Private Sub Parse()
     mData.EatCharacter "]"
 End Sub
 
+'@Description "Parse elements within the array"
 Private Sub ParseElement(ByRef SS As JSON.StringStream)
+Attribute ParseElement.VB_Description = "Parse elements within the array"
 '    Debug.Assert Not (SS Is Nothing)
 '
 '#If DEV Then
@@ -80,9 +86,9 @@ Private Sub ParseElement(ByRef SS As JSON.StringStream)
 '    SS.DiscardSpaces
 End Sub
 
-'@Description "Concrete class's data type."
+'@Description "Class's data type."
 Public Function DataType() As JSON.JType
-Attribute DataType.VB_Description = "Concrete class's data type."
+Attribute DataType.VB_Description = "Class's data type."
 #If DEV Then
     Const FunctionName As String = "DataType"
     Dim Logger As JSON.Logger
@@ -142,7 +148,9 @@ Attribute NewEnum.VB_UserMemId = -4
     Set NewEnum = mValues.[_NewEnum]
 End Function
 
+'@Description "Return a JSON formated string representation of the object"
 Public Function ToJSONString() As String
+Attribute ToJSONString.VB_Description = "Return a JSON formated string representation of the object"
 #If DEV Then
     Const FunctionName As String = "ToJSONString"
     Dim Logger As JSON.Logger
@@ -167,7 +175,9 @@ Public Function ToJSONString() As String
     ToJSONString = Output
 End Function
 
+'@Description "Return a human readable string representation of the object"
 Private Function ToString(Optional ByVal IndentMultiplier As Long = 0) As String
+Attribute ToString.VB_Description = "Return a human readable string representation of the object"
     Debug.Assert IndentMultiplier >= 0
 
 #If DEV Then

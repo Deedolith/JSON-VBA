@@ -298,7 +298,7 @@ End Sub
 
 '@TestMethod("JBoolean")
 Private Sub Parsing_3()
-    Const ExpectedError As Long = JSON.JSException.JSUnexpectedToken
+    Const ExpectedError As Long = JSON.JException.JUnexpectedToken
     On Error GoTo TestFail
     
     'Arrange:

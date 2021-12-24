@@ -14,5 +14,7 @@ Attribute VB_Description = "Base class for data writers."
 '@Folder("JSON.Providers")
 Option Explicit
 
+'@Description "Data writing interface"
 Public Sub Execute(ByRef Data As String)
+Attribute Execute.VB_Description = "Data writing interface"
 End Sub

@@ -18,7 +18,9 @@ Implements JSON.IReader
 Private mPath As String
 Private Const ModuleName As String = "FileReader"
 
+'@Description "Constructor"
 Friend Sub Create(ByVal Path As String)
+Attribute Create.VB_Description = "Constructor"
     Debug.Assert Path <> vbNullString   '// path must not be empty
 
 #If DEV Then
@@ -30,7 +32,9 @@ Friend Sub Create(ByVal Path As String)
     mPath = Path
 End Sub
 
+'@Description "Interface implementation"
 Private Function IReader_Execute() As String
+Attribute IReader_Execute.VB_Description = "Interface implementation"
     Const ForReading As Long = 1
 
 #If DEV Then

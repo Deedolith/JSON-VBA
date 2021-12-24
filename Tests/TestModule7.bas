@@ -75,7 +75,7 @@ End Sub
 
 '@TestMethod("Services")
 Private Sub CreateBoolean_3()
-    Const ExpectedError As Long = JSON.JSException.JSUnexpectedToken
+    Const ExpectedError As Long = JSON.JException.JUnexpectedToken
     On Error GoTo TestFail
     
     'Arrange:
@@ -119,7 +119,7 @@ End Sub
 
 '@TestMethod("Services")
 Private Sub CreateCreateNull_3()
-    Const ExpectedError As Long = JSON.JSException.JSUnexpectedToken
+    Const ExpectedError As Long = JSON.JException.JUnexpectedToken
     On Error GoTo TestFail
     
     'Arrange:
@@ -163,7 +163,7 @@ End Sub
 
 '@TestMethod("Services")
 Private Sub CreateCreateNumber_2()
-    Const ExpectedError As Long = JSON.JSException.JSUnexpectedToken
+    Const ExpectedError As Long = JSON.JException.JUnexpectedToken
     On Error GoTo TestFail
     
     'Arrange:
@@ -207,7 +207,7 @@ End Sub
 
 '@TestMethod("Services")
 Private Sub CreateCreateString_2()
-    Const ExpectedError As Long = JSON.JSException.JSUnexpectedCharacter
+    Const ExpectedError As Long = JSON.JException.JUnexpectedCharacter
     On Error GoTo TestFail
     
     'Arrange:

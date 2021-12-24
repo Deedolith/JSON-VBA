@@ -15,7 +15,9 @@ Private mData As JSON.StringStream
 Private mValue As String
 Private Const ModuleName As String = "JString"
 
+'@Description "Constructor"
 Friend Sub Create(ByRef SS As JSON.StringStream)
+Attribute Create.VB_Description = "Constructor"
     Debug.Assert Not SS Is Nothing
 
 #If DEV Then
@@ -40,7 +42,9 @@ Attribute DataType.VB_Description = "Class's data type."
     DataType = JSON.JType.JSString
 End Property
 
+'@Description "Stream parsing"
 Private Sub Parse()
+Attribute Parse.VB_Description = "Stream parsing"
 #If DEV Then
     Const FunctionName As String = "Parse"
     Dim Logger As JSON.Logger
@@ -56,9 +60,9 @@ Private Sub Parse()
     mValue = Value
 End Sub
 
-'@Description "Return the string value of the object."
+'@Description "Return the string value of the object"
 Public Property Get Value() As String
-Attribute Value.VB_Description = "Return the string value of the object."
+Attribute Value.VB_Description = "Return the string value of the object"
 #If DEV Then
     Const FunctionName As String = "Value (Get)"
     Dim Logger As JSON.Logger
@@ -68,7 +72,9 @@ Attribute Value.VB_Description = "Return the string value of the object."
     Value = Services.Escape(mValue)
 End Property
 
+'@Description "Set the string value of the object"
 Public Property Let Value(ByVal Data As String)
+Attribute Value.VB_Description = "Set the string value of the object"
 #If DEV Then
     Const FunctionName As String = "Value (Let)"
     Dim Logger As JSON.Logger
@@ -78,7 +84,9 @@ Public Property Let Value(ByVal Data As String)
     mValue = Data
 End Property
 
+'@Description "Return a JSON string representation of the object"
 Public Function ToJSONString() As String
+Attribute ToJSONString.VB_Description = "Return a JSON string representation of the object"
 #If DEV Then
     Const FunctionName As String = "ToJSONString"
     Dim Logger As JSON.Logger
@@ -92,7 +100,9 @@ Public Function ToJSONString() As String
     ToJSONString = Output
 End Function
 
+'@Description "Retrun a human readable string representation of the object"
 Public Function ToString(Optional ByVal IndentMultiplier As Long = 0) As String
+Attribute ToString.VB_Description = "Retrun a human readable string representation of the object"
     Debug.Assert IndentMultiplier >= 0
 
 #If DEV Then

@@ -14,5 +14,7 @@ Attribute VB_Description = "Base class for data readers."
 '@Folder "JSON.Providers"
 Option Explicit
 
+'@Description "Data reading interface"
 Public Function Execute() As String
+Attribute Execute.VB_Description = "Data reading interface"
 End Function

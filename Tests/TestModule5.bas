@@ -130,7 +130,7 @@ End Sub
 
 '@TestMethod("StringStream")
 Private Sub EatCharacter_fail()
-    Const ExpectedError As Long = JSON.JSException.JSUnexpectedCharacter
+    Const ExpectedError As Long = JSON.JException.JUnexpectedCharacter
     On Error GoTo TestFail
     
     'Arrange:
@@ -172,7 +172,7 @@ End Sub
 
 '@TestMethod("StringStream")
 Private Sub EatString_fail()
-    Const ExpectedError As Long = JSON.JSException.JSUnexpectedCharacter
+    Const ExpectedError As Long = JSON.JException.JUnexpectedCharacter
     On Error GoTo TestFail
     
     'Arrange:
@@ -211,5 +211,4 @@ TestFail:
     Assert.Fail "Le test a produit une erreur: #" & Err.Number & " - " & Err.Description
     Resume TestExit
 End Sub
-
 

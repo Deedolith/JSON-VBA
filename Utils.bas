@@ -2,10 +2,10 @@ Attribute VB_Name = "Utils"
 '@Folder("JSON.Utilities")
 Option Explicit
 
-Public Enum JSException
-    JSUnexpectedKey = vbObjectError + 1
-    JSUnexpectedCharacter = vbObjectError + 2
-    JSUnexpectedToken = vbObjectError + 3
+Public Enum JException
+    JUnexpectedKey = vbObjectError + 1
+    JUnexpectedCharacter = vbObjectError + 2
+    JUnexpectedToken = vbObjectError + 3
 End Enum
 
 Public Enum JType

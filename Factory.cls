@@ -17,7 +17,9 @@ Option Explicit
 
 Private Const ModuleName As String = "Factory"
 
+'@Description "Instanciate a new FileReader object"
 Public Function CreateFileReader(ByVal Path As String) As JSON.FileReader
+Attribute CreateFileReader.VB_Description = "Instanciate a new FileReader object"
     Debug.Assert Path <> vbNullString   '// path must not be empty
 
 #If DEV Then
@@ -33,7 +35,9 @@ Public Function CreateFileReader(ByVal Path As String) As JSON.FileReader
     Set CreateFileReader = Reader
 End Function
 
+'@Description "Instanciate a new FileWriter object"
 Public Function CreateFileWriter(ByVal Path As String) As JSON.FileWriter
+Attribute CreateFileWriter.VB_Description = "Instanciate a new FileWriter object"
     Debug.Assert Path <> vbNullString   '// path must not be empty
 
 #If DEV Then
@@ -49,7 +53,9 @@ Public Function CreateFileWriter(ByVal Path As String) As JSON.FileWriter
     Set CreateFileWriter = Writer
 End Function
 
+'@Description "Instanciate a new JBoolean object"
 Public Function CreateBoolean(ByVal Value As Boolean) As JSON.JBoolean
+Attribute CreateBoolean.VB_Description = "Instanciate a new JBoolean object"
 #If DEV Then
     Const FunctionName As String = "CreateBoolean"
     Dim Logger As JSON.Logger
@@ -62,7 +68,9 @@ Public Function CreateBoolean(ByVal Value As Boolean) As JSON.JBoolean
     Set CreateBoolean = JBoolean
 End Function
 
+'@Description "Instanciate a new JNull object"
 Public Function CreateNull() As JSON.JNull
+Attribute CreateNull.VB_Description = "Instanciate a new JNull object"
 #If DEV Then
     Const FunctionName As String = "CreateNull"
     Dim Logger As JSON.Logger
@@ -74,7 +82,9 @@ Public Function CreateNull() As JSON.JNull
     Set CreateNull = JNull
 End Function
 
+'@Description "Instanciate a new JNumber object"
 Public Function CreateNumber(ByVal Value As Double) As JSON.JNumber
+Attribute CreateNumber.VB_Description = "Instanciate a new JNumber object"
 #If DEV Then
     Const FunctionName As String = "CreateNumber"
     Dim Logger As JSON.Logger
@@ -87,7 +97,9 @@ Public Function CreateNumber(ByVal Value As Double) As JSON.JNumber
     Set CreateNumber = JNumber
 End Function
 
+'@Description "Instanciate a new JString object"
 Public Function CreateString(ByVal Value As String) As JSON.JString
+Attribute CreateString.VB_Description = "Instanciate a new JString object"
 #If DEV Then
     Const FunctionName As String = "CreateString"
     Dim Logger As JSON.Logger
@@ -100,7 +112,9 @@ Public Function CreateString(ByVal Value As String) As JSON.JString
     Set CreateString = JString
 End Function
 
+'@Description "Instanciate a new Jarray object"
 Public Function CreateArray() As JSON.Jarray
+Attribute CreateArray.VB_Description = "Instanciate a new Jarray object"
 #If DEV Then
     Const FunctionName As String = "CreateArray"
     Dim Logger As JSON.Logger
