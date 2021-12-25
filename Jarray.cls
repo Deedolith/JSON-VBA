@@ -277,3 +277,17 @@ Attribute Remove.VB_Description = "Remove an element as the given index"
     mValues.Remove Index + 1
 End Sub
 
+'@DefaultMember
+Public Function Item(ByVal Index As Long) As Object
+Attribute Item.VB_UserMemId = 0
+    Debug.Assert Index >= 0
+    Debug.Assert Index < mValues.Count
+    
+#If DEV Then
+    Const FunctionName As String = "Item"
+    Dim Logger As JSON.Logger
+    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
+#End If
+
+    Set Item = mValues.Item(Index + 1)
+End Function

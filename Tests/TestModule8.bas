@@ -533,3 +533,56 @@ TestFail:
     Assert.Fail "Le test a produit une erreur: #" & Err.Number & " - " & Err.Description
     Resume TestExit
 End Sub
+
+'@TestMethod("JArray")
+Private Sub Item()
+    On Error GoTo TestFail
+    
+    'Arrange:
+        Dim JArray As JSON.JArray
+        Set JArray = Factory.CreateArray
+        JArray.PushBack Factory.CreateNull
+        JArray.PushBack Factory.CreateNull
+        JArray.PushBack Factory.CreateNull
+        JArray.PushBack Factory.CreateNull
+    'Act:
+        Dim Element As Object
+        Set Element = JArray(2)
+    'Assert:
+        Assert.Succeed
+
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Le test a produit une erreur: #" & Err.Number & " - " & Err.Description
+    Resume TestExit
+End Sub
+
+
+'@TestMethod("JArray")
+Private Sub Item_2()
+    Const ExpectedError As Long = 9     '// L'indice n'appartient pas à la sélection.
+    On Error GoTo TestFail
+    
+    'Arrange:
+        Dim JArray As JSON.JArray
+        Set JArray = Factory.CreateArray
+        JArray.PushBack Factory.CreateNull
+        JArray.PushBack Factory.CreateNull
+        JArray.PushBack Factory.CreateNull
+        JArray.PushBack Factory.CreateNull
+    'Act:
+        Dim Element As Object
+        Set Element = JArray(4)
+Assert:
+    Assert.Fail "L'erreur attendue ne s'est pas produite"
+
+TestExit:
+    Exit Sub
+TestFail:
+    If Err.Number = ExpectedError Then
+        Resume TestExit
+    Else
+        Resume Assert
+    End If
+End Sub
