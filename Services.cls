@@ -254,7 +254,7 @@ Attribute CreateString.VB_Description = "Instanciate a new JString object from a
 End Function
 
 '@Description "Instanciate a new JArray object from a stream"
-Friend Function CreateArray(ByRef SS As JSON.StringStream) As JSON.Jarray
+Friend Function CreateArray(ByRef SS As JSON.StringStream) As JSON.JArray
 Attribute CreateArray.VB_Description = "Instanciate a new JArray object from a stream"
     Debug.Assert Not (SS Is Nothing)    '// SS must be a valid instance
     Debug.Assert Not (SS.EOF)           '// SS must not be empty
@@ -265,9 +265,46 @@ Attribute CreateArray.VB_Description = "Instanciate a new JArray object from a s
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
 #End If
     
-    Dim Table As JSON.Jarray
-    Set Table = New JSON.Jarray
+    Dim Table As JSON.JArray
+    Set Table = New JSON.JArray
 
     Table.Create SS
     Set CreateArray = Table
+End Function
+
+Friend Function GetValueAs(ByRef Value As Object, ByVal DataType As JSON.JType) As Object
+#If DEV Then
+    Const FunctionName As String = "GetValueAs"
+    Dim Logger As JSON.Logger
+    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
+#End If
+
+    Select Case DataType
+    Case JSON.JType.JSArray
+        Dim JArray As JSON.JArray
+        Set JArray = Value
+        Set GetValueAs = JArray
+    Case JSON.JSBoolean
+        Dim JBoolean As JSON.JBoolean
+        Set JBoolean = Value
+        Set GetValueAs = JBoolean
+    Case JSON.JType.JSNull
+        Dim JNull As JSON.JNull
+        Set JNull = Value
+        Set GetValueAs = JNull
+    Case JSON.JType.JSNumber
+        Dim JNumber As JSON.JNumber
+        Set JNumber = Value
+        Set GetValueAs = JNumber
+    Case JSON.JType.JSObject
+        Dim JObject As JSON.JObject
+        Set JObject = Value
+        Set GetValueAs = JObject
+    Case JSON.JType.JSString
+        Dim JString As JSON.JString
+        Set JString = Value
+        Set GetValueAs = JString
+    Case Else
+        Err.Raise 9     '// subscript out of range
+    End Select
 End Function

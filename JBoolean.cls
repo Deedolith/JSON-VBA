@@ -11,7 +11,6 @@ Attribute VB_Exposed = True
 '@Folder "JSON"
 Option Explicit
 
-'@TODO Implement the JBoolean class
 Const ModuleName As String = "JBoolean"
 Private mValue As Boolean
 Private mData As JSON.StringStream
