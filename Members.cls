@@ -27,15 +27,15 @@ Private Sub Class_Initialize()
     Set mMembers = New Collection
 End Sub
 
-'@Enumerator
 '@Description "Enumerator"
+'@Enumerator
 Public Property Get NewEnum() As IUnknown
+Attribute NewEnum.VB_UserMemId = -4
 #If DEV Then
     Const FunctionName As String = "NewEnum"
     Dim Logger As JSON.Logger
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
 #End If
-
 
     Set NewEnum = mMembers.[_NewEnum]
 End Property
@@ -53,6 +53,7 @@ End Function
 
 '@DefaultMember
 Public Function Item(ByVal Key As String) As JSON.Pair
+Attribute Item.VB_UserMemId = 0
 #If DEV Then
     Const FunctionName As String = "Item"
     Dim Logger As JSON.Logger
@@ -111,5 +112,3 @@ Error:
         Err.Raise Err.Number, Err.Source, Err.Description, Err.HelpFile, Err.HelpContext
     End Select
 End Function
-
-

@@ -139,3 +139,23 @@ Attribute CreateObject.VB_Description = "Instanciate a new JObject object"
     Set JObject = New JSON.JObject
     Set CreateObject = JObject
 End Function
+
+Public Function CreatePair(ByVal Name As String, ByVal Value As Object) As JSON.Pair
+    Debug.Assert Not Value Is Nothing
+
+#If DEV Then
+    Const FunctionName As String = "CreatePair"
+    Dim Logger As JSON.Logger
+    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
+#End If
+
+    If ((TypeOf Value Is JArray) Or (TypeOf Value Is JBoolean) Or (TypeOf Value Is JNull) Or (TypeOf Value Is JNumber) Or (TypeOf Value Is JString) Or (TypeOf Value Is JObject)) Then
+        Dim Pair As JSON.Pair
+        Set Pair = New JSON.Pair
+        Pair.Name = Name
+        Set Pair.Value = Value
+        Set CreatePair = Pair
+    Else
+        Err.Raise 13, "Factory.CreatePair"        '// Type Mismatch
+    End If
+End Function

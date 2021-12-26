@@ -117,18 +117,6 @@ Attribute DataType.VB_Description = "Class's data type."
     DataType = JSON.JType.JSObject
 End Function
 
-'@Description "Return the number of members in the object."
-Public Function Count() As Long
-Attribute Count.VB_Description = "Return the number of members in the object."
-#If DEV Then
-    Const FunctionName As String = "Count"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
-
-    Count = mMembers.Count
-End Function
-
 '@Description "The object's default value"
 Public Property Get Value() As String
 Attribute Value.VB_Description = "The object's default value"
@@ -145,7 +133,7 @@ End Property
 Public Function ToString(Optional ByVal IndentMultiplier As Long = 0) As String
 Attribute ToString.VB_Description = "Return a human readable string representation of the object"
 #If DEV Then
-    Const FunctionName As String = "JValue_ToString"
+    Const FunctionName As String = "ToString"
     Dim Logger As JSON.Logger
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
 #End If
@@ -201,3 +189,13 @@ Attribute ToJSONString.VB_Description = "Return a JSON string representation of 
     Output = Output & "}"
     ToJSONString = Output
 End Function
+
+Public Property Get Members() As JSON.Members
+#If DEV Then
+    Const FunctionName As String = "Members"
+    Dim Logger As JSON.Logger
+    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
+#End If
+
+    Set Members = mMembers
+End Property
