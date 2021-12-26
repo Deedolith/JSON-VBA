@@ -125,3 +125,17 @@ Attribute CreateArray.VB_Description = "Instanciate a new Jarray object"
     Set JArray = New JSON.JArray
     Set CreateArray = JArray
 End Function
+
+'@Description "Instanciate a new JObject object"
+Public Function CreateObject() As JSON.JObject
+Attribute CreateObject.VB_Description = "Instanciate a new JObject object"
+#If DEV Then
+    Const FunctionName As String = "CreateObject"
+    Dim Logger As JSON.Logger
+    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
+#End If
+
+    Dim JObject As JSON.JObject
+    Set JObject = New JSON.JObject
+    Set CreateObject = JObject
+End Function

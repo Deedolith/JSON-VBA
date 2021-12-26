@@ -265,14 +265,16 @@ Attribute CreateArray.VB_Description = "Instanciate a new JArray object from a s
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
 #End If
     
-    Dim Table As JSON.JArray
-    Set Table = New JSON.JArray
+    Dim JArray As JSON.JArray
+    Set JArray = New JSON.JArray
 
-    Table.Create SS
-    Set CreateArray = Table
+    JArray.Create SS
+    Set CreateArray = JArray
 End Function
 
+'@Description "Convert a generic JSON object to the requested type"
 Friend Function GetValueAs(ByRef Value As Object, ByVal DataType As JSON.JType) As Object
+Attribute GetValueAs.VB_Description = "Convert a generic JSON object to the requested type"
 #If DEV Then
     Const FunctionName As String = "GetValueAs"
     Dim Logger As JSON.Logger
@@ -309,7 +311,9 @@ Friend Function GetValueAs(ByRef Value As Object, ByVal DataType As JSON.JType) 
     End Select
 End Function
 
+'@Description "Parse a JSON value and return the corresponding object"
 Friend Function ParseValue(ByRef SS As JSON.StringStream) As Object
+Attribute ParseValue.VB_Description = "Parse a JSON value and return the corresponding object"
     Debug.Assert Not (SS Is Nothing)    '// SS must be a valid instance
     Debug.Assert Not (SS.EOF)           '// SS must not be empty
 
@@ -320,7 +324,7 @@ Friend Function ParseValue(ByRef SS As JSON.StringStream) As Object
 #End If
 
     If (IsObject(SS)) Then
-        '//Set ParseValue = CreateObject(SS)
+        Set ParseValue = CreateObject(SS)
     ElseIf (IsArray(SS)) Then
         Set ParseValue = CreateArray(SS)
     ElseIf (IsString(SS)) Then
@@ -336,7 +340,9 @@ Friend Function ParseValue(ByRef SS As JSON.StringStream) As Object
     End If
 End Function
 
+'@Description "Check if the next value as an array"
 Private Function IsArray(ByRef SS As JSON.StringStream) As Boolean
+Attribute IsArray.VB_Description = "Check if the next value as an array"
     Debug.Assert Not (SS Is Nothing)
 
 #If DEV Then
@@ -348,7 +354,9 @@ Private Function IsArray(ByRef SS As JSON.StringStream) As Boolean
     IsArray = SS.PeekCharacter = "["
 End Function
 
+'@Description "Check if the next value is a boolean"
 Private Function IsBoolean(ByRef SS As JSON.StringStream) As Boolean
+Attribute IsBoolean.VB_Description = "Check if the next value is a boolean"
     Debug.Assert Not (SS Is Nothing)
 
 #If DEV Then
@@ -360,7 +368,9 @@ Private Function IsBoolean(ByRef SS As JSON.StringStream) As Boolean
     IsBoolean = SS.GetStringFromRegEx("^(?:true|false)") <> vbNullString
 End Function
 
+'@Description "Check if the next value is a null"
 Private Function IsNull(ByRef SS As JSON.StringStream) As Boolean
+Attribute IsNull.VB_Description = "Check if the next value is a null"
     Debug.Assert Not (SS Is Nothing)
 
 #If DEV Then
@@ -372,7 +382,9 @@ Private Function IsNull(ByRef SS As JSON.StringStream) As Boolean
     IsNull = SS.GetStringFromRegEx("^null") <> vbNullString
 End Function
 
+'@Description "Check if the next value is a number"
 Private Function IsNumber(ByRef SS As JSON.StringStream) As Boolean
+Attribute IsNumber.VB_Description = "Check if the next value is a number"
     Debug.Assert Not (SS Is Nothing)
 
 #If DEV Then
@@ -384,7 +396,9 @@ Private Function IsNumber(ByRef SS As JSON.StringStream) As Boolean
     IsNumber = SS.GetStringFromRegEx("^(?:-?(?:0|[1-9][0-9]*)(?:\.[0-9]+)?(?:[eE][+-]?[0-9]+)?)") <> vbNullString
 End Function
 
+'@Description "Check if the next value is an object"
 Private Function IsObject(ByRef SS As JSON.StringStream) As Boolean
+Attribute IsObject.VB_Description = "Check if the next value is an object"
     Debug.Assert Not (SS Is Nothing)
 
 #If DEV Then
@@ -396,7 +410,9 @@ Private Function IsObject(ByRef SS As JSON.StringStream) As Boolean
     IsObject = SS.PeekCharacter = "{"
 End Function
 
+'@Description "Check if the next value is a string"
 Private Function IsString(ByRef SS As JSON.StringStream) As Boolean
+Attribute IsString.VB_Description = "Check if the next value is a string"
     Debug.Assert Not (SS Is Nothing)
 
 #If DEV Then
@@ -408,3 +424,40 @@ Private Function IsString(ByRef SS As JSON.StringStream) As Boolean
     IsString = SS.PeekCharacter = """"
 End Function
 
+'@Description "Instanciate a new Pair object"
+Friend Function CreatePair(ByVal Name As String, ByRef Element As Object) As JSON.Pair
+Attribute CreatePair.VB_Description = "Instanciate a new Pair object"
+#If DEV Then
+    Const FunctionName As String = "CreatePair"
+    Dim Logger As JSON.Logger
+    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
+#End If
+
+    If ((TypeOf Element Is JArray) Or (TypeOf Element Is JBoolean) Or (TypeOf Element Is JNull) Or (TypeOf Element Is JNumber) Or (TypeOf Element Is JString) Or (TypeOf Element Is JObject)) Then
+        Dim Pair As JSON.Pair
+        Set Pair = New JSON.Pair
+        Pair.Create Name, Element
+        Set CreatePair = Pair
+    Else
+        Err.Raise 13        '// Type Mismatch
+    End If
+End Function
+
+'@Description "Instanciate a new JObject object from a stream"
+Friend Function CreateObject(ByRef SS As JSON.StringStream) As JSON.JObject
+Attribute CreateObject.VB_Description = "Instanciate a new JObject object from a stream"
+    Debug.Assert Not (SS Is Nothing)    '// SS must be a valid instance
+    Debug.Assert Not (SS.EOF)           '// SS must not be empty
+
+#If DEV Then
+    Const FunctionName As String = "CreateObject"
+    Dim Logger As JSON.Logger
+    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
+#End If
+    
+    Dim JObject As JSON.JObject
+    Set JObject = New JSON.JObject
+
+    JObject.Create SS
+    Set CreateObject = JObject
+End Function
