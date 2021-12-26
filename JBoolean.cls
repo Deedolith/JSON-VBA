@@ -113,6 +113,6 @@ Attribute Parse.VB_Description = "Stream parsing"
         mData.EatString Value
         mValue = Value = "true"
     Else
-        Err.Raise JSON.JException.JUnexpectedToken, "JBoolean.Parse", "Expecting true or false."
+        Err.Raise JSON.JException.JUnexpectedToken, "JBoolean.Parse", """true"" or ""false"" expected."
     End If
 End Sub

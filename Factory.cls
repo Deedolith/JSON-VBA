@@ -12,7 +12,7 @@ Attribute VB_Description = "Singleton Factory class, responsible for instanciati
 '@IgnoreModule AssignmentNotUsed, VariableNotUsed
 '@Exposed
 '@PredeclaredId
-'@Folder("JSON.Services")
+'@Folder "JSON.Services"
 Option Explicit
 
 Private Const ModuleName As String = "Factory"

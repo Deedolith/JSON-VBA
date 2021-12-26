@@ -308,3 +308,103 @@ Friend Function GetValueAs(ByRef Value As Object, ByVal DataType As JSON.JType) 
         Err.Raise 9     '// subscript out of range
     End Select
 End Function
+
+Friend Function ParseValue(ByRef SS As JSON.StringStream) As Object
+    Debug.Assert Not (SS Is Nothing)    '// SS must be a valid instance
+    Debug.Assert Not (SS.EOF)           '// SS must not be empty
+
+#If DEV Then
+    Const FunctionName As String = "ParseValue"
+    Dim Logger As JSON.Logger
+    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
+#End If
+
+    If (IsObject(SS)) Then
+        '//Set ParseValue = CreateObject(SS)
+    ElseIf (IsArray(SS)) Then
+        Set ParseValue = CreateArray(SS)
+    ElseIf (IsString(SS)) Then
+        Set ParseValue = CreateString(SS)
+    ElseIf (IsNumber(SS)) Then
+        Set ParseValue = CreateNumber(SS)
+    ElseIf (IsBoolean(SS)) Then
+        Set ParseValue = CreateBoolean(SS)
+    ElseIf (IsNull(SS)) Then
+        Set ParseValue = CreateNull(SS)
+    Else
+        Err.Raise JSON.JException.JUnexpectedCharacter, "Services.ParseValue", "Unexpected token"
+    End If
+End Function
+
+Private Function IsArray(ByRef SS As JSON.StringStream) As Boolean
+    Debug.Assert Not (SS Is Nothing)
+
+#If DEV Then
+    Const FunctionName As String = "IsArray"
+    Dim Logger As JSON.Logger
+    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
+#End If
+
+    IsArray = SS.PeekCharacter = "["
+End Function
+
+Private Function IsBoolean(ByRef SS As JSON.StringStream) As Boolean
+    Debug.Assert Not (SS Is Nothing)
+
+#If DEV Then
+    Const FunctionName As String = "IsBoolean"
+    Dim Logger As JSON.Logger
+    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
+#End If
+
+    IsBoolean = SS.GetStringFromRegEx("^(?:true|false)") <> vbNullString
+End Function
+
+Private Function IsNull(ByRef SS As JSON.StringStream) As Boolean
+    Debug.Assert Not (SS Is Nothing)
+
+#If DEV Then
+    Const FunctionName As String = "IsNull"
+    Dim Logger As JSON.Logger
+    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
+#End If
+
+    IsNull = SS.GetStringFromRegEx("^null") <> vbNullString
+End Function
+
+Private Function IsNumber(ByRef SS As JSON.StringStream) As Boolean
+    Debug.Assert Not (SS Is Nothing)
+
+#If DEV Then
+    Const FunctionName As String = "IsNumber"
+    Dim Logger As JSON.Logger
+    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
+#End If
+
+    IsNumber = SS.GetStringFromRegEx("^(?:-?(?:0|[1-9][0-9]*)(?:\.[0-9]+)?(?:[eE][+-]?[0-9]+)?)") <> vbNullString
+End Function
+
+Private Function IsObject(ByRef SS As JSON.StringStream) As Boolean
+    Debug.Assert Not (SS Is Nothing)
+
+#If DEV Then
+    Const FunctionName As String = "IsObject"
+    Dim Logger As JSON.Logger
+    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
+#End If
+
+    IsObject = SS.PeekCharacter = "{"
+End Function
+
+Private Function IsString(ByRef SS As JSON.StringStream) As Boolean
+    Debug.Assert Not (SS Is Nothing)
+
+#If DEV Then
+    Const FunctionName As String = "IsString"
+    Dim Logger As JSON.Logger
+    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
+#End If
+
+    IsString = SS.PeekCharacter = """"
+End Function
+

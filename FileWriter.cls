@@ -11,7 +11,7 @@ Attribute VB_Description = "A simple text file writer, provided for conveniance.
 '@ModuleDescription "A simple text file writer, provided for conveniance."
 '@IgnoreModule AssignmentNotUsed, VariableNotUsed
 '@Exposed
-'@Folder("JSON.Providers")
+'@Folder "JSON.Providers"
 Option Explicit
 Implements JSON.IWriter
 

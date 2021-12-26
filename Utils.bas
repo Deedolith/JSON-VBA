@@ -1,5 +1,5 @@
 Attribute VB_Name = "Utils"
-'@Folder("JSON.Utilities")
+'@Folder "JSON.Utilities"
 Option Explicit
 
 Public Enum JException

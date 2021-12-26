@@ -586,3 +586,96 @@ TestFail:
         Resume Assert
     End If
 End Sub
+
+'@TestMethod("JArray")
+Private Sub Parse()
+    On Error GoTo TestFail
+    
+    'Arrange:
+        Dim SS As JSON.StringStream
+        Set SS = Services.CreateStringStream("[ ]")
+        
+        Dim JArray As JSON.JArray
+        Set JArray = Services.CreateArray(SS)
+    'Act:
+    
+    'Assert:
+        Assert.Succeed
+
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Le test a produit une erreur: #" & Err.Number & " - " & Err.Description
+    Resume TestExit
+End Sub
+
+'@TestMethod("JArray")
+Private Sub Parse_2()
+    On Error GoTo TestFail
+    
+    'Arrange:
+        Dim SS As JSON.StringStream
+        Set SS = Services.CreateStringStream("[ null ]")
+        
+        Dim JArray As JSON.JArray
+        Set JArray = Services.CreateArray(SS)
+    'Act:
+    
+    'Assert:
+        Assert.IsTrue TypeOf JArray.GetItemAs(0, JSON.JType.JSNull) Is JNull
+
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Le test a produit une erreur: #" & Err.Number & " - " & Err.Description
+    Resume TestExit
+End Sub
+
+'@TestMethod("JArray")
+Private Sub Parse_4()
+    On Error GoTo TestFail
+    
+    'Arrange:
+        Dim SS As JSON.StringStream
+        Set SS = Services.CreateStringStream("[ null, null ]")
+        
+        Dim JArray As JSON.JArray
+        Set JArray = Services.CreateArray(SS)
+    'Act:
+    
+    'Assert:
+        Assert.IsTrue TypeOf JArray.GetItemAs(0, JSON.JType.JSNull) Is JNull
+
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Le test a produit une erreur: #" & Err.Number & " - " & Err.Description
+    Resume TestExit
+End Sub
+
+
+'@TestMethod("JArray")
+Private Sub Parse_3()
+    Const ExpectedError As Long = JSON.JException.JUnexpectedCharacter
+    On Error GoTo TestFail
+    
+    'Arrange:
+        Dim SS As JSON.StringStream
+        Set SS = Services.CreateStringStream("invalid array")
+        
+        Dim JArray As JSON.JArray
+        Set JArray = Services.CreateArray(SS)
+    'Act:
+
+Assert:
+    Assert.Fail "L'erreur attendue ne s'est pas produite"
+
+TestExit:
+    Exit Sub
+TestFail:
+    If Err.Number = ExpectedError Then
+        Resume TestExit
+    Else
+        Resume Assert
+    End If
+End Sub

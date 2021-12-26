@@ -8,14 +8,14 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
 Attribute VB_Description = "Represent a JSON array, zero index based."
-'@Folder("JSON")
+'@Folder "JSON"
 '@ModuleDescription "Represent a JSON array, zero index based."
 '@IgnoreModule AssignmentNotUsed, VariableNotUsed
 '@Exposed
 Option Explicit
 
 Private mData As JSON.StringStream
-Private mValues As Collection
+Private mElements As Collection
 Private Const ModuleName As String = "JArray"
 
 '@Description "Constructor"
@@ -40,7 +40,7 @@ Private Sub Class_Initialize()
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
 #End If
 
-    Set mValues = New Collection
+    Set mElements = New Collection
 End Sub
 
 '@Description "Stream parsing"
@@ -73,17 +73,17 @@ End Sub
 '@Description "Parse elements within the array"
 Private Sub ParseElement(ByRef SS As JSON.StringStream)
 Attribute ParseElement.VB_Description = "Parse elements within the array"
-'    Debug.Assert Not (SS Is Nothing)
-'
-'#If DEV Then
-'    Const FunctionName As String = "ParseElement"
-'    Dim Logger As JSON.Logger
-'    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-'#End If
-'
-'    SS.DiscardSpaces
-'    mValues.Add Services.ParseValue(SS)
-'    SS.DiscardSpaces
+    Debug.Assert Not (SS Is Nothing)
+
+#If DEV Then
+    Const FunctionName As String = "ParseElement"
+    Dim Logger As JSON.Logger
+    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
+#End If
+
+    SS.DiscardSpaces
+    mElements.Add Services.ParseValue(SS)
+    SS.DiscardSpaces
 End Sub
 
 '@Description "Class's data type."
@@ -107,14 +107,14 @@ Attribute Size.VB_Description = "Return the number of elements in the array."
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
 #End If
 
-    Size = mValues.Count
+    Size = mElements.Count
 End Function
 
 '@Description "Return an element given its index."
 Public Function GetItemAs(ByVal Index As Long, ByVal DataType As JSON.JType) As Object
 Attribute GetItemAs.VB_Description = "Return an element given its index."
     Debug.Assert Index >= 0
-    Debug.Assert Index < mValues.Count
+    Debug.Assert Index < mElements.Count
 
 #If DEV Then
     Const FunctionName As String = "Item (Get)"
@@ -122,14 +122,14 @@ Attribute GetItemAs.VB_Description = "Return an element given its index."
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
 #End If
     
-    Set GetItemAs = Services.GetValueAs(mValues.Item(Index + 1), DataType)
+    Set GetItemAs = Services.GetValueAs(mElements.Item(Index + 1), DataType)
 End Function
 
 '@Description "Set an element at the given index"
 Public Sub SetItem(ByVal Index As Long, ByRef Element As Object)
 Attribute SetItem.VB_Description = "Set an element at the given index"
     Debug.Assert Index >= 0
-    Debug.Assert Index < mValues.Count
+    Debug.Assert Index < mElements.Count
 
 #If DEV Then
     Const FunctionName As String = "Item (Set)"
@@ -139,17 +139,17 @@ Attribute SetItem.VB_Description = "Set an element at the given index"
 
      If ((TypeOf Element Is JArray) Or (TypeOf Element Is JBoolean) Or (TypeOf Element Is JNull) Or (TypeOf Element Is JNumber) Or (TypeOf Element Is JString) Or (TypeOf Element Is JObject)) Then
         Index = Index + 1
-        mValues.Remove Index
-        If (mValues.Count = 0) Then
+        mElements.Remove Index
+        If (mElements.Count = 0) Then
                 '// mValues is empty, just add the element
-            mValues.Add Element
+            mElements.Add Element
         Else
-            If (Index > mValues.Count) Then
+            If (Index > mElements.Count) Then
                     '// add element at the end
-                mValues.Add Element, After:=Index - 1
+                mElements.Add Element, After:=Index - 1
             Else
                     '// add element elsewhere
-                mValues.Add Element, Before:=Index
+                mElements.Add Element, Before:=Index
             End If
         End If
     Else
@@ -168,7 +168,7 @@ Attribute NewEnum.VB_UserMemId = -4
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
 #End If
 
-    Set NewEnum = mValues.[_NewEnum]
+    Set NewEnum = mElements.[_NewEnum]
 End Function
 
 '@Description "Return a JSON formated string representation of the object"
@@ -187,7 +187,7 @@ Attribute ToJSONString.VB_Description = "Return a JSON formated string represent
     SecondLoop = False
 
     Dim Element As Object
-    For Each Element In mValues
+    For Each Element In mElements
         If (SecondLoop) Then
             Output = Output & ","
         End If
@@ -222,7 +222,7 @@ Attribute ToString.VB_Description = "Return a human readable string representati
     SecondLoop = False
 
     Dim Element As Object
-    For Each Element In mValues
+    For Each Element In mElements
         If (SecondLoop) Then
             Output = Output & "," & vbCrLf
         End If
@@ -256,7 +256,7 @@ Attribute PushBack.VB_Description = "Add an element at the back of the array"
 #End If
 
     If ((TypeOf Element Is JArray) Or (TypeOf Element Is JBoolean) Or (TypeOf Element Is JNull) Or (TypeOf Element Is JNumber) Or (TypeOf Element Is JString) Or (TypeOf Element Is JObject)) Then
-        mValues.Add Element
+        mElements.Add Element
     Else
         Err.Raise 13        '// type mismatch
     End If
@@ -266,7 +266,7 @@ End Sub
 Public Sub Remove(ByVal Index As Long)
 Attribute Remove.VB_Description = "Remove an element as the given index"
     Debug.Assert Index >= 0
-    Debug.Assert Index < mValues.Count
+    Debug.Assert Index < mElements.Count
 
 #If DEV Then
     Const FunctionName As String = "Remove"
@@ -274,14 +274,14 @@ Attribute Remove.VB_Description = "Remove an element as the given index"
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
 #End If
 
-    mValues.Remove Index + 1
+    mElements.Remove Index + 1
 End Sub
 
 '@DefaultMember
 Public Function Item(ByVal Index As Long) As Object
 Attribute Item.VB_UserMemId = 0
     Debug.Assert Index >= 0
-    Debug.Assert Index < mValues.Count
+    Debug.Assert Index < mElements.Count
     
 #If DEV Then
     Const FunctionName As String = "Item"
@@ -289,5 +289,5 @@ Attribute Item.VB_UserMemId = 0
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
 #End If
 
-    Set Item = mValues.Item(Index + 1)
+    Set Item = mElements.Item(Index + 1)
 End Function

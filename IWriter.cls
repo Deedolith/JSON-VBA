@@ -11,7 +11,7 @@ Attribute VB_Description = "Base class for data writers."
 '@ModuleDescription "Base class for data writers."
 '@Exposed
 '@Interface
-'@Folder("JSON.Providers")
+'@Folder "JSON.Providers"
 Option Explicit
 
 '@Description "Data writing interface"

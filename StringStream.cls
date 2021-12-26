@@ -8,7 +8,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '@IgnoreModule AssignmentNotUsed, VariableNotUsed
-'@Folder("JSON")
+'@Folder "JSON"
 Option Explicit
 
 Private mData As String
