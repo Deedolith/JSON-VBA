@@ -59,8 +59,10 @@ Attribute Name.VB_Description = "Set the pair's name"
 End Property
 
 '@Description "Retrieve the pair's value"
+'@DefaultMember
 Public Property Get Value() As Object
 Attribute Value.VB_Description = "Retrieve the pair's value"
+Attribute Value.VB_UserMemId = 0
 #If DEV Then
     Const FunctionName As String = "Value (Get)"
     Dim Logger As JSON.Logger
@@ -78,6 +80,9 @@ Attribute Value.VB_Description = "set the pair's value"
     Dim Logger As JSON.Logger
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
 #End If
-
-    Set mElement = Element
+    If ((TypeOf Element Is JArray) Or (TypeOf Element Is JBoolean) Or (TypeOf Element Is JNull) Or (TypeOf Element Is JNumber) Or (TypeOf Element Is JString) Or (TypeOf Element Is JObject)) Then
+        Set mElement = Element
+    Else
+        Err.Raise 13        '// Type mismatch
+    End If
 End Property

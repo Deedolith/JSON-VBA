@@ -441,3 +441,73 @@ TestFail:
     End If
 End Sub
 
+'@TestMethod("JObject")
+Private Sub SetItem()
+    On Error GoTo TestFail
+    
+    'Arrange:
+        Dim SS As JSON.StringStream
+        Set SS = Services.CreateStringStream("{ ""Member"":null}")
+        
+        Dim JObject As JSON.JObject
+        Set JObject = Services.CreateObject(SS)
+    'Act:
+        Set JObject.Members("Member").Value = Factory.CreateNumber(67.4)
+    'Assert:
+        Assert.Succeed
+
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Le test a produit une erreur: #" & Err.Number & " - " & Err.Description
+    Resume TestExit
+End Sub
+
+'@TestMethod("JObject")
+Private Sub SetItem_2()
+    On Error GoTo TestFail
+    
+    'Arrange:
+        Dim SS As JSON.StringStream
+        Set SS = Services.CreateStringStream("{ ""Member"":null}")
+        
+        Dim JObject As JSON.JObject
+        Set JObject = Services.CreateObject(SS)
+    'Act:
+        Set JObject.Members("Member") = Factory.CreateNumber(67.4)
+    'Assert:
+        Assert.Succeed
+
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Le test a produit une erreur: #" & Err.Number & " - " & Err.Description
+    Resume TestExit
+End Sub
+
+
+'@TestMethod("JObject")
+Private Sub SetItem_3()
+    Const ExpectedError As Long = 13        '// Type mismatch
+    On Error GoTo TestFail
+    
+    'Arrange:
+        Dim SS As JSON.StringStream
+        Set SS = Services.CreateStringStream("{ ""Member"":null}")
+        
+        Dim JObject As JSON.JObject
+        Set JObject = Services.CreateObject(SS)
+    'Act:
+        Set JObject.Members("Member").Value = VBA.CreateObject("Scripting.FileSystemObject")
+Assert:
+    Assert.Fail "L'erreur attendue ne s'est pas produite"
+
+TestExit:
+    Exit Sub
+TestFail:
+    If Err.Number = ExpectedError Then
+        Resume TestExit
+    Else
+        Resume Assert
+    End If
+End Sub
