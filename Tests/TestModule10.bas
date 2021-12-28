@@ -33,7 +33,7 @@ Private Sub TestCleanup()
 End Sub
 
 '@TestMethod("JDocupment")
-Private Sub LoadFrom()                        'TODO Renommer le test
+Private Sub LoadFrom()
     On Error GoTo TestFail
     
     'Arrange:
@@ -56,7 +56,7 @@ TestFail:
 End Sub
 
 '@TestMethod("JDocupment")
-Private Sub GetValueAs()                        'TODO Renommer le test
+Private Sub GetValueAs()
     On Error GoTo TestFail
     
     'Arrange:
@@ -79,4 +79,30 @@ TestFail:
     Assert.Fail "Le test a produit une erreur: #" & Err.Number & " - " & Err.Description
     Resume TestExit
 End Sub
+
+'@TestMethod("JDocupment")
+Private Sub Query()
+    On Error GoTo TestFail
+    
+    'Arrange:
+        Const DataSource As String = "C:\Users\flambert\Desktop\JSON VBA\Test.json"
+        Dim Reader As IReader
+        Set Reader = Factory.CreateFileReader(DataSource)
+        
+        Dim JDocument As JSON.JDocument
+        Set JDocument = Factory.CreateDocument
+        JDocument.LoadFrom Reader
+    'Act:
+        Dim Data As Object
+        Set Data = JDocument.Query("/8/alpha")
+    'Assert:
+        Assert.AreEqual "abcdefghijklmnopqrstuvwyz", Data.Value
+
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Le test a produit une erreur: #" & Err.Number & " - " & Err.Description
+    Resume TestExit
+End Sub
+
 

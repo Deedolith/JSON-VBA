@@ -66,3 +66,98 @@ Private Function Parse()
     Set mValue = Services.ParseValue(mData)
 End Function
 
+'@Description "Retrieve a JSON element by querying the document with a pseudo XPath (case sensitive)."
+Public Function Query(ByVal XPath As String) As Object
+#If DEV Then
+    Const FunctionName As String = "Query"
+    Dim Logger As JSON.Logger
+    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
+#End If
+
+    Dim Path As Collection
+    Set Path = ParseXpath(XPath)
+    
+    Dim JValue As Object
+    Set JValue = mValue
+    
+    Dim Item As Variant
+    For Each Item In Path
+        If (Not IsNumeric(Item)) Then
+            Dim JObject As JSON.JObject
+            Set JObject = Services.GetValueAs(JValue, JSON.JType.JSObject)
+            Set JValue = JObject.Members(Item).Value
+        Else
+            Dim JArray As JSON.JArray
+            Set JArray = Services.GetValueAs(JValue, JSON.JType.JSArray)
+            Set JValue = JArray(Item)
+        End If
+    Next
+    Set Query = JValue
+End Function
+
+Private Function ParseXpath(ByVal XPath As String) As Collection
+#If DEV Then
+    Const FunctionName As String = "ParseXpath"
+    Dim Logger As JSON.Logger
+    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
+#End If
+
+    Dim Output As Collection
+    Set Output = New Collection
+
+    Dim SS As StringStream
+    Set SS = Services.CreateStringStream(XPath)
+    
+    SS.EatCharacter "/"
+    
+    Dim Character As String
+    Do While Not SS.EOF
+        Character = SS.PeekCharacter
+        If (Character = "[") Then
+            SS.EatCharacter "["
+            
+            Dim Number As String
+            Number = ParseNumber(SS)
+            Output.Add CInt(Number)
+            
+            SS.EatCharacter "]"
+        ElseIf (Character <> "/") Then
+            Dim StringData As String
+            StringData = ParseString(SS)
+            Output.Add StringData
+        Else
+            SS.EatCharacter "/"
+        End If
+    Loop
+    Set ParseXpath = Output
+End Function
+
+Private Function ParseNumber(ByRef SS As StringStream) As String
+    Debug.Assert Not (SS Is Nothing)
+
+#If DEV Then
+    Const FunctionName As String = "ParseNumber"
+    Dim Logger As JSON.Logger
+    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
+#End If
+
+    Dim Number As String
+    Number = SS.GetStringFromRegEx("^[1-9]\d*")
+    SS.EatString Number
+    ParseNumber = Number
+End Function
+
+Private Function ParseString(ByRef SS As StringStream) As String
+    Debug.Assert Not (SS Is Nothing)
+
+#If DEV Then
+    Const FunctionName As String = "ParseString"
+    Dim Logger As JSON.Logger
+    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
+#End If
+
+    Dim Data As String
+    Data = SS.GetStringFromRegEx("[^\[\/]+")
+    SS.EatString Data
+    ParseString = Data
+End Function
