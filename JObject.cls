@@ -85,14 +85,9 @@ Attribute ParseMembers.VB_Description = "Parse elements within the object"
     
     Dim Name As String
     Name = SS.GetStringFromRegEx("^(?:\\(?:[""\\\/bfnrt]|u[a-fA-F0-9]{4})|[^""\\\0-\x1F\x7F]+)*")
-    If (Name <> vbNullString) Then
-        SS.EatString Name
-        SS.EatCharacter """"
-        Name = Services.Unescape(Name)
-    Else
-        Err.Raise JSON.JException.JUnexpectedToken, "JObject.ParseMembers", "String expected"
-    End If
-    
+    SS.EatString Name
+    Name = Services.Unescape(Name)
+    SS.EatCharacter """"
     SS.DiscardSpaces
     SS.EatCharacter ":"
     SS.DiscardSpaces

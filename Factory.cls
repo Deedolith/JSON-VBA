@@ -159,3 +159,15 @@ Public Function CreatePair(ByVal Name As String, ByVal Value As Object) As JSON.
         Err.Raise 13, "Factory.CreatePair"        '// Type Mismatch
     End If
 End Function
+
+Public Function CreateDocument() As JSON.JDocument
+#If DEV Then
+    Const FunctionName As String = "CreateDocument"
+    Dim Logger As JSON.Logger
+    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
+#End If
+
+    Dim JDocument As JSON.JDocument
+    Set JDocument = New JSON.JDocument
+    Set CreateDocument = JDocument
+End Function

@@ -98,8 +98,6 @@ Attribute GetStringFromRegEx.VB_Description = "Extract the first occurence match
     Dim rx As Object        '// VBScript_RegExp_55.RegExp
     Set rx = VBA.CreateObject("VBScript.RegExp")
     rx.Pattern = RegEx
-    rx.Global = True
-    rx.MultiLine = True
     
     Dim Matchs As Object        '// VBScript_RegExp_55.MatchCollection
     Set Matchs = rx.Execute(mData)

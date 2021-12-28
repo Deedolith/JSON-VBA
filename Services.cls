@@ -323,6 +323,7 @@ Attribute ParseValue.VB_Description = "Parse a JSON value and return the corresp
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
 #End If
 
+    SS.DiscardSpaces
     If (IsObject(SS)) Then
         Set ParseValue = CreateObject(SS)
     ElseIf (IsArray(SS)) Then
