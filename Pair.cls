@@ -13,10 +13,12 @@ Option Explicit
 
 Private mName As String
 Private mElement As Object
-Const ModuleName As String = "Pair"
+#If DEV Then
+    Const ModuleName As String = "Pair"
+#End If
 
 '@Description "Constructor"
-Friend Sub Create(ByVal Name As String, ByRef Element As Object)
+Friend Sub Create(ByVal Name As String, ByVal Element As Object)
 Attribute Create.VB_Description = "Constructor"
     Debug.Assert Not Element Is Nothing
 
@@ -26,7 +28,7 @@ Attribute Create.VB_Description = "Constructor"
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
 #End If
 
-    If ((TypeOf Element Is JArray) Or (TypeOf Element Is JBoolean) Or (TypeOf Element Is JNull) Or (TypeOf Element Is JNumber) Or (TypeOf Element Is JString) Or (TypeOf Element Is JObject)) Then
+    If ((TypeOf Element Is Jarray) Or (TypeOf Element Is JBoolean) Or (TypeOf Element Is JNull) Or (TypeOf Element Is JNumber) Or (TypeOf Element Is JString) Or (TypeOf Element Is JObject)) Then
          mName = Name
         Set mElement = Element
     Else
@@ -80,7 +82,7 @@ Attribute Value.VB_Description = "set the pair's value"
     Dim Logger As JSON.Logger
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
 #End If
-    If ((TypeOf Element Is JArray) Or (TypeOf Element Is JBoolean) Or (TypeOf Element Is JNull) Or (TypeOf Element Is JNumber) Or (TypeOf Element Is JString) Or (TypeOf Element Is JObject)) Then
+    If ((TypeOf Element Is Jarray) Or (TypeOf Element Is JBoolean) Or (TypeOf Element Is JNull) Or (TypeOf Element Is JNumber) Or (TypeOf Element Is JString) Or (TypeOf Element Is JObject)) Then
         Set mElement = Element
     Else
         Err.Raise 13        '// Type mismatch

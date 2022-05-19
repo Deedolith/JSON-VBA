@@ -16,12 +16,14 @@ Option Explicit
 
 Private mData As JSON.StringStream
 Private mElements As Collection
-Private Const ModuleName As String = "JArray"
+#If DEV Then
+    Private Const ModuleName As String = "JArray"
+#End If
 
 '@Description "Constructor"
-Friend Sub Create(ByRef SS As JSON.StringStream)
+Friend Sub Create(ByVal StringStream As JSON.StringStream)
 Attribute Create.VB_Description = "Constructor"
-    Debug.Assert Not (SS Is Nothing)      '// Data must be a valid instance
+    Debug.Assert Not (StringStream Is Nothing)      '// Data must be a valid instance
 
 #If DEV Then
     Const FunctionName As String = "Create"
@@ -29,7 +31,7 @@ Attribute Create.VB_Description = "Constructor"
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
 #End If
 
-    Set mData = SS
+    Set mData = StringStream
     Parse
 End Sub
 
@@ -71,9 +73,9 @@ Attribute Parse.VB_Description = "Stream parsing"
 End Sub
 
 '@Description "Parse elements within the array"
-Private Sub ParseElement(ByRef SS As JSON.StringStream)
+Private Sub ParseElement(ByVal StringStream As JSON.StringStream)
 Attribute ParseElement.VB_Description = "Parse elements within the array"
-    Debug.Assert Not (SS Is Nothing)
+    Debug.Assert Not (StringStream Is Nothing)
 
 #If DEV Then
     Const FunctionName As String = "ParseElement"
@@ -81,9 +83,9 @@ Attribute ParseElement.VB_Description = "Parse elements within the array"
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
 #End If
 
-    SS.DiscardSpaces
-    mElements.Add Services.ParseValue(SS)
-    SS.DiscardSpaces
+    StringStream.DiscardSpaces
+    mElements.Add Services.ParseValue(StringStream)
+    StringStream.DiscardSpaces
 End Sub
 
 '@Description "Class's data type."
@@ -137,7 +139,7 @@ Attribute SetItem.VB_Description = "Set an element at the given index"
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
 #End If
 
-     If ((TypeOf Element Is JArray) Or (TypeOf Element Is JBoolean) Or (TypeOf Element Is JNull) Or (TypeOf Element Is JNumber) Or (TypeOf Element Is JString) Or (TypeOf Element Is JObject)) Then
+     If ((TypeOf Element Is Jarray) Or (TypeOf Element Is JBoolean) Or (TypeOf Element Is JNull) Or (TypeOf Element Is JNumber) Or (TypeOf Element Is JString) Or (TypeOf Element Is JObject)) Then
         Index = Index + 1
         mElements.Remove Index
         If (mElements.Count = 0) Then
@@ -255,7 +257,7 @@ Attribute PushBack.VB_Description = "Add an element at the back of the array"
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
 #End If
 
-    If ((TypeOf Element Is JArray) Or (TypeOf Element Is JBoolean) Or (TypeOf Element Is JNull) Or (TypeOf Element Is JNumber) Or (TypeOf Element Is JString) Or (TypeOf Element Is JObject)) Then
+    If ((TypeOf Element Is Jarray) Or (TypeOf Element Is JBoolean) Or (TypeOf Element Is JNull) Or (TypeOf Element Is JNumber) Or (TypeOf Element Is JString) Or (TypeOf Element Is JObject)) Then
         mElements.Add Element
     Else
         Err.Raise 13        '// type mismatch

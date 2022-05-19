@@ -1,18 +1,20 @@
 Attribute VB_Name = "TestModule9"
+'@IgnoreModule SetAssignmentWithIncompatibleObjectType, ImplicitUnboundDefaultMemberAccess, IndexedDefaultMemberAccess, UseMeaningfulName
 Option Explicit
 Option Private Module
 
 '@TestModule
 '@Folder("Tests")
 
-Private Assert As Rubberduck.AssertClass
-Private Fakes As Rubberduck.FakesProvider
+Private Assert As Object        '// Rubberduck.AssertClass
+'@Ignore VariableNotUsed
+Private Fakes As Object         '// Rubberduck.FakesProvider
 
 '@ModuleInitialize
 Private Sub ModuleInitialize()
     'cette procédure s'exécute une seule fois par module.
-    Set Assert = New Rubberduck.AssertClass
-    Set Fakes = New Rubberduck.FakesProvider
+    Set Assert = CreateObject("Rubberduck.AssertClass")
+    Set Fakes = CreateObject("Rubberduck.FakesProvider")
 End Sub
 
 '@ModuleCleanup
@@ -23,11 +25,13 @@ Private Sub ModuleCleanup()
 End Sub
 
 '@TestInitialize
+'@Ignore EmptyMethod
 Private Sub TestInitialize()
     'cette procédure s'exécute avant chaque test dans le module..
 End Sub
 
 '@TestCleanup
+'@Ignore EmptyMethod
 Private Sub TestCleanup()
     'cette procédure s'exécute après chaque test dans le module.
 End Sub
@@ -350,8 +354,6 @@ Private Sub Iterator()
     On Error GoTo TestFail
     
     'Arrange:
-        Const Expected As String = "{""Member"":null,""Member2"":null}"
-
         Dim JObject As JSON.JObject
         Set JObject = Factory.CreateObject
         JObject.Members.Add Factory.CreatePair("Member", Factory.CreateNull)
@@ -360,6 +362,9 @@ Private Sub Iterator()
     'Act:
         Dim Pair As JSON.Pair
         For Each Pair In JObject.Members
+            '@Ignore VariableNotUsed
+            Dim Value As Object
+            Set Value = Pair.Value
         Next
     'Assert:
         Assert.Succeed
@@ -376,11 +381,13 @@ Private Sub Parse()
     On Error GoTo TestFail
     
     'Arrange:
-        Dim SS As JSON.StringStream
-        Set SS = Services.CreateStringStream("{ }")
+        Dim StringStream As JSON.StringStream
+        Set StringStream = Services.CreateStringStream("{ }")
         
+        '@Ignore VariableNotUsed
         Dim JObject As JSON.JObject
-        Set JObject = Services.CreateObject(SS)
+        '@Ignore AssignmentNotUsed
+        Set JObject = Services.CreateObject(StringStream)
     'Act:
     
     'Assert:
@@ -398,11 +405,13 @@ Private Sub Parse_2()
     On Error GoTo TestFail
     
     'Arrange:
-        Dim SS As JSON.StringStream
-        Set SS = Services.CreateStringStream("{ ""Member"":null}")
+        Dim StringStream As JSON.StringStream
+        Set StringStream = Services.CreateStringStream("{ ""Member"":null}")
         
+        '@Ignore VariableNotUsed
         Dim JObject As JSON.JObject
-        Set JObject = Services.CreateObject(SS)
+        '@Ignore AssignmentNotUsed
+        Set JObject = Services.CreateObject(StringStream)
     'Act:
     
     'Assert:
@@ -421,11 +430,13 @@ Private Sub Parse_3()
     On Error GoTo TestFail
     
     'Arrange:
-        Dim SS As JSON.StringStream
-        Set SS = Services.CreateStringStream("Incorrect value")
+        Dim StringStream As JSON.StringStream
+        Set StringStream = Services.CreateStringStream("Incorrect value")
         
+        '@Ignore VariableNotUsed
         Dim JObject As JSON.JObject
-        Set JObject = Services.CreateObject(SS)
+        '@Ignore AssignmentNotUsed
+        Set JObject = Services.CreateObject(StringStream)
     'Act:
 
 Assert:
@@ -446,11 +457,11 @@ Private Sub SetItem()
     On Error GoTo TestFail
     
     'Arrange:
-        Dim SS As JSON.StringStream
-        Set SS = Services.CreateStringStream("{ ""Member"":null}")
+        Dim StringStream As JSON.StringStream
+        Set StringStream = Services.CreateStringStream("{ ""Member"":null}")
         
         Dim JObject As JSON.JObject
-        Set JObject = Services.CreateObject(SS)
+        Set JObject = Services.CreateObject(StringStream)
     'Act:
         Set JObject.Members("Member").Value = Factory.CreateNumber(67.4)
     'Assert:
@@ -468,11 +479,11 @@ Private Sub SetItem_2()
     On Error GoTo TestFail
     
     'Arrange:
-        Dim SS As JSON.StringStream
-        Set SS = Services.CreateStringStream("{ ""Member"":null}")
+        Dim StringStream As JSON.StringStream
+        Set StringStream = Services.CreateStringStream("{ ""Member"":null}")
         
         Dim JObject As JSON.JObject
-        Set JObject = Services.CreateObject(SS)
+        Set JObject = Services.CreateObject(StringStream)
     'Act:
         Set JObject.Members("Member") = Factory.CreateNumber(67.4)
     'Assert:
@@ -492,11 +503,11 @@ Private Sub SetItem_3()
     On Error GoTo TestFail
     
     'Arrange:
-        Dim SS As JSON.StringStream
-        Set SS = Services.CreateStringStream("{ ""Member"":null}")
+        Dim StringStream As JSON.StringStream
+        Set StringStream = Services.CreateStringStream("{ ""Member"":null}")
         
         Dim JObject As JSON.JObject
-        Set JObject = Services.CreateObject(SS)
+        Set JObject = Services.CreateObject(StringStream)
     'Act:
         Set JObject.Members("Member").Value = VBA.CreateObject("Scripting.FileSystemObject")
 Assert:

@@ -17,9 +17,11 @@ Public Enum JType
     JSNull
 End Enum
 
-Private Const ModuleName As String = "Utils"
+#If DEV Then
+    Private Const ModuleName As String = "Utils"
+#End If
 
-Public Function GetValueAs(ByRef Value As Object, ByVal DataType As JSON.JType) As Object
+Public Function GetValueAs(ByVal Value As Object, ByVal DataType As JSON.JType) As Object
 #If DEV Then
     Const FunctionName As String = "GetValueAs"
     Dim Logger As JSON.Logger

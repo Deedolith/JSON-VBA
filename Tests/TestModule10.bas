@@ -1,18 +1,19 @@
 Attribute VB_Name = "TestModule10"
+'@IgnoreModule AssignmentNotUsed, VariableNotUsed, UseMeaningfulName
 Option Explicit
 Option Private Module
 
 '@TestModule
 '@Folder("Tests")
 
-Private Assert As Rubberduck.AssertClass
-Private Fakes As Rubberduck.FakesProvider
+Private Assert As Object        '// Rubberduck.AssertClass
+Private Fakes As Object         '// Rubberduck.FakesProvider
 
 '@ModuleInitialize
 Private Sub ModuleInitialize()
     'cette procédure s'exécute une seule fois par module.
-    Set Assert = New Rubberduck.AssertClass
-    Set Fakes = New Rubberduck.FakesProvider
+    Set Assert = CreateObject("Rubberduck.AssertClass")
+    Set Fakes = CreateObject("Rubberduck.FakesProvider")
 End Sub
 
 '@ModuleCleanup
@@ -23,11 +24,13 @@ Private Sub ModuleCleanup()
 End Sub
 
 '@TestInitialize
+'@Ignore EmptyMethod
 Private Sub TestInitialize()
     'cette procédure s'exécute avant chaque test dans le module..
 End Sub
 
 '@TestCleanup
+'@Ignore EmptyMethod
 Private Sub TestCleanup()
     'cette procédure s'exécute après chaque test dans le module.
 End Sub
@@ -68,8 +71,8 @@ Private Sub GetValueAs()
         Set JDocument = Factory.CreateDocument
         JDocument.LoadFrom Reader
     'Act:
-        Dim JArray As JSON.JArray
-        Set JArray = JDocument.GetValueAs(JSON.JType.JSArray)
+        Dim Jarray As JSON.Jarray
+        Set Jarray = JDocument.GetValueAs(JSON.JType.JSArray)
     'Assert:
     Assert.Succeed
 
@@ -104,5 +107,4 @@ TestFail:
     Assert.Fail "Le test a produit une erreur: #" & Err.Number & " - " & Err.Description
     Resume TestExit
 End Sub
-
 

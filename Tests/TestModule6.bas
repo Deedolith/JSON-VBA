@@ -6,14 +6,14 @@ Option Private Module
 '@TestModule
 '@Folder("Tests")
 
-Private Assert As Rubberduck.AssertClass
-Private Fakes As Rubberduck.FakesProvider
+Private Assert As Object        '// Rubberduck.AssertClass
+Private Fakes As Object         '// Rubberduck.FakesProvider
 
 '@ModuleInitialize
 Private Sub ModuleInitialize()
     'cette procédure s'exécute une seule fois par module.
-    Set Assert = VBA.CreateObject("Rubberduck.AssertClass")
-    Set Fakes = VBA.CreateObject("Rubberduck.FakesProvider")
+    Set Assert = CreateObject("Rubberduck.AssertClass")
+    Set Fakes = CreateObject("Rubberduck.FakesProvider")
 End Sub
 
 '@ModuleCleanup

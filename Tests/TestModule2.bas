@@ -6,12 +6,12 @@ Option Private Module
 '@TestModule
 '@Folder("Tests")
 
-Private Assert As Rubberduck.AssertClass
-Private Fakes As Rubberduck.FakesProvider
+Private Assert As Object        '// Rubberduck.AssertClass
+Private Fakes As Object         '// Rubberduck.FakesProvider
 
 '@ModuleInitialize
 Private Sub ModuleInitialize()
-    'cette proc?dure s'ex?cute une seule fois par module.
+    'cette procédure s'exécute une seule fois par module.
     Set Assert = CreateObject("Rubberduck.AssertClass")
     Set Fakes = CreateObject("Rubberduck.FakesProvider")
 End Sub

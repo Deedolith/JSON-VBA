@@ -15,7 +15,9 @@ Attribute VB_Description = "Singleton Factory class, responsible for instanciati
 '@Folder "JSON.Services"
 Option Explicit
 
-Private Const ModuleName As String = "Factory"
+#If DEV Then
+    Private Const ModuleName As String = "Factory"
+#End If
 
 '@Description "Instanciate a new FileReader object"
 Public Function CreateFileReader(ByVal Path As String) As JSON.FileReader
@@ -113,7 +115,7 @@ Attribute CreateString.VB_Description = "Instanciate a new JString object"
 End Function
 
 '@Description "Instanciate a new Jarray object"
-Public Function CreateArray() As JSON.JArray
+Public Function CreateArray() As JSON.Jarray
 Attribute CreateArray.VB_Description = "Instanciate a new Jarray object"
 #If DEV Then
     Const FunctionName As String = "CreateArray"
@@ -121,9 +123,9 @@ Attribute CreateArray.VB_Description = "Instanciate a new Jarray object"
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
 #End If
 
-    Dim JArray As JSON.JArray
-    Set JArray = New JSON.JArray
-    Set CreateArray = JArray
+    Dim Jarray As JSON.Jarray
+    Set Jarray = New JSON.Jarray
+    Set CreateArray = Jarray
 End Function
 
 '@Description "Instanciate a new JObject object"
@@ -149,7 +151,7 @@ Public Function CreatePair(ByVal Name As String, ByVal Value As Object) As JSON.
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
 #End If
 
-    If ((TypeOf Value Is JArray) Or (TypeOf Value Is JBoolean) Or (TypeOf Value Is JNull) Or (TypeOf Value Is JNumber) Or (TypeOf Value Is JString) Or (TypeOf Value Is JObject)) Then
+    If ((TypeOf Value Is Jarray) Or (TypeOf Value Is JBoolean) Or (TypeOf Value Is JNull) Or (TypeOf Value Is JNumber) Or (TypeOf Value Is JString) Or (TypeOf Value Is JObject)) Then
         Dim Pair As JSON.Pair
         Set Pair = New JSON.Pair
         Pair.Name = Name

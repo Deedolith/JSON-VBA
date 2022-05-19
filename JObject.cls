@@ -16,12 +16,14 @@ Option Explicit
 
 Private mData As JSON.StringStream
 Private mMembers As JSON.Members
-Private Const ModuleName As String = "JObject"
+#If DEV Then
+    Private Const ModuleName As String = "JObject"
+#End If
 
 '@Description "Constructor"
-Friend Sub Create(ByRef SS As JSON.StringStream)
+Friend Sub Create(ByVal StringStream As JSON.StringStream)
 Attribute Create.VB_Description = "Constructor"
-    Debug.Assert Not (SS Is Nothing)      '// Data must be a valid instance
+    Debug.Assert Not (StringStream Is Nothing)      '// Data must be a valid instance
     
 #If DEV Then
     Const FunctionName As String = "Create"
@@ -29,7 +31,7 @@ Attribute Create.VB_Description = "Constructor"
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
 #End If
 
-    Set mData = SS
+    Set mData = StringStream
     Parse
 End Sub
 
@@ -71,9 +73,9 @@ Attribute Parse.VB_Description = "Stream parsing"
 End Sub
 
 '@Description "Parse elements within the object"
-Private Sub ParseMembers(ByRef SS As JSON.StringStream)
+Private Sub ParseMembers(ByVal StringStream As JSON.StringStream)
 Attribute ParseMembers.VB_Description = "Parse elements within the object"
-    Debug.Assert Not SS Is Nothing
+    Debug.Assert Not StringStream Is Nothing
 
 #If DEV Then
     Const FunctionName As String = "ParseMembers"
@@ -81,19 +83,19 @@ Attribute ParseMembers.VB_Description = "Parse elements within the object"
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
 #End If
 
-    SS.EatCharacter """"
+    StringStream.EatCharacter """"
     
     Dim Name As String
-    Name = SS.GetStringFromRegEx("^(?:\\(?:[""\\\/bfnrt]|u[a-fA-F0-9]{4})|[^""\\\0-\x1F\x7F]+)*")
-    SS.EatString Name
+    Name = StringStream.GetStringFromRegEx("^(?:\\(?:[""\\\/bfnrt]|u[a-fA-F0-9]{4})|[^""\\\0-\x1F\x7F]+)*")
+    StringStream.EatString Name
     Name = Services.Unescape(Name)
-    SS.EatCharacter """"
-    SS.DiscardSpaces
-    SS.EatCharacter ":"
-    SS.DiscardSpaces
+    StringStream.EatCharacter """"
+    StringStream.DiscardSpaces
+    StringStream.EatCharacter ":"
+    StringStream.DiscardSpaces
     
     Dim Value As Object
-    Set Value = Services.ParseValue(SS)
+    Set Value = Services.ParseValue(StringStream)
     
     Dim Pair As JSON.Pair
     Set Pair = Services.CreatePair(Name, Value)

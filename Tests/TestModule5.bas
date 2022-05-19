@@ -6,8 +6,8 @@ Option Private Module
 '@TestModule
 '@Folder("Tests")
 
-Private Assert As Rubberduck.AssertClass
-Private Fakes As Rubberduck.FakesProvider
+Private Assert As Object        '// Rubberduck.AssertClass
+Private Fakes As Object         '// Rubberduck.FakesProvider
 
 '@ModuleInitialize
 Private Sub ModuleInitialize()

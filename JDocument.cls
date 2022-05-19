@@ -7,15 +7,19 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
+'@Exposed
 '@Folder("JSON")
 Option Explicit
 
 Private mData As JSON.StringStream
 Private mValue As Object
-Private Const ModuleName As String = "JDocument"
+#If DEV Then
+    Private Const ModuleName As String = "JDocument"
+#End If
 
 '@Description "Acquire data from a source"
-Public Sub LoadFrom(ByRef Reader As IReader)
+Public Sub LoadFrom(ByVal Reader As IReader)
+Attribute LoadFrom.VB_Description = "Acquire data from a source"
 #If DEV Then
     Const FunctionName As String = "LoadFrom"
     Dim Logger As JSON.Logger
@@ -29,11 +33,12 @@ On Error GoTo Error
     Parse
 Exit Sub
 Error:
-    Err.Raise Err.Number, Err.Source, Err.Description & " at position " & Length - Len(mData.Value) & " (" & Left(mData.Value, 20) & ") ."
+    Err.Raise Err.Number, Err.Source, Err.Description & " at position " & Length - Len(mData.Value) & " (" & Left$(mData.Value, 20) & ") ."
 End Sub
 
 '@Description "Write Data to a target"
-Public Sub WriteTo(ByRef Writer As IWriter)
+Public Sub WriteTo(ByVal Writer As IWriter)
+Attribute WriteTo.VB_Description = "Write Data to a target"
 #If DEV Then
     Const FunctionName As String = "WriteTo"
     Dim Logger As JSON.Logger
@@ -45,6 +50,7 @@ End Sub
 
 '@Description "Retrieve the document's root JSON object"
 Public Function GetValueAs(ByVal DataType As JSON.JType) As Object
+Attribute GetValueAs.VB_Description = "Retrieve the document's root JSON object"
 #If DEV Then
     Const FunctionName As String = "GetValueAs"
     Dim Logger As JSON.Logger
@@ -57,17 +63,19 @@ Public Function GetValueAs(ByVal DataType As JSON.JType) As Object
 End Function
 
 '@Description "Stream parsing"
-Private Function Parse()
+Private Sub Parse()
+Attribute Parse.VB_Description = "Stream parsing"
 #If DEV Then
     Const FunctionName As String = "Parse"
     Dim Logger As JSON.Logger
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
 #End If
     Set mValue = Services.ParseValue(mData)
-End Function
+End Sub
 
 '@Description "Retrieve a JSON element by querying the document with a pseudo XPath (case sensitive)."
 Public Function Query(ByVal XPath As String) As Object
+Attribute Query.VB_Description = "Retrieve a JSON element by querying the document with a pseudo XPath (case sensitive)."
 #If DEV Then
     Const FunctionName As String = "Query"
     Dim Logger As JSON.Logger
@@ -87,9 +95,9 @@ Public Function Query(ByVal XPath As String) As Object
             Set JObject = Services.GetValueAs(JValue, JSON.JType.JSObject)
             Set JValue = JObject.Members(Item).Value
         Else
-            Dim JArray As JSON.JArray
-            Set JArray = Services.GetValueAs(JValue, JSON.JType.JSArray)
-            Set JValue = JArray(Item)
+            Dim Jarray As JSON.Jarray
+            Set Jarray = Services.GetValueAs(JValue, JSON.JType.JSArray)
+            Set JValue = Jarray(Item)
         End If
     Next
     Set Query = JValue
@@ -105,35 +113,35 @@ Private Function ParseXpath(ByVal XPath As String) As Collection
     Dim Output As Collection
     Set Output = New Collection
 
-    Dim SS As StringStream
-    Set SS = Services.CreateStringStream(XPath)
+    Dim StringStream As JSON.StringStream
+    Set StringStream = Services.CreateStringStream(XPath)
     
-    SS.EatCharacter "/"
+    StringStream.EatCharacter "/"
     
     Dim Character As String
-    Do While Not SS.EOF
-        Character = SS.PeekCharacter
+    Do While Not StringStream.EOF
+        Character = StringStream.PeekCharacter
         If (Character = "[") Then
-            SS.EatCharacter "["
+            StringStream.EatCharacter "["
             
             Dim Number As String
-            Number = ParseNumber(SS)
+            Number = ParseNumber(StringStream)
             Output.Add CInt(Number)
             
-            SS.EatCharacter "]"
+            StringStream.EatCharacter "]"
         ElseIf (Character <> "/") Then
             Dim StringData As String
-            StringData = ParseString(SS)
+            StringData = ParseString(StringStream)
             Output.Add StringData
         Else
-            SS.EatCharacter "/"
+            StringStream.EatCharacter "/"
         End If
     Loop
     Set ParseXpath = Output
 End Function
 
-Private Function ParseNumber(ByRef SS As StringStream) As String
-    Debug.Assert Not (SS Is Nothing)
+Private Function ParseNumber(ByVal StringStream As JSON.StringStream) As String
+    Debug.Assert Not (StringStream Is Nothing)
 
 #If DEV Then
     Const FunctionName As String = "ParseNumber"
@@ -142,13 +150,13 @@ Private Function ParseNumber(ByRef SS As StringStream) As String
 #End If
 
     Dim Number As String
-    Number = SS.GetStringFromRegEx("^[1-9]\d*")
-    SS.EatString Number
+    Number = StringStream.GetStringFromRegEx("^[1-9]\d*")
+    StringStream.EatString Number
     ParseNumber = Number
 End Function
 
-Private Function ParseString(ByRef SS As StringStream) As String
-    Debug.Assert Not (SS Is Nothing)
+Private Function ParseString(ByVal StringStream As JSON.StringStream) As String
+    Debug.Assert Not (StringStream Is Nothing)
 
 #If DEV Then
     Const FunctionName As String = "ParseString"
@@ -157,7 +165,7 @@ Private Function ParseString(ByRef SS As StringStream) As String
 #End If
 
     Dim Data As String
-    Data = SS.GetStringFromRegEx("[^\[\/]+")
-    SS.EatString Data
+    Data = StringStream.GetStringFromRegEx("[^\[\/]+")
+    StringStream.EatString Data
     ParseString = Data
 End Function

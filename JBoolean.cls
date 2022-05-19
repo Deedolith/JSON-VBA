@@ -11,14 +11,16 @@ Attribute VB_Exposed = True
 '@Folder "JSON"
 Option Explicit
 
-Const ModuleName As String = "JBoolean"
+#If DEV Then
+    Const ModuleName As String = "JBoolean"
+#End If
 Private mValue As Boolean
 Private mData As JSON.StringStream
 
 '@Description "Constructor"
-Friend Sub Create(ByRef SS As JSON.StringStream)
+Friend Sub Create(ByVal StringStream As JSON.StringStream)
 Attribute Create.VB_Description = "Constructor"
-    Debug.Assert Not (SS Is Nothing)
+    Debug.Assert Not (StringStream Is Nothing)
 
 #If DEV Then
     Const FunctionName As String = "Create"
@@ -26,7 +28,7 @@ Attribute Create.VB_Description = "Constructor"
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
 #End If
 
-    Set mData = SS
+    Set mData = StringStream
     Parse
 End Sub
 

@@ -12,7 +12,9 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private mData As String
-Private Const ModuleName As String = "StringStream"
+#If DEV Then
+    Private Const ModuleName As String = "StringStream"
+#End If
 
 '@Description "Constructor"
 Friend Sub Create(ByVal Data As String)
@@ -35,11 +37,11 @@ Attribute DiscardSpaces.VB_Description = "Eat any possible space"
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
 #End If
 
-    Dim rx As Object        '// VBScript_RegExp_55.RegExp
-    Set rx = VBA.CreateObject("VBScript.RegExp")
+    Dim RegEx As Object        '// VBScript_RegExp_55.RegExp
+    Set RegEx = VBA.CreateObject("VBScript.RegExp")
 
-    rx.Pattern = "\s*([\s\S]*)"
-    mData = rx.Replace(mData, "$1")
+    RegEx.Pattern = "\s*([\s\S]*)"
+    mData = RegEx.Replace(mData, "$1")
 End Sub
 
 '@Description "Eat a single character"
@@ -87,7 +89,7 @@ Attribute Value.VB_UserMemId = 0
 End Property
 
 '@Description "Extract the first occurence matching the regex's first group"
-Public Function GetStringFromRegEx(ByVal RegEx As String) As String
+Public Function GetStringFromRegEx(ByVal Pattern As String) As String
 Attribute GetStringFromRegEx.VB_Description = "Extract the first occurence matching the regex's first group"
 #If DEV Then
     Const FunctionName As String = "GetStringFromRegEx"
@@ -95,12 +97,12 @@ Attribute GetStringFromRegEx.VB_Description = "Extract the first occurence match
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
 #End If
 
-    Dim rx As Object        '// VBScript_RegExp_55.RegExp
-    Set rx = VBA.CreateObject("VBScript.RegExp")
-    rx.Pattern = RegEx
+    Dim RegEx As Object        '// VBScript_RegExp_55.RegExp
+    Set RegEx = VBA.CreateObject("VBScript.RegExp")
+    RegEx.Pattern = Pattern
     
     Dim Matchs As Object        '// VBScript_RegExp_55.MatchCollection
-    Set Matchs = rx.Execute(mData)
+    Set Matchs = RegEx.Execute(mData)
     If Not (Matchs Is Nothing) Then
         If (Matchs.Count) Then
             GetStringFromRegEx = Matchs.Item(0).Value

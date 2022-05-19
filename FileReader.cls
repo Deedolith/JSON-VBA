@@ -16,7 +16,9 @@ Option Explicit
 Implements JSON.IReader
 
 Private mPath As String
-Private Const ModuleName As String = "FileReader"
+#If DEV Then
+    Private Const ModuleName As String = "FileReader"
+#End If
 
 '@Description "Constructor"
 Friend Sub Create(ByVal Path As String)

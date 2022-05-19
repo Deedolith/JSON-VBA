@@ -6,14 +6,14 @@ Option Private Module
 '@TestModule
 '@Folder("Tests")
 
-Private Assert As Rubberduck.AssertClass
-Private Fakes As Rubberduck.FakesProvider
+Private Assert As Object        '// Rubberduck.AssertClass
+Private Fakes As Object         '// Rubberduck.FakesProvider
 
 '@ModuleInitialize
 Private Sub ModuleInitialize()
     'cette procédure s'exécute une seule fois par module.
-    Set Assert = New Rubberduck.AssertClass
-    Set Fakes = New Rubberduck.FakesProvider
+    Set Assert = CreateObject("Rubberduck.AssertClass")
+    Set Fakes = CreateObject("Rubberduck.FakesProvider")
 End Sub
 
 '@ModuleCleanup
@@ -38,12 +38,12 @@ Private Sub Instanciation()
     On Error GoTo TestFail
     
     'Arrange:
-        Dim JArray As JSON.JArray
-        Set JArray = Factory.CreateArray
+        Dim Jarray As JSON.Jarray
+        Set Jarray = Factory.CreateArray
     'Act:
         
     'Assert:
-        Assert.IsTrue TypeOf JArray Is JSON.JArray
+        Assert.IsTrue TypeOf Jarray Is JSON.Jarray
 
 TestExit:
     Exit Sub
@@ -57,12 +57,12 @@ Private Sub Size()
     On Error GoTo TestFail
     
     'Arrange:
-        Dim JArray As JSON.JArray
-        Set JArray = Factory.CreateArray
+        Dim Jarray As JSON.Jarray
+        Set Jarray = Factory.CreateArray
     'Act:
         
     'Assert:
-        Assert.AreEqual CLng(0), JArray.Size
+        Assert.AreEqual CLng(0), Jarray.Size
 
 TestExit:
     Exit Sub
@@ -81,12 +81,12 @@ Private Sub ToString()
         Expected = Expected & vbCrLf
         Expected = Expected & "]"
 
-        Dim JArray As JSON.JArray
-        Set JArray = Factory.CreateArray
+        Dim Jarray As JSON.Jarray
+        Set Jarray = Factory.CreateArray
     'Act:
         
     'Assert:
-        Assert.AreEqual Expected, JArray.ToString
+        Assert.AreEqual Expected, Jarray.ToString
 
 TestExit:
     Exit Sub
@@ -105,13 +105,13 @@ Private Sub ToString_2()
         Expected = Expected & vbTab & "null" & vbCrLf
         Expected = Expected & "]"
 
-        Dim JArray As JSON.JArray
-        Set JArray = Factory.CreateArray
-        JArray.PushBack Factory.CreateNull
+        Dim Jarray As JSON.Jarray
+        Set Jarray = Factory.CreateArray
+        Jarray.PushBack Factory.CreateNull
     'Act:
         
     'Assert:
-        Assert.AreEqual Expected, JArray.ToString
+        Assert.AreEqual Expected, Jarray.ToString
 
 TestExit:
     Exit Sub
@@ -131,14 +131,14 @@ Private Sub ToString_3()
         Expected = Expected & vbTab & "null" & vbCrLf
         Expected = Expected & "]"
 
-        Dim JArray As JSON.JArray
-        Set JArray = Factory.CreateArray
-        JArray.PushBack Factory.CreateNull
-        JArray.PushBack Factory.CreateNull
+        Dim Jarray As JSON.Jarray
+        Set Jarray = Factory.CreateArray
+        Jarray.PushBack Factory.CreateNull
+        Jarray.PushBack Factory.CreateNull
     'Act:
         
     'Assert:
-        Assert.AreEqual Expected, JArray.ToString
+        Assert.AreEqual Expected, Jarray.ToString
 
 TestExit:
     Exit Sub
@@ -156,12 +156,12 @@ Private Sub ToJSONString()
         Dim Expected As String
         Expected = Expected & "[]"
 
-        Dim JArray As JSON.JArray
-        Set JArray = Factory.CreateArray
+        Dim Jarray As JSON.Jarray
+        Set Jarray = Factory.CreateArray
     'Act:
         
     'Assert:
-        Assert.AreEqual Expected, JArray.ToJSONString
+        Assert.AreEqual Expected, Jarray.ToJSONString
 
 TestExit:
     Exit Sub
@@ -178,13 +178,13 @@ Private Sub ToJSONString_2()
         Dim Expected As String
         Expected = Expected & "[null]"
 
-        Dim JArray As JSON.JArray
-        Set JArray = Factory.CreateArray
-        JArray.PushBack Factory.CreateNull
+        Dim Jarray As JSON.Jarray
+        Set Jarray = Factory.CreateArray
+        Jarray.PushBack Factory.CreateNull
     'Act:
         
     'Assert:
-        Assert.AreEqual Expected, JArray.ToJSONString
+        Assert.AreEqual Expected, Jarray.ToJSONString
 
 TestExit:
     Exit Sub
@@ -201,14 +201,14 @@ Private Sub ToJSONString_3()
         Dim Expected As String
         Expected = Expected & "[null,null]"
 
-        Dim JArray As JSON.JArray
-        Set JArray = Factory.CreateArray
-        JArray.PushBack Factory.CreateNull
-        JArray.PushBack Factory.CreateNull
+        Dim Jarray As JSON.Jarray
+        Set Jarray = Factory.CreateArray
+        Jarray.PushBack Factory.CreateNull
+        Jarray.PushBack Factory.CreateNull
     'Act:
         
     'Assert:
-        Assert.AreEqual Expected, JArray.ToJSONString
+        Assert.AreEqual Expected, Jarray.ToJSONString
 
 TestExit:
     Exit Sub
@@ -223,12 +223,12 @@ Private Sub Size_2()
     On Error GoTo TestFail
     
     'Arrange:
-        Dim JArray As JSON.JArray
-        Set JArray = Factory.CreateArray
+        Dim Jarray As JSON.Jarray
+        Set Jarray = Factory.CreateArray
     'Act:
-        JArray.PushBack Factory.CreateNull
+        Jarray.PushBack Factory.CreateNull
     'Assert:
-        Assert.AreEqual CLng(1), JArray.Size
+        Assert.AreEqual CLng(1), Jarray.Size
 
 TestExit:
     Exit Sub
@@ -242,10 +242,10 @@ Private Sub PushBack()
     On Error GoTo TestFail
     
     'Arrange:
-        Dim JArray As JSON.JArray
-        Set JArray = Factory.CreateArray
+        Dim Jarray As JSON.Jarray
+        Set Jarray = Factory.CreateArray
     'Act:
-        JArray.PushBack Factory.CreateNull
+        Jarray.PushBack Factory.CreateNull
     'Assert:
         Assert.Succeed
 
@@ -262,10 +262,10 @@ Private Sub PushBack_2()
     On Error GoTo TestFail
     
     'Arrange:
-        Dim JArray As JSON.JArray
-        Set JArray = Factory.CreateArray
+        Dim Jarray As JSON.Jarray
+        Set Jarray = Factory.CreateArray
     'Act:
-        JArray.PushBack CreateObject("Scripting.FileSystemObject")
+        Jarray.PushBack CreateObject("Scripting.FileSystemObject")
 
 Assert:
     Assert.Fail "L'erreur attendue ne s'est pas produite"
@@ -285,13 +285,13 @@ Private Sub Remove()
     On Error GoTo TestFail
     
     'Arrange:
-        Dim JArray As JSON.JArray
-        Set JArray = Factory.CreateArray
+        Dim Jarray As JSON.Jarray
+        Set Jarray = Factory.CreateArray
     'Act:
-        JArray.PushBack Factory.CreateNull
-        JArray.Remove 0
+        Jarray.PushBack Factory.CreateNull
+        Jarray.Remove 0
     'Assert:
-        Assert.AreEqual CLng(0), JArray.Size
+        Assert.AreEqual CLng(0), Jarray.Size
 
 TestExit:
     Exit Sub
@@ -306,10 +306,10 @@ Private Sub Remove_2()
     On Error GoTo TestFail
     
     'Arrange:
-        Dim JArray As JSON.JArray
-        Set JArray = Factory.CreateArray
+        Dim Jarray As JSON.Jarray
+        Set Jarray = Factory.CreateArray
     'Act:
-        JArray.Remove 0
+        Jarray.Remove 0
 
 Assert:
     Assert.Fail "L'erreur attendue ne s'est pas produite"
@@ -329,13 +329,13 @@ Private Sub SetItem()
     On Error GoTo TestFail
     
     'Arrange:
-        Dim JArray As JSON.JArray
-        Set JArray = Factory.CreateArray
+        Dim Jarray As JSON.Jarray
+        Set Jarray = Factory.CreateArray
     'Act:
-        JArray.PushBack Factory.CreateNull
-        JArray.SetItem 0, Factory.CreateBoolean(True)
+        Jarray.PushBack Factory.CreateNull
+        Jarray.SetItem 0, Factory.CreateBoolean(True)
     'Assert:
-        Assert.IsTrue TypeOf JArray.GetItemAs(0, JSON.JType.JSBoolean) Is JSON.JBoolean
+        Assert.IsTrue TypeOf Jarray.GetItemAs(0, JSON.JType.JSBoolean) Is JSON.JBoolean
 
 TestExit:
     Exit Sub
@@ -349,15 +349,15 @@ Private Sub SetItem_2()
     On Error GoTo TestFail
     
     'Arrange:
-        Dim JArray As JSON.JArray
-        Set JArray = Factory.CreateArray
+        Dim Jarray As JSON.Jarray
+        Set Jarray = Factory.CreateArray
     'Act:
-        JArray.PushBack Factory.CreateNull
-        JArray.PushBack Factory.CreateString("random string")
-        JArray.SetItem 0, Factory.CreateBoolean(True)
+        Jarray.PushBack Factory.CreateNull
+        Jarray.PushBack Factory.CreateString("random string")
+        Jarray.SetItem 0, Factory.CreateBoolean(True)
     'Assert:
-        Assert.IsTrue TypeOf JArray.GetItemAs(0, JSON.JType.JSBoolean) Is JSON.JBoolean
-        Assert.IsTrue TypeOf JArray.GetItemAs(1, JSON.JType.JSString) Is JSON.JString
+        Assert.IsTrue TypeOf Jarray.GetItemAs(0, JSON.JType.JSBoolean) Is JSON.JBoolean
+        Assert.IsTrue TypeOf Jarray.GetItemAs(1, JSON.JType.JSString) Is JSON.JString
 
 TestExit:
     Exit Sub
@@ -371,17 +371,17 @@ Private Sub SetItem_3()
     On Error GoTo TestFail
     
     'Arrange:
-        Dim JArray As JSON.JArray
-        Set JArray = Factory.CreateArray
+        Dim Jarray As JSON.Jarray
+        Set Jarray = Factory.CreateArray
     'Act:
-        JArray.PushBack Factory.CreateNull
-        JArray.PushBack Factory.CreateString("random string")
-        JArray.PushBack Factory.CreateNumber(55.4)
-        JArray.SetItem 1, Factory.CreateBoolean(True)
+        Jarray.PushBack Factory.CreateNull
+        Jarray.PushBack Factory.CreateString("random string")
+        Jarray.PushBack Factory.CreateNumber(55.4)
+        Jarray.SetItem 1, Factory.CreateBoolean(True)
     'Assert:
-        Assert.IsTrue TypeOf JArray.GetItemAs(0, JSON.JType.JSNull) Is JSON.JNull
-        Assert.IsTrue TypeOf JArray.GetItemAs(1, JSON.JType.JSBoolean) Is JSON.JBoolean
-        Assert.IsTrue TypeOf JArray.GetItemAs(2, JSON.JType.JSNumber) Is JSON.JNumber
+        Assert.IsTrue TypeOf Jarray.GetItemAs(0, JSON.JType.JSNull) Is JSON.JNull
+        Assert.IsTrue TypeOf Jarray.GetItemAs(1, JSON.JType.JSBoolean) Is JSON.JBoolean
+        Assert.IsTrue TypeOf Jarray.GetItemAs(2, JSON.JType.JSNumber) Is JSON.JNumber
 
 TestExit:
     Exit Sub
@@ -396,11 +396,11 @@ Private Sub SetItem_4()
     On Error GoTo TestFail
     
     'Arrange:
-        Dim JArray As JSON.JArray
-        Set JArray = Factory.CreateArray
-        JArray.PushBack Factory.CreateNull
+        Dim Jarray As JSON.Jarray
+        Set Jarray = Factory.CreateArray
+        Jarray.PushBack Factory.CreateNull
     'Act:
-       JArray.SetItem 0, CreateObject("Scripting.FileSystemObject")
+       Jarray.SetItem 0, CreateObject("Scripting.FileSystemObject")
 Assert:
     Assert.Fail "L'erreur attendue ne s'est pas produite"
 
@@ -419,17 +419,17 @@ Private Sub SetItem_5()
     On Error GoTo TestFail
     
     'Arrange:
-        Dim JArray As JSON.JArray
-        Set JArray = Factory.CreateArray
+        Dim Jarray As JSON.Jarray
+        Set Jarray = Factory.CreateArray
     'Act:
-        JArray.PushBack Factory.CreateNull
-        JArray.PushBack Factory.CreateString("random string")
-        JArray.PushBack Factory.CreateNumber(55.4)
-        JArray.SetItem 2, Factory.CreateBoolean(True)
+        Jarray.PushBack Factory.CreateNull
+        Jarray.PushBack Factory.CreateString("random string")
+        Jarray.PushBack Factory.CreateNumber(55.4)
+        Jarray.SetItem 2, Factory.CreateBoolean(True)
     'Assert:
-        Assert.IsTrue TypeOf JArray.GetItemAs(0, JSON.JType.JSNull) Is JSON.JNull
-        Assert.IsTrue TypeOf JArray.GetItemAs(1, JSON.JType.JSString) Is JSON.JString
-        Assert.IsTrue TypeOf JArray.GetItemAs(2, JSON.JType.JSBoolean) Is JSON.JBoolean
+        Assert.IsTrue TypeOf Jarray.GetItemAs(0, JSON.JType.JSNull) Is JSON.JNull
+        Assert.IsTrue TypeOf Jarray.GetItemAs(1, JSON.JType.JSString) Is JSON.JString
+        Assert.IsTrue TypeOf Jarray.GetItemAs(2, JSON.JType.JSBoolean) Is JSON.JBoolean
 
 TestExit:
     Exit Sub
@@ -443,17 +443,17 @@ Private Sub SetItem_6()
     On Error GoTo TestFail
     
     'Arrange:
-        Dim JArray As JSON.JArray
-        Set JArray = Factory.CreateArray
+        Dim Jarray As JSON.Jarray
+        Set Jarray = Factory.CreateArray
     'Act:
-        JArray.PushBack Factory.CreateNull
-        JArray.PushBack Factory.CreateString("random string")
-        JArray.PushBack Factory.CreateNumber(55.4)
-        JArray.SetItem 0, Factory.CreateBoolean(True)
+        Jarray.PushBack Factory.CreateNull
+        Jarray.PushBack Factory.CreateString("random string")
+        Jarray.PushBack Factory.CreateNumber(55.4)
+        Jarray.SetItem 0, Factory.CreateBoolean(True)
     'Assert:
-        Assert.IsTrue TypeOf JArray.GetItemAs(0, JSON.JType.JSBoolean) Is JSON.JBoolean
-        Assert.IsTrue TypeOf JArray.GetItemAs(1, JSON.JType.JSString) Is JSON.JString
-        Assert.IsTrue TypeOf JArray.GetItemAs(2, JSON.JType.JSNumber) Is JSON.JNumber
+        Assert.IsTrue TypeOf Jarray.GetItemAs(0, JSON.JType.JSBoolean) Is JSON.JBoolean
+        Assert.IsTrue TypeOf Jarray.GetItemAs(1, JSON.JType.JSString) Is JSON.JString
+        Assert.IsTrue TypeOf Jarray.GetItemAs(2, JSON.JType.JSNumber) Is JSON.JNumber
 
 TestExit:
     Exit Sub
@@ -467,12 +467,12 @@ Private Sub GetItemAs()
     On Error GoTo TestFail
     
     'Arrange:
-        Dim JArray As JSON.JArray
-        Set JArray = Factory.CreateArray
+        Dim Jarray As JSON.Jarray
+        Set Jarray = Factory.CreateArray
     'Act:
-        JArray.PushBack Factory.CreateNull
+        Jarray.PushBack Factory.CreateNull
     'Assert:
-        Assert.IsTrue TypeOf JArray.GetItemAs(0, JSON.JType.JSNull) Is JSON.JNull
+        Assert.IsTrue TypeOf Jarray.GetItemAs(0, JSON.JType.JSNull) Is JSON.JNull
 
 TestExit:
     Exit Sub
@@ -488,11 +488,11 @@ Private Sub GetItemAs_2()
     On Error GoTo TestFail
     
     'Arrange:
-        Dim JArray As JSON.JArray
-        Set JArray = Factory.CreateArray
+        Dim Jarray As JSON.Jarray
+        Set Jarray = Factory.CreateArray
     'Act:
-        JArray.PushBack Factory.CreateNull
-        Assert.IsTrue TypeOf JArray.GetItemAs(0, JSON.JType.JSBoolean) Is JSON.JBoolean
+        Jarray.PushBack Factory.CreateNull
+        Assert.IsTrue TypeOf Jarray.GetItemAs(0, JSON.JType.JSBoolean) Is JSON.JBoolean
 
 Assert:
     Assert.Fail "L'erreur attendue ne s'est pas produite"
@@ -512,16 +512,16 @@ Private Sub Iterate()
     On Error GoTo TestFail
     
     'Arrange:
-        Dim JArray As JSON.JArray
-        Set JArray = Factory.CreateArray
+        Dim Jarray As JSON.Jarray
+        Set Jarray = Factory.CreateArray
     'Act:
-        JArray.PushBack Factory.CreateNull
-        JArray.PushBack Factory.CreateNull
-        JArray.PushBack Factory.CreateNull
-        JArray.PushBack Factory.CreateNull
+        Jarray.PushBack Factory.CreateNull
+        Jarray.PushBack Factory.CreateNull
+        Jarray.PushBack Factory.CreateNull
+        Jarray.PushBack Factory.CreateNull
         
         Dim Element As Object
-        For Each Element In JArray
+        For Each Element In Jarray
             Assert.IsTrue Element.ToString <> vbNullString
         Next
     'Assert:
@@ -539,15 +539,15 @@ Private Sub Item()
     On Error GoTo TestFail
     
     'Arrange:
-        Dim JArray As JSON.JArray
-        Set JArray = Factory.CreateArray
-        JArray.PushBack Factory.CreateNull
-        JArray.PushBack Factory.CreateNull
-        JArray.PushBack Factory.CreateNull
-        JArray.PushBack Factory.CreateNull
+        Dim Jarray As JSON.Jarray
+        Set Jarray = Factory.CreateArray
+        Jarray.PushBack Factory.CreateNull
+        Jarray.PushBack Factory.CreateNull
+        Jarray.PushBack Factory.CreateNull
+        Jarray.PushBack Factory.CreateNull
     'Act:
         Dim Element As Object
-        Set Element = JArray(2)
+        Set Element = Jarray(2)
     'Assert:
         Assert.Succeed
 
@@ -565,15 +565,15 @@ Private Sub Item_2()
     On Error GoTo TestFail
     
     'Arrange:
-        Dim JArray As JSON.JArray
-        Set JArray = Factory.CreateArray
-        JArray.PushBack Factory.CreateNull
-        JArray.PushBack Factory.CreateNull
-        JArray.PushBack Factory.CreateNull
-        JArray.PushBack Factory.CreateNull
+        Dim Jarray As JSON.Jarray
+        Set Jarray = Factory.CreateArray
+        Jarray.PushBack Factory.CreateNull
+        Jarray.PushBack Factory.CreateNull
+        Jarray.PushBack Factory.CreateNull
+        Jarray.PushBack Factory.CreateNull
     'Act:
         Dim Element As Object
-        Set Element = JArray(4)
+        Set Element = Jarray(4)
 Assert:
     Assert.Fail "L'erreur attendue ne s'est pas produite"
 
@@ -595,8 +595,8 @@ Private Sub Parse()
         Dim SS As JSON.StringStream
         Set SS = Services.CreateStringStream("[ ]")
         
-        Dim JArray As JSON.JArray
-        Set JArray = Services.CreateArray(SS)
+        Dim Jarray As JSON.Jarray
+        Set Jarray = Services.CreateArray(SS)
     'Act:
     
     'Assert:
@@ -617,12 +617,12 @@ Private Sub Parse_2()
         Dim SS As JSON.StringStream
         Set SS = Services.CreateStringStream("[ null ]")
         
-        Dim JArray As JSON.JArray
-        Set JArray = Services.CreateArray(SS)
+        Dim Jarray As JSON.Jarray
+        Set Jarray = Services.CreateArray(SS)
     'Act:
     
     'Assert:
-        Assert.IsTrue TypeOf JArray.GetItemAs(0, JSON.JType.JSNull) Is JNull
+        Assert.IsTrue TypeOf Jarray.GetItemAs(0, JSON.JType.JSNull) Is JNull
 
 TestExit:
     Exit Sub
@@ -639,12 +639,12 @@ Private Sub Parse_4()
         Dim SS As JSON.StringStream
         Set SS = Services.CreateStringStream("[ null, null ]")
         
-        Dim JArray As JSON.JArray
-        Set JArray = Services.CreateArray(SS)
+        Dim Jarray As JSON.Jarray
+        Set Jarray = Services.CreateArray(SS)
     'Act:
     
     'Assert:
-        Assert.IsTrue TypeOf JArray.GetItemAs(0, JSON.JType.JSNull) Is JNull
+        Assert.IsTrue TypeOf Jarray.GetItemAs(0, JSON.JType.JSNull) Is JNull
 
 TestExit:
     Exit Sub
@@ -663,8 +663,8 @@ Private Sub Parse_3()
         Dim SS As JSON.StringStream
         Set SS = Services.CreateStringStream("invalid array")
         
-        Dim JArray As JSON.JArray
-        Set JArray = Services.CreateArray(SS)
+        Dim Jarray As JSON.Jarray
+        Set Jarray = Services.CreateArray(SS)
     'Act:
 
 Assert:
