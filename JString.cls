@@ -53,11 +53,11 @@ Attribute Parse.VB_Description = "Stream parsing"
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
 #End If
 
-    mData.EatCharacter """"
+    mData.EatCharacter DOUBLEQUOTE
     Dim Value As String
     Value = mData.GetStringFromRegEx("^(?:\\(?:[""\\\/bfnrt]|u[a-fA-F0-9]{4})|[^""\\\0-\x1F\x7F]+)*")
     mData.EatString Value
-    mData.EatCharacter """"
+    mData.EatCharacter DOUBLEQUOTE
     Value = Services.Unescape(Value)
     mValue = Value
 End Sub
@@ -96,9 +96,9 @@ Attribute ToJSONString.VB_Description = "Return a JSON string representation of 
 #End If
 
     Dim Output As String
-    Output = Output & """"
+    Output = Output & DOUBLEQUOTE
     Output = Output & Services.Escape(mValue)
-    Output = Output & """"
+    Output = Output & DOUBLEQUOTE
     ToJSONString = Output
 End Function
 
@@ -114,8 +114,8 @@ Attribute ToString.VB_Description = "Retrun a human readable string representati
 #End If
 
     Dim Output As String
-    Output = Output & """"
+    Output = Output & DOUBLEQUOTE
     Output = Output & mValue
-    Output = Output & """"
+    Output = Output & DOUBLEQUOTE
     ToString = Output
 End Function

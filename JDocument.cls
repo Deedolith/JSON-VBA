@@ -93,11 +93,11 @@ Attribute Query.VB_Description = "Retrieve a JSON element by querying the docume
         If (Not IsNumeric(Item)) Then
             Dim JObject As JSON.JObject
             Set JObject = Services.GetValueAs(JValue, JSON.JType.JSObject)
-            Set JValue = JObject.Members(Item).Value
+            Set JValue = JObject.Members.Item(Item).Value
         Else
             Dim Jarray As JSON.Jarray
             Set Jarray = Services.GetValueAs(JValue, JSON.JType.JSArray)
-            Set JValue = Jarray(Item)
+            Set JValue = Jarray.Item(Item)
         End If
     Next
     Set Query = JValue

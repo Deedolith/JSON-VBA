@@ -83,15 +83,15 @@ Attribute ParseMembers.VB_Description = "Parse elements within the object"
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
 #End If
 
-    StringStream.EatCharacter """"
+    StringStream.EatCharacter DOUBLEQUOTE
     
     Dim Name As String
     Name = StringStream.GetStringFromRegEx("^(?:\\(?:[""\\\/bfnrt]|u[a-fA-F0-9]{4})|[^""\\\0-\x1F\x7F]+)*")
     StringStream.EatString Name
     Name = Services.Unescape(Name)
-    StringStream.EatCharacter """"
+    StringStream.EatCharacter DOUBLEQUOTE
     StringStream.DiscardSpaces
-    StringStream.EatCharacter ":"
+    StringStream.EatCharacter SEMICOLON
     StringStream.DiscardSpaces
     
     Dim Value As Object
@@ -152,7 +152,7 @@ Attribute ToString.VB_Description = "Return a human readable string representati
         If (SecondLoop) Then
             Output = Output & "," & vbCrLf
         End If
-        Output = Output & Tabs & vbTab & """" & Pair.Name & """:" & Pair.Value.ToString(IndentMultiplier + 1)
+        Output = Output & Tabs & vbTab & DOUBLEQUOTE & Pair.Name & """:" & Pair.Value.ToString(IndentMultiplier + 1)
         SecondLoop = True
     Next
     Output = Output & vbCrLf

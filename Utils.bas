@@ -2,6 +2,9 @@ Attribute VB_Name = "Utils"
 '@Folder "JSON.Utilities"
 Option Explicit
 
+Public Const DOUBLEQUOTE As String = """"
+Public Const SEMICOLON As String = ":"
+
 Public Enum JException
     JUnexpectedKey = vbObjectError + 1
     JUnexpectedCharacter = vbObjectError + 2

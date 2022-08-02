@@ -359,15 +359,19 @@ Private Sub Iterator()
         JObject.Members.Add Factory.CreatePair("Member", Factory.CreateNull)
         JObject.Members.Add Factory.CreatePair("Member2", Factory.CreateNull)
         JObject.Members.Add Factory.CreatePair("Member3", Factory.CreateNull)
+        
+        Dim Count As Long
+        Count = 0
     'Act:
         Dim Pair As JSON.Pair
         For Each Pair In JObject.Members
             '@Ignore VariableNotUsed
             Dim Value As Object
             Set Value = Pair.Value
+            Count = Count + 1
         Next
     'Assert:
-        Assert.Succeed
+        Assert.AreEqual CLng(3), Count
 
 TestExit:
     Exit Sub
@@ -384,11 +388,11 @@ Private Sub Parse()
         Dim StringStream As JSON.StringStream
         Set StringStream = Services.CreateStringStream("{ }")
         
+    'Act:
         '@Ignore VariableNotUsed
         Dim JObject As JSON.JObject
         '@Ignore AssignmentNotUsed
         Set JObject = Services.CreateObject(StringStream)
-    'Act:
     
     'Assert:
         Assert.Succeed
@@ -408,11 +412,11 @@ Private Sub Parse_2()
         Dim StringStream As JSON.StringStream
         Set StringStream = Services.CreateStringStream("{ ""Member"":null}")
         
+    'Act:
         '@Ignore VariableNotUsed
         Dim JObject As JSON.JObject
         '@Ignore AssignmentNotUsed
         Set JObject = Services.CreateObject(StringStream)
-    'Act:
     
     'Assert:
         Assert.Succeed
@@ -433,11 +437,11 @@ Private Sub Parse_3()
         Dim StringStream As JSON.StringStream
         Set StringStream = Services.CreateStringStream("Incorrect value")
         
+    'Act:
         '@Ignore VariableNotUsed
         Dim JObject As JSON.JObject
         '@Ignore AssignmentNotUsed
         Set JObject = Services.CreateObject(StringStream)
-    'Act:
 
 Assert:
     Assert.Fail "L'erreur attendue ne s'est pas produite"

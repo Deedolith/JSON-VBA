@@ -116,7 +116,7 @@ End Function
 Public Function GetItemAs(ByVal Index As Long, ByVal DataType As JSON.JType) As Object
 Attribute GetItemAs.VB_Description = "Return an element given its index."
     Debug.Assert Index >= 0
-    Debug.Assert Index < mElements.Count
+    Debug.Assert Index <= mElements.Count
 
 #If DEV Then
     Const FunctionName As String = "Item (Get)"
@@ -131,7 +131,7 @@ End Function
 Public Sub SetItem(ByVal Index As Long, ByRef Element As Object)
 Attribute SetItem.VB_Description = "Set an element at the given index"
     Debug.Assert Index >= 0
-    Debug.Assert Index < mElements.Count
+    Debug.Assert Index <= mElements.Count
 
 #If DEV Then
     Const FunctionName As String = "Item (Set)"
@@ -268,7 +268,7 @@ End Sub
 Public Sub Remove(ByVal Index As Long)
 Attribute Remove.VB_Description = "Remove an element as the given index"
     Debug.Assert Index >= 0
-    Debug.Assert Index < mElements.Count
+    Debug.Assert Index <= mElements.Count
 
 #If DEV Then
     Const FunctionName As String = "Remove"
@@ -283,7 +283,7 @@ End Sub
 Public Function Item(ByVal Index As Long) As Object
 Attribute Item.VB_UserMemId = 0
     Debug.Assert Index >= 0
-    Debug.Assert Index < mElements.Count
+    Debug.Assert Index <= mElements.Count
     
 #If DEV Then
     Const FunctionName As String = "Item"

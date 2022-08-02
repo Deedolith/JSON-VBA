@@ -424,7 +424,7 @@ Attribute IsString.VB_Description = "Check if the next value is a string"
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
 #End If
 
-    IsString = StringStream.PeekCharacter = """"
+    IsString = StringStream.PeekCharacter = DOUBLEQUOTE
 End Function
 
 '@Description "Instanciate a new Pair object"
