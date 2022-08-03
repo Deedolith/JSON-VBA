@@ -70,6 +70,7 @@ Attribute Parse.VB_Description = "Stream parsing"
     Dim Logger As JSON.Logger
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
 #End If
+
     Set mValue = Services.ParseValue(mData)
 End Sub
 
@@ -141,9 +142,8 @@ Private Function ParseXpath(ByVal XPath As String) As Collection
 End Function
 
 Private Function ParseNumber(ByVal StringStream As JSON.StringStream) As String
-    Debug.Assert Not (StringStream Is Nothing)
-
 #If DEV Then
+    Debug.Assert Not (StringStream Is Nothing)
     Const FunctionName As String = "ParseNumber"
     Dim Logger As JSON.Logger
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
@@ -156,9 +156,8 @@ Private Function ParseNumber(ByVal StringStream As JSON.StringStream) As String
 End Function
 
 Private Function ParseString(ByVal StringStream As JSON.StringStream) As String
-    Debug.Assert Not (StringStream Is Nothing)
-
 #If DEV Then
+    Debug.Assert Not (StringStream Is Nothing)
     Const FunctionName As String = "ParseString"
     Dim Logger As JSON.Logger
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)

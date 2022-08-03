@@ -70,9 +70,8 @@ Attribute Item.VB_UserMemId = 0
 End Function
 
 Public Sub Add(ByRef Pair As JSON.Pair)
-    Debug.Assert Not (Pair Is Nothing)
-
 #If DEV Then
+    Debug.Assert Not (Pair Is Nothing)
     Const FunctionName As String = "Add"
     Dim Logger As JSON.Logger
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)

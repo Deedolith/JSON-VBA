@@ -23,9 +23,8 @@ Private mMembers As JSON.Members
 '@Description "Constructor"
 Friend Sub Create(ByVal StringStream As JSON.StringStream)
 Attribute Create.VB_Description = "Constructor"
-    Debug.Assert Not (StringStream Is Nothing)      '// Data must be a valid instance
-    
 #If DEV Then
+    Debug.Assert Not (StringStream Is Nothing)      '// Data must be a valid instance
     Const FunctionName As String = "Create"
     Dim Logger As JSON.Logger
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
@@ -75,9 +74,8 @@ End Sub
 '@Description "Parse elements within the object"
 Private Sub ParseMembers(ByVal StringStream As JSON.StringStream)
 Attribute ParseMembers.VB_Description = "Parse elements within the object"
-    Debug.Assert Not StringStream Is Nothing
-
 #If DEV Then
+    Debug.Assert Not StringStream Is Nothing
     Const FunctionName As String = "ParseMembers"
     Dim Logger As JSON.Logger
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)

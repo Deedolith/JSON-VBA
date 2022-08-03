@@ -19,9 +19,8 @@ Private mData As JSON.StringStream
 '@Description "Constructor"
 Friend Sub Create(ByVal StringStream As JSON.StringStream)
 Attribute Create.VB_Description = "Constructor"
-    Debug.Assert Not (StringStream Is Nothing)
-
 #If DEV Then
+    Debug.Assert Not (StringStream Is Nothing)
     Const FunctionName As String = "Create"
     Dim Logger As JSON.Logger
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
@@ -89,9 +88,8 @@ End Function
 '@Description "Return a human readable string representation of the object"
 Public Function ToString(Optional ByVal IndentMultiplier As Long = 0) As String
 Attribute ToString.VB_Description = "Return a human readable string representation of the object"
-    Debug.Assert IndentMultiplier >= 0
-
 #If DEV Then
+    Debug.Assert IndentMultiplier >= 0
     Const FunctionName As String = "ToString"
     Dim Logger As JSON.Logger
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)

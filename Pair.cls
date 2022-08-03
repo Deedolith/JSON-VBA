@@ -20,9 +20,8 @@ Private mElement As Object
 '@Description "Constructor"
 Friend Sub Create(ByVal Name As String, ByVal Element As Object)
 Attribute Create.VB_Description = "Constructor"
-    Debug.Assert Not Element Is Nothing
-
 #If DEV Then
+    Debug.Assert Not Element Is Nothing
     Const FunctionName As String = "Create"
     Dim Logger As JSON.Logger
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)

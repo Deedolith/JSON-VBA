@@ -23,9 +23,8 @@ Private mElements As Collection
 '@Description "Constructor"
 Friend Sub Create(ByVal StringStream As JSON.StringStream)
 Attribute Create.VB_Description = "Constructor"
-    Debug.Assert Not (StringStream Is Nothing)      '// Data must be a valid instance
-
 #If DEV Then
+    Debug.Assert Not (StringStream Is Nothing)      '// Data must be a valid instance
     Const FunctionName As String = "Create"
     Dim Logger As JSON.Logger
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
@@ -75,9 +74,8 @@ End Sub
 '@Description "Parse elements within the array"
 Private Sub ParseElement(ByVal StringStream As JSON.StringStream)
 Attribute ParseElement.VB_Description = "Parse elements within the array"
-    Debug.Assert Not (StringStream Is Nothing)
-
 #If DEV Then
+    Debug.Assert Not (StringStream Is Nothing)
     Const FunctionName As String = "ParseElement"
     Dim Logger As JSON.Logger
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
@@ -115,10 +113,9 @@ End Function
 '@Description "Return an element given its index."
 Public Function GetItemAs(ByVal Index As Long, ByVal DataType As JSON.JType) As Object
 Attribute GetItemAs.VB_Description = "Return an element given its index."
-    Debug.Assert Index >= 0
-    Debug.Assert Index <= mElements.Count
-
 #If DEV Then
+    Debug.Assert Index >= 0
+    Debug.Assert Index < mElements.Count
     Const FunctionName As String = "Item (Get)"
     Dim Logger As JSON.Logger
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
@@ -130,10 +127,9 @@ End Function
 '@Description "Set an element at the given index"
 Public Sub SetItem(ByVal Index As Long, ByRef Element As Object)
 Attribute SetItem.VB_Description = "Set an element at the given index"
-    Debug.Assert Index >= 0
-    Debug.Assert Index <= mElements.Count
-
 #If DEV Then
+    Debug.Assert Index >= 0
+    Debug.Assert Index < mElements.Count
     Const FunctionName As String = "Item (Set)"
     Dim Logger As JSON.Logger
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
@@ -203,9 +199,8 @@ End Function
 '@Description "Return a human readable string representation of the object"
 Public Function ToString(Optional ByVal IndentMultiplier As Long = 0) As String
 Attribute ToString.VB_Description = "Return a human readable string representation of the object"
-    Debug.Assert IndentMultiplier >= 0
-
 #If DEV Then
+    Debug.Assert IndentMultiplier >= 0
     Const FunctionName As String = "ToString"
     Dim Logger As JSON.Logger
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
@@ -267,10 +262,9 @@ End Sub
 '@Description "Remove an element as the given index"
 Public Sub Remove(ByVal Index As Long)
 Attribute Remove.VB_Description = "Remove an element as the given index"
-    Debug.Assert Index >= 0
-    Debug.Assert Index <= mElements.Count
-
 #If DEV Then
+    Debug.Assert Index >= 0
+    Debug.Assert Index < mElements.Count
     Const FunctionName As String = "Remove"
     Dim Logger As JSON.Logger
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
@@ -282,10 +276,9 @@ End Sub
 '@DefaultMember
 Public Function Item(ByVal Index As Long) As Object
 Attribute Item.VB_UserMemId = 0
-    Debug.Assert Index >= 0
-    Debug.Assert Index <= mElements.Count
-    
 #If DEV Then
+    Debug.Assert Index >= 0
+    Debug.Assert Index < mElements.Count
     Const FunctionName As String = "Item"
     Dim Logger As JSON.Logger
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
