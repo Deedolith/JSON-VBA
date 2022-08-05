@@ -1,4 +1,4 @@
-Attribute VB_Name = "TestModule4"
+Attribute VB_Name = "Test_JString"
 '@IgnoreModule
 Option Explicit
 Option Private Module

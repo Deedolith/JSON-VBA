@@ -1,4 +1,4 @@
-Attribute VB_Name = "TestModule9"
+Attribute VB_Name = "Test_JObject"
 '@IgnoreModule SetAssignmentWithIncompatibleObjectType, ImplicitUnboundDefaultMemberAccess, IndexedDefaultMemberAccess, UseMeaningfulName
 Option Explicit
 Option Private Module

@@ -1,4 +1,4 @@
-Attribute VB_Name = "TestModule8"
+Attribute VB_Name = "Test_JArray"
 '@IgnoreModule
 Option Explicit
 Option Private Module

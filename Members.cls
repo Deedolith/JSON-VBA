@@ -52,7 +52,9 @@ Public Function Count() As Long
 End Function
 
 '@DefaultMember
+'@Description "Provide access to a single member."
 Public Function Item(ByVal Key As String) As JSON.Pair
+Attribute Item.VB_Description = "Provide access to a single member."
 Attribute Item.VB_UserMemId = 0
 #If DEV Then
     Const FunctionName As String = "Item"
@@ -69,6 +71,7 @@ Attribute Item.VB_UserMemId = 0
     End If
 End Function
 
+'@Description "Add a member to the collection, in the form of a key / value pair"
 Public Sub Add(ByRef Pair As JSON.Pair)
 #If DEV Then
     Debug.Assert Not (Pair Is Nothing)
@@ -80,6 +83,7 @@ Public Sub Add(ByRef Pair As JSON.Pair)
     mMembers.Add Pair, Services.ToBase64(Pair.Name)
 End Sub
 
+'@Description "Remove a member from the collection."
 Public Sub Remove(ByVal Key As String)
 #If DEV Then
     Const FunctionName As String = "Remove"

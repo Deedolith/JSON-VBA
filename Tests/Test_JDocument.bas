@@ -1,4 +1,4 @@
-Attribute VB_Name = "TestModule10"
+Attribute VB_Name = "Test_JDocument"
 '@IgnoreModule AssignmentNotUsed, VariableNotUsed, UseMeaningfulName
 Option Explicit
 Option Private Module

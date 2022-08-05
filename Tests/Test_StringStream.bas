@@ -1,4 +1,4 @@
-Attribute VB_Name = "TestModule5"
+Attribute VB_Name = "Test_StringStream"
 '@IgnoreModule
 Option Explicit
 Option Private Module

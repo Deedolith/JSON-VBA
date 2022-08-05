@@ -47,9 +47,8 @@ End Sub
 '@Description "Eat a single character"
 Public Sub EatCharacter(ByVal Character As String)
 Attribute EatCharacter.VB_Description = "Eat a single character"
-    Debug.Assert (Len(Character) = 1)   '// Expected single character
-
 #If DEV Then
+    Debug.Assert (Len(Character) = 1)   '// Expected single character
     Const FunctionName As String = "EatCharacter"
     Dim Logger As JSON.Logger
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)

@@ -1,4 +1,4 @@
-Attribute VB_Name = "TestModule6"
+Attribute VB_Name = "Test_JNull"
 '@IgnoreModule
 Option Explicit
 Option Private Module
@@ -18,153 +18,147 @@ End Sub
 
 '@ModuleCleanup
 Private Sub ModuleCleanup()
-    'cette procédure s'exécute une seule fois par module.
+    'cette proc?dure s'ex?cute une seule fois par module.
     Set Assert = Nothing
     Set Fakes = Nothing
 End Sub
 
 '@TestInitialize
 Private Sub TestInitialize()
-    'cette procédure s'exécute avant chaque test dans le module..
+    'cette proc?dure s'ex?cute avant chaque test dans le module..
 End Sub
 
 '@TestCleanup
 Private Sub TestCleanup()
-    'cette procédure s'exécute après chaque test dans le module.
+    'cette proc?dure s'ex?cute apr?s chaque test dans le module.
 End Sub
 
-'@TestMethod("Factory")
-Private Sub CreateBoolean()
-    On Error GoTo TestFail
-    
-    'Arrange:
-        Dim JValue As Object
-        Set JValue = Factory.CreateBoolean(True)
-    'Act:
-
-    'Assert:
-    Assert.IsTrue TypeOf JValue Is JSON.JBoolean
-
-TestExit:
-    Exit Sub
-TestFail:
-    Assert.Fail "Le test a produit une erreur: #" & Err.Number & " - " & Err.Description
-    Resume TestExit
-End Sub
-
-'@TestMethod("Factory")
-Private Sub CreateNull()
-    On Error GoTo TestFail
-    
-    'Arrange:
-        Dim JValue As Object
-        Set JValue = Factory.CreateNull
-    'Act:
-
-    'Assert:
-    Assert.IsTrue TypeOf JValue Is JSON.JNull
-
-TestExit:
-    Exit Sub
-TestFail:
-    Assert.Fail "Le test a produit une erreur: #" & Err.Number & " - " & Err.Description
-    Resume TestExit
-End Sub
-
-'@TestMethod("Factory")
-Private Sub CreateNumber()
-    On Error GoTo TestFail
-    
-    'Arrange:
-        Dim JValue As Object
-        Set JValue = Factory.CreateNumber(457.25)
-    'Act:
-
-    'Assert:
-    Assert.IsTrue TypeOf JValue Is JSON.JNumber
-
-TestExit:
-    Exit Sub
-TestFail:
-    Assert.Fail "Le test a produit une erreur: #" & Err.Number & " - " & Err.Description
-    Resume TestExit
-End Sub
-
-'@TestMethod("Factory")
-Private Sub CreateString()
-    On Error GoTo TestFail
-    
-    'Arrange:
-        Dim JValue As Object
-        Set JValue = Factory.CreateString("abcdef")
-    'Act:
-
-    'Assert:
-    Assert.IsTrue TypeOf JValue Is JSON.JString
-
-TestExit:
-    Exit Sub
-TestFail:
-    Assert.Fail "Le test a produit une erreur: #" & Err.Number & " - " & Err.Description
-    Resume TestExit
-End Sub
-
-'@TestMethod("Factory")
-Private Sub CreateBoolean_2()
-    Const ExpectedError As Long = 13        '// type mismatch
-    On Error GoTo TestFail
-    
-    'Arrange:
-        Dim JBoolean As JSON.JBoolean
-        Set JBoolean = Factory.CreateBoolean("incorrect value")
-    'Act:
-
-Assert:
-    Assert.Fail "L'erreur attendue ne s'est pas produite"
-
-TestExit:
-    Exit Sub
-TestFail:
-    If Err.Number = ExpectedError Then
-        Resume TestExit
-    Else
-        Resume Assert
-    End If
-End Sub
-
-'@TestMethod("Factory")
-Private Sub CreateNull_2()
-    Const ExpectedError As Long = 438        '// Propriété ou méthode non gérée par cet objet
+'@TestMethod("JNull")
+Private Sub Instanciation()
     On Error GoTo TestFail
     
     'Arrange:
         Dim JNull As JSON.JNull
-        Set JNull = Factory.CreateNull("incorrect value")
+        Set JNull = Factory.CreateNull
     'Act:
 
-Assert:
-    Assert.Fail "L'erreur attendue ne s'est pas produite"
+    'Assert:
+        Assert.IsTrue TypeOf JNull Is JSON.JNull
 
 TestExit:
     Exit Sub
 TestFail:
-    If Err.Number = ExpectedError Then
-        Resume TestExit
-    Else
-        Resume Assert
-    End If
+    Assert.Fail "Le test a produit une erreur: #" & Err.Number & " - " & Err.Description
+    Resume TestExit
 End Sub
 
-'@TestMethod("Factory")
-Private Sub CreateNumber_2()
-    Const ExpectedError As Long = 13        '// type mismatch
+'@TestMethod("JNull")
+Private Sub DataType()
     On Error GoTo TestFail
     
     'Arrange:
-        Dim JNumber As JSON.JNumber
-        Set JNumber = Factory.CreateNumber("incorrect value")
+        Dim JNull As JSON.JNull
+        Set JNull = Factory.CreateNull
     'Act:
 
+    'Assert:
+        Assert.AreEqual JSON.JType.JSNull, JNull.DataType
+
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Le test a produit une erreur: #" & Err.Number & " - " & Err.Description
+    Resume TestExit
+End Sub
+
+'@TestMethod("JNull")
+Private Sub ToString()
+    On Error GoTo TestFail
+    
+    'Arrange:
+        Dim JNull As JSON.JNull
+        Set JNull = Factory.CreateNull
+    'Act:
+
+    'Assert:
+        Assert.AreEqual "null", JNull.ToString
+
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Le test a produit une erreur: #" & Err.Number & " - " & Err.Description
+    Resume TestExit
+End Sub
+
+'@TestMethod("JNull")
+Private Sub Value()
+    On Error GoTo TestFail
+    
+    'Arrange:
+        Dim JNull As JSON.JNull
+        Set JNull = Factory.CreateNull
+    'Act:
+
+    'Assert:
+        Assert.IsTrue IsNull(JNull.Value)
+
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Le test a produit une erreur: #" & Err.Number & " - " & Err.Description
+    Resume TestExit
+End Sub
+
+'@TestMethod("JNull")
+Private Sub ToJSONString()
+    On Error GoTo TestFail
+    
+    'Arrange:
+        Dim JNull As JSON.JNull
+        Set JNull = Factory.CreateNull
+    'Act:
+
+    'Assert:
+        Assert.AreEqual "null", JNull.ToJSONString
+
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Le test a produit une erreur: #" & Err.Number & " - " & Err.Description
+    Resume TestExit
+End Sub
+
+'@TestMethod("JNull")
+Private Sub Parsing()
+    On Error GoTo TestFail
+    
+    'Arrange:
+        Dim SS As JSON.StringStream
+        Set SS = Services.CreateStringStream("null")
+    'Act:
+        Dim JNull As JSON.JNull
+        Set JNull = Services.CreateNull(SS)
+    'Assert:
+        Assert.IsTrue IsNull(JNull.Value)
+
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Le test a produit une erreur: #" & Err.Number & " - " & Err.Description
+    Resume TestExit
+End Sub
+
+'@TestMethod("JNull")
+Private Sub Parsing_2()
+    Const ExpectedError As Long = JSON.JException.JUnexpectedToken
+    On Error GoTo TestFail
+    
+    'Arrange:
+        Dim SS As JSON.StringStream
+        Set SS = Services.CreateStringStream("incorrect value")
+    'Act:
+        Dim JNull As JSON.JNull
+        Set JNull = Services.CreateNull(SS)
 Assert:
     Assert.Fail "L'erreur attendue ne s'est pas produite"
 
@@ -177,4 +171,3 @@ TestFail:
         Resume Assert
     End If
 End Sub
-

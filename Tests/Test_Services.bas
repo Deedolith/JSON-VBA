@@ -1,4 +1,4 @@
-Attribute VB_Name = "TestModule7"
+Attribute VB_Name = "Test_Services"
 '@IgnoreModule
 Option Explicit
 Option Private Module
