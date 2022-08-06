@@ -1,4 +1,4 @@
-Attribute VB_Name = "zTest_JNumber"
+Attribute VB_Name = "Test_JNumber"
 '@IgnoreModule
 Option Explicit
 Option Private Module
