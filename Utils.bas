@@ -11,6 +11,12 @@ Public Enum JException
     JUnexpectedToken = vbObjectError + 3
 End Enum
 
+Public Type VersionNumber
+    Major As Long
+    Minor As Long
+    Revision As Long
+End Type
+
 Public Enum JType
     JSObject
     JSArray
@@ -35,3 +41,12 @@ Public Function GetValueAs(ByVal Value As Object, ByVal DataType As JSON.JType) 
     Set JObject = Services.GetValueAs(Value, DataType)
     Set GetValueAs = JObject
 End Function
+
+Public Function Version() As VersionNumber
+    Dim VersionNumber As JSON.VersionNumber
+    VersionNumber.Major = 1
+    VersionNumber.Minor = 0
+    VersionNumber.Revision = 14
+    Version = VersionNumber
+End Function
+

@@ -220,7 +220,10 @@ Private Sub Add()
         Dim JObject As JSON.JObject
         Set JObject = Factory.CreateObject
     'Act:
-        JObject.Members.Add Factory.CreatePair("Member", Factory.CreateNull)
+        Dim Members As JSON.Members
+        Set Members = JObject.Members
+        Members.Add Factory.CreatePair("Member", Factory.CreateNull)
+        '// JObject.Members.Add Factory.CreatePair("Member", Factory.CreateNull)
     'Assert:
         Assert.AreEqual CLng(1), JObject.Members.Count
         Assert.IsTrue TypeOf JObject.Members.Item("Member") Is JSON.Pair
