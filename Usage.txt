@@ -1,5 +1,6 @@
 Before anything, you need to install the library:
 Download each cls and bas files, and import them into your favorit VBA editor.
+I recommend to import into a dedicated Excel or Access file and set a reference to it.
 
 ********************  WARNING  ********************
 Don't just copy / past files as you'll miss important features, be sure to import all the files.
