@@ -46,7 +46,7 @@ Public Function Version() As VersionNumber
     Dim VersionNumber As JSON.VersionNumber
     VersionNumber.Major = 1
     VersionNumber.Minor = 0
-    VersionNumber.Revision = 14
+    VersionNumber.Revision = 16
     Version = VersionNumber
 End Function
 

@@ -6,8 +6,8 @@ Option Private Module
 '@TestModule
 '@Folder("Tests")
 
-Private Assert As Object        '// Rubberduck.AssertClass
-Private Fakes As Object         '// Rubberduck.FakesProvider
+Private Assert As Rubberduck.AssertClass
+Private Fakes As Rubberduck.FakesProvider
 
 '@ModuleInitialize
 Private Sub ModuleInitialize()
@@ -100,6 +100,11 @@ Private Sub Query()
         Set Data = JDocument.Query("/8/alpha")
     'Assert:
         Assert.AreEqual "abcdefghijklmnopqrstuvwyz", Data.Value
+        If (TypeOf Data Is JSON.JString) Then
+            Assert.IsTrue
+        Else
+            Assert.IsFalse
+        End If
 
 TestExit:
     Exit Sub
@@ -108,3 +113,28 @@ TestFail:
     Resume TestExit
 End Sub
 
+'@TestMethod("JDocupment")
+Private Sub Query_2()
+    On Error GoTo TestFail
+    
+    'Arrange:
+        Const DataSource As String = "C:\Users\flambert\Desktop\JSON VBA\Test.json"
+        Dim Reader As IReader
+        Set Reader = Factory.CreateFileReader(DataSource)
+        
+        Dim JDocument As JSON.JDocument
+        Set JDocument = Factory.CreateDocument
+        JDocument.LoadFrom Reader
+    'Act:
+        Dim Data As Object
+        Set Data = JDocument.Query("/8/alpha")
+    'Assert:
+        Assert.IsTrue TypeOf JDocument.Query("/8/alpha") Is JSON.JString
+        Assert.AreEqual "abcdefghijklmnopqrstuvwyz", Data.Value
+
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Le test a produit une erreur: #" & Err.Number & " - " & Err.Description
+    Resume TestExit
+End Sub

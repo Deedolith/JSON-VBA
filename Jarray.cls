@@ -135,19 +135,21 @@ Attribute SetItem.VB_Description = "Set an element at the given index"
     Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
 #End If
 
+    Dim Position As Long
+    Position = Index
      If ((TypeOf Element Is Jarray) Or (TypeOf Element Is JBoolean) Or (TypeOf Element Is JNull) Or (TypeOf Element Is JNumber) Or (TypeOf Element Is JString) Or (TypeOf Element Is JObject)) Then
-        Index = Index + 1
-        mElements.Remove Index
+        Position = Position + 1
+        mElements.Remove Position
         If (mElements.Count = 0) Then
-                '// mValues is empty, just add the element
+                '// Collection is empty, just add the element
             mElements.Add Element
         Else
             If (Index > mElements.Count) Then
                     '// add element at the end
-                mElements.Add Element, After:=Index - 1
+                mElements.Add Element, After:=Position - 1
             Else
                     '// add element elsewhere
-                mElements.Add Element, Before:=Index
+                mElements.Add Element, Before:=Position
             End If
         End If
     Else
