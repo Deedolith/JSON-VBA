@@ -1,0 +1,83 @@
+Before anything, you need to install the library:
+Download each cls and bas files, and import them into your favorit VBA editor.
+
+********************  WARNING  ********************
+Don't just copy / past files as you'll miss important features, be sure to import all the files.
+***************************************************
+
+
+First, you need to provide a mean to read data from your data source.
+The data source can be anything, a text file, a database, a network stream, a simple string ect ...
+
+Concerning text files, the library provide a FileReader class responsible from reading a text file.
+Instanciating it is is very easy thanks to the pre-declared Factory class. Just call the CreateFileReader method and provide a valid file path as argument.
+Note that the factory is a very conveniant helper, use and abuse it.
+
+Let's say you have a JSON file located at C:\Temp\Test.json, we can load it with these 2 lines of code:
+
+Dim DataReader As IReader
+Set DataReader = Factory.CreateFileReader("C:\Temp\Test.json")
+
+
+Next, you will need a JSON document that will represent you JSON data.
+Instanciate one with the help of the factory, and load the JSON data from your previous reader:
+
+Dim Document As JDocument
+Set Document = Factory.CreateDocument
+Document.LoadFrom(DataReader)
+
+
+At this point, you have a valid document.
+All you need to do is exploit its powerfull functionalities.
+
+Let's say your JSON looks like the following (an array of 5 elements)
+[
+    "a string",
+    -42,
+    true,
+    false,
+    null
+]
+
+You can retrieve the whole array thanks to the GetValueAs method from the JDocument class that will return a class of the requested data type (in this case: a JArray):
+
+Dim JArray as JArray
+Set JArray = Document.GetValueAs(JSArray)
+
+
+Next, you want to retrieve the 3rd value.
+The GetItemAs method will do the work for you, provide the item index (zero based index), and like the GetValueAs method from the JDocument class, request the data type.
+In our case the data type is a boolean:
+
+Dim JBoolean As JBoolean
+Set JBoolean = JArray.GetItemAs(2, JSBoolean)
+
+
+Finally, you can handle the boolean value, either read it, or write it:
+
+Dim Data As Boolean
+Data = JBoolean.Value
+
+JBoolean.Value = True
+
+
+Should you have complex JSON data, it can be fastidious to constantly request elements and sub-elements of the correct type.
+Thankfully, the JDocument provide the Query method, wich allow you to provide an XPath-like argument to reach the desired JSON entry.
+The following code return the 3rd item of the array directly:
+
+Dim DataReader As IReader
+Set DataReader = Factory.CreateFileReader("C:\Temp\Test.json")
+
+Dim Document As JDocument
+Set Document = Factory.CreateDocument
+Document.LoadFrom(DataReader)
+
+Dim JBoolean As JBoolean
+Set JBoolean = JDocument.Query("/2")
+
+Conveniant isn't it ?
+
+Concerning acquiring data, as mentionned before, JSON data can come from any source.
+It is your responsibility to write a reader class implementing the IReader interface to enable the library to read your particular data source.
+
+Don't hesitate to read the Reference documentation and experiment the various functionalities offered by the library, the possibilities are infinite.
