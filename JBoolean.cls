@@ -10,6 +10,7 @@ Attribute VB_Exposed = True
 '@Exposed
 '@Folder "JSON"
 Option Explicit
+Implements JSObject
 
 Const ModuleName As String = "JBoolean"
 
@@ -39,9 +40,9 @@ Attribute DataType.VB_Description = "Class's data type."
     DataType = JType.JSBoolean
 End Property
 
-'@Description "Return a human readable string representation of the object"
+'@Description "Return a human readable string representation of the JSObject"
 Public Function ToString(Optional ByVal IndentMultiplier As Long = 0) As String
-Attribute ToString.VB_Description = "Return a human readable string representation of the object"
+Attribute ToString.VB_Description = "Return a human readable string representation of the JSObject"
     Const FunctionName As String = "ToString"
     Dim ErrorLogger As ErrorLogger
     Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
@@ -55,9 +56,9 @@ Attribute ToString.VB_Description = "Return a human readable string representati
     ToString = Output
 End Function
 
-'@Description "Return a JSON string representation of the object"
+'@Description "Return a JSON string representation of the JSObject"
 Public Function ToJSONString() As String
-Attribute ToJSONString.VB_Description = "Return a JSON string representation of the object"
+Attribute ToJSONString.VB_Description = "Return a JSON string representation of the JSObject"
     Const FunctionName As String = "ToJSONString"
     Dim ErrorLogger As ErrorLogger
     Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
@@ -103,3 +104,19 @@ Attribute Parse.VB_Description = "Stream parsing"
         Err.Raise JException.JUnexpectedToken, "JBoolean.Parse", """true"" or ""false"" expected."
     End If
 End Sub
+
+Private Function JSObject_ToJSONString() As String
+    Const FunctionName As String = "JSObject_ToJSONString"
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
+
+    JSObject_ToJSONString = ToJSONString
+End Function
+
+Private Function JSObject_ToString(Optional ByVal IndentMultiplier As Long = 0&) As String
+    Const FunctionName As String = "JSObject_ToString"
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
+
+    JSObject_ToString = ToString(IndentMultiplier)
+End Function

@@ -40,10 +40,10 @@ Attribute IWriter_Execute.VB_Description = "Interface implementation"
     Dim ErrorLogger As ErrorLogger
     Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
-    Dim fso As Object       '// Scripting.FileSystemObject
-    Set fso = VBA.CreateObject("Scripting.FileSystemObject")
+    Dim Fso As Object       '// Scripting.FileSystemObject
+    Set Fso = VBA.CreateObject("Scripting.FileSystemObject")
     
-    Dim oStream As Object       '// Scripting.TextStream
-    Set oStream = fso.OpenTextFile(mPath, ForWriting, True)
-    oStream.Write Data
+    Dim OStream As Object       '// Scripting.TextStream
+    Set OStream = Fso.OpenTextFile(mPath, ForWriting, True)
+    OStream.Write Data
 End Sub

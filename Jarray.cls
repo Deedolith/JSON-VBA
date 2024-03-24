@@ -13,6 +13,7 @@ Attribute VB_Description = "Represent a JSON array, zero index based."
 '@IgnoreModule AssignmentNotUsed, VariableNotUsed
 '@Exposed
 Option Explicit
+Implements JSObject
 
 Private Const ModuleName As String = "JArray"
 
@@ -100,7 +101,7 @@ Attribute Size.VB_Description = "Return the number of elements in the array."
 End Function
 
 '@Description "Return an element given its index."
-Public Function GetItemAs(ByVal Index As Long, ByVal DataType As JType) As Object
+Public Function GetItemAs(ByVal Index As Long, ByVal DataType As JType) As JSObject
 Attribute GetItemAs.VB_Description = "Return an element given its index."
     Debug.Assert Index >= 0
     Debug.Assert Index < mElements.Count
@@ -113,7 +114,7 @@ Attribute GetItemAs.VB_Description = "Return an element given its index."
 End Function
 
 '@Description "Set an element at the given index"
-Public Sub SetItem(ByVal Index As Long, ByRef Element As Object)
+Public Sub SetItem(ByVal Index As Long, ByRef Element As JSObject)
 Attribute SetItem.VB_Description = "Set an element at the given index"
     Debug.Assert Index >= 0
     Debug.Assert Index < mElements.Count
@@ -156,9 +157,9 @@ Attribute NewEnum.VB_UserMemId = -4
     Set NewEnum = mElements.[_NewEnum]
 End Function
 
-'@Description "Return a JSON formated string representation of the object"
+'@Description "Return a JSON formated string representation of the JSObject"
 Public Function ToJSONString() As String
-Attribute ToJSONString.VB_Description = "Return a JSON formated string representation of the object"
+Attribute ToJSONString.VB_Description = "Return a JSON formated string representation of the JSObject"
     Const FunctionName As String = "ToJSONString"
     Dim ErrorLogger As ErrorLogger
     Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
@@ -169,7 +170,7 @@ Attribute ToJSONString.VB_Description = "Return a JSON formated string represent
     Dim SecondLoop As Boolean
     SecondLoop = False
 
-    Dim Element As Object
+    Dim Element As JSObject
     For Each Element In mElements
         If (SecondLoop) Then
             Output = Output & ","
@@ -181,9 +182,9 @@ Attribute ToJSONString.VB_Description = "Return a JSON formated string represent
     ToJSONString = Output
 End Function
 
-'@Description "Return a human readable string representation of the object"
+'@Description "Return a human readable string representation of the JSObject"
 Public Function ToString(Optional ByVal IndentMultiplier As Long = 0) As String
-Attribute ToString.VB_Description = "Return a human readable string representation of the object"
+Attribute ToString.VB_Description = "Return a human readable string representation of the JSObject"
     Debug.Assert IndentMultiplier >= 0
 
     Const FunctionName As String = "ToString"
@@ -202,7 +203,7 @@ Attribute ToString.VB_Description = "Return a human readable string representati
     Dim SecondLoop As Boolean
     SecondLoop = False
 
-    Dim Element As Object
+    Dim Element As JSObject
     For Each Element In mElements
         If (SecondLoop) Then
             Output = Output & "," & vbCrLf
@@ -226,7 +227,7 @@ Attribute Value.VB_Description = "The array's default value"
 End Property
 
 '@Description "Add an element at the back of the array"
-Public Sub PushBack(ByRef Element As Object)
+Public Sub PushBack(ByRef Element As JSObject)
 Attribute PushBack.VB_Description = "Add an element at the back of the array"
     Const FunctionName As String = "PushBack"
     Dim ErrorLogger As ErrorLogger
@@ -253,7 +254,7 @@ Attribute Remove.VB_Description = "Remove an element as the given index"
 End Sub
 
 '@DefaultMember
-Public Function Item(ByVal Index As Long) As Object
+Public Function Item(ByVal Index As Long) As JSObject
 Attribute Item.VB_UserMemId = 0
     Debug.Assert Index >= 0
     Debug.Assert Index < mElements.Count
@@ -263,4 +264,20 @@ Attribute Item.VB_UserMemId = 0
     Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
     Set Item = mElements.Item(Index + 1)
+End Function
+
+Private Function JSObject_ToJSONString() As String
+    Const FunctionName As String = "JSObject_ToJSONString"
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
+
+    JSObject_ToJSONString = ToJSONString
+End Function
+
+Private Function JSObject_ToString(Optional ByVal IndentMultiplier As Long = 0&) As String
+    Const FunctionName As String = "JSObject_ToString"
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
+
+    JSObject_ToString = ToString(IndentMultiplier)
 End Function

@@ -18,7 +18,7 @@ Public Type VersionNumber
 End Type
 
 Public Enum JType
-    JSobject
+    JSObject
     JSArray
     JSString
     JSNumber
@@ -28,12 +28,12 @@ End Enum
 
 Private Const ModuleName As String = "Utility"
 
-Public Function GetValueAs(ByVal Value As Object, ByVal DataType As JType) As Object
+Public Function GetValueAs(ByVal Value As JSObject, ByVal DataType As JType) As JSObject
     Const FunctionName As String = "GetValueAs"
     Dim ErrorLogger As ErrorLogger
     Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
-    Dim JObject As Object
+    Dim JObject As JSObject
     Set JObject = Services.GetValueAs(Value, DataType)
     Set GetValueAs = JObject
 End Function

@@ -14,10 +14,10 @@ Option Explicit
 Const ModuleName As String = "Pair"
 
 Private mName As String
-Private mElement As Object
+Private mElement As JSObject
 
 '@Description "Constructor"
-Friend Sub Create(ByVal Name As String, ByVal Element As Object)
+Friend Sub Create(ByVal Name As String, ByVal Element As JSObject)
 Attribute Create.VB_Description = "Constructor"
     Debug.Assert Not Element Is Nothing
     Const FunctionName As String = "Create"
@@ -54,7 +54,7 @@ End Property
 
 '@Description "Retrieve the pair's value"
 '@DefaultMember
-Public Property Get Value() As Object
+Public Property Get Value() As JSObject
 Attribute Value.VB_Description = "Retrieve the pair's value"
 Attribute Value.VB_UserMemId = 0
     Const FunctionName As String = "Value (Get)"
@@ -65,7 +65,7 @@ Attribute Value.VB_UserMemId = 0
 End Property
 
 '@Description "set the pair's value"
-Public Property Set Value(ByVal Element As Object)
+Public Property Set Value(ByVal Element As JSObject)
 Attribute Value.VB_Description = "set the pair's value"
     Const FunctionName As String = "Value (Set)"
     Dim ErrorLogger As ErrorLogger

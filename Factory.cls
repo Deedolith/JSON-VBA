@@ -17,9 +17,9 @@ Option Explicit
 
 Private Const ModuleName As String = "Factory"
 
-'@Description "Instanciate a new FileReader object"
+'@Description "Instanciate a new FileReader JSObject"
 Public Function CreateFileReader(ByVal Path As String) As FileReader
-Attribute CreateFileReader.VB_Description = "Instanciate a new FileReader object"
+Attribute CreateFileReader.VB_Description = "Instanciate a new FileReader JSObject"
     Debug.Assert Path <> vbNullString   '// path must not be empty
 
     Const FunctionName As String = "CreateFileReader"
@@ -33,9 +33,9 @@ Attribute CreateFileReader.VB_Description = "Instanciate a new FileReader object
     Set CreateFileReader = Reader
 End Function
 
-'@Description "Instanciate a new FileWriter object"
+'@Description "Instanciate a new FileWriter JSObject"
 Public Function CreateFileWriter(ByVal Path As String) As FileWriter
-Attribute CreateFileWriter.VB_Description = "Instanciate a new FileWriter object"
+Attribute CreateFileWriter.VB_Description = "Instanciate a new FileWriter JSObject"
     Debug.Assert Path <> vbNullString   '// path must not be empty
 
     Const FunctionName As String = "CreateFileWriter"
@@ -49,9 +49,9 @@ Attribute CreateFileWriter.VB_Description = "Instanciate a new FileWriter object
     Set CreateFileWriter = Writer
 End Function
 
-'@Description "Instanciate a new JBoolean object"
+'@Description "Instanciate a new JBoolean JSObject"
 Public Function CreateBoolean(ByVal Value As Boolean) As JBoolean
-Attribute CreateBoolean.VB_Description = "Instanciate a new JBoolean object"
+Attribute CreateBoolean.VB_Description = "Instanciate a new JBoolean JSObject"
     Const FunctionName As String = "CreateBoolean"
     Dim ErrorLogger As ErrorLogger
     Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
@@ -62,9 +62,9 @@ Attribute CreateBoolean.VB_Description = "Instanciate a new JBoolean object"
     Set CreateBoolean = JBoolean
 End Function
 
-'@Description "Instanciate a new JNull object"
+'@Description "Instanciate a new JNull JSObject"
 Public Function CreateNull() As JNull
-Attribute CreateNull.VB_Description = "Instanciate a new JNull object"
+Attribute CreateNull.VB_Description = "Instanciate a new JNull JSObject"
     Const FunctionName As String = "CreateNull"
     Dim ErrorLogger As ErrorLogger
     Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
@@ -74,9 +74,9 @@ Attribute CreateNull.VB_Description = "Instanciate a new JNull object"
     Set CreateNull = JNull
 End Function
 
-'@Description "Instanciate a new JNumber object"
+'@Description "Instanciate a new JNumber JSObject"
 Public Function CreateNumber(ByVal Value As Double) As JNumber
-Attribute CreateNumber.VB_Description = "Instanciate a new JNumber object"
+Attribute CreateNumber.VB_Description = "Instanciate a new JNumber JSObject"
     Const FunctionName As String = "CreateNumber"
     Dim ErrorLogger As ErrorLogger
     Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
@@ -87,9 +87,9 @@ Attribute CreateNumber.VB_Description = "Instanciate a new JNumber object"
     Set CreateNumber = JNumber
 End Function
 
-'@Description "Instanciate a new JString object"
+'@Description "Instanciate a new JString JSObject"
 Public Function CreateString(ByVal Value As String) As JString
-Attribute CreateString.VB_Description = "Instanciate a new JString object"
+Attribute CreateString.VB_Description = "Instanciate a new JString JSObject"
     Const FunctionName As String = "CreateString"
     Dim ErrorLogger As ErrorLogger
     Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
@@ -100,9 +100,9 @@ Attribute CreateString.VB_Description = "Instanciate a new JString object"
     Set CreateString = JString
 End Function
 
-'@Description "Instanciate a new Jarray object"
+'@Description "Instanciate a new Jarray JSObject"
 Public Function CreateArray() As JArray
-Attribute CreateArray.VB_Description = "Instanciate a new Jarray object"
+Attribute CreateArray.VB_Description = "Instanciate a new Jarray JSObject"
     Const FunctionName As String = "CreateArray"
     Dim ErrorLogger As ErrorLogger
     Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
@@ -112,9 +112,9 @@ Attribute CreateArray.VB_Description = "Instanciate a new Jarray object"
     Set CreateArray = JArray
 End Function
 
-'@Description "Instanciate a new JObject object"
+'@Description "Instanciate a new JObject JSObject"
 Public Function CreateObject() As JObject
-Attribute CreateObject.VB_Description = "Instanciate a new JObject object"
+Attribute CreateObject.VB_Description = "Instanciate a new JObject JSObject"
     Const FunctionName As String = "CreateObject"
     Dim ErrorLogger As ErrorLogger
     Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
@@ -124,7 +124,7 @@ Attribute CreateObject.VB_Description = "Instanciate a new JObject object"
     Set CreateObject = JObject
 End Function
 
-Public Function CreatePair(ByVal Name As String, ByVal Value As Object) As Pair
+Public Function CreatePair(ByVal Name As String, ByVal Value As JSObject) As Pair
     Debug.Assert Not Value Is Nothing
 
     Const FunctionName As String = "CreatePair"
@@ -151,4 +151,3 @@ Public Function CreateDocument() As JDocument
     Set JDocument = New JDocument
     Set CreateDocument = JDocument
 End Function
-

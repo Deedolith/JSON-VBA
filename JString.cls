@@ -10,6 +10,7 @@ Attribute VB_Exposed = True
 '@Exposed
 '@Folder "JSON"
 Option Explicit
+Implements JSObject
 
 Private Const ModuleName As String = "JString"
 
@@ -55,9 +56,9 @@ Attribute Parse.VB_Description = "Stream parsing"
     mValue = Value
 End Sub
 
-'@Description "Return the string value of the object"
+'@Description "Return the string value of the JSObject"
 Public Property Get Value() As String
-Attribute Value.VB_Description = "Return the string value of the object"
+Attribute Value.VB_Description = "Return the string value of the JSObject"
     Const FunctionName As String = "Value (Get)"
     Dim ErrorLogger As ErrorLogger
     Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
@@ -65,9 +66,9 @@ Attribute Value.VB_Description = "Return the string value of the object"
     Value = Services.Escape(mValue)
 End Property
 
-'@Description "Set the string value of the object"
+'@Description "Set the string value of the JSObject"
 Public Property Let Value(ByVal Data As String)
-Attribute Value.VB_Description = "Set the string value of the object"
+Attribute Value.VB_Description = "Set the string value of the JSObject"
     Const FunctionName As String = "Value (Let)"
     Dim ErrorLogger As ErrorLogger
     Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
@@ -75,9 +76,9 @@ Attribute Value.VB_Description = "Set the string value of the object"
     mValue = Data
 End Property
 
-'@Description "Return a JSON string representation of the object"
+'@Description "Return a JSON string representation of the JSObject"
 Public Function ToJSONString() As String
-Attribute ToJSONString.VB_Description = "Return a JSON string representation of the object"
+Attribute ToJSONString.VB_Description = "Return a JSON string representation of the JSObject"
     Const FunctionName As String = "ToJSONString"
     Dim ErrorLogger As ErrorLogger
     Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
@@ -89,9 +90,9 @@ Attribute ToJSONString.VB_Description = "Return a JSON string representation of 
     ToJSONString = Output
 End Function
 
-'@Description "Retrun a human readable string representation of the object"
+'@Description "Retrun a human readable string representation of the JSObject"
 Public Function ToString(Optional ByVal IndentMultiplier As Long = 0) As String
-Attribute ToString.VB_Description = "Retrun a human readable string representation of the object"
+Attribute ToString.VB_Description = "Retrun a human readable string representation of the JSObject"
     Debug.Assert IndentMultiplier >= 0
     Const FunctionName As String = "ToString"
     Dim ErrorLogger As ErrorLogger
@@ -102,4 +103,20 @@ Attribute ToString.VB_Description = "Retrun a human readable string representati
     Output = Output & mValue
     Output = Output & DOUBLEQUOTE
     ToString = Output
+End Function
+
+Private Function JSObject_ToJSONString() As String
+    Const FunctionName As String = "JSObject_ToJSONString"
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
+
+    JSObject_ToJSONString = ToJSONString
+End Function
+
+Private Function JSObject_ToString(Optional ByVal IndentMultiplier As Long = 0&) As String
+    Const FunctionName As String = "JSObject_ToString"
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
+
+    JSObject_ToString = ToString(IndentMultiplier)
 End Function

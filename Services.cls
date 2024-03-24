@@ -14,9 +14,9 @@ Option Explicit
 
 Private Const ModuleName As String = "Services"
 
-'@Description "Instanciate a new StringStream object"
+'@Description "Instanciate a new StringStream JSObject"
 Friend Function CreateStringStream(ByVal Data As String) As StringStream
-Attribute CreateStringStream.VB_Description = "Instanciate a new StringStream object"
+Attribute CreateStringStream.VB_Description = "Instanciate a new StringStream JSObject"
     Const FunctionName As String = "CreateStringStream"
     Dim ErrorLogger As ErrorLogger
     Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
@@ -164,9 +164,9 @@ Public Function CreateErrorLogger(ByVal ModuleName As String, ByVal FunctionName
 #End If
 End Function
 
-'@Description "Instanciate a new JBoolean object from a stream"
+'@Description "Instanciate a new JBoolean JSObject from a stream"
 Friend Function CreateBoolean(ByVal StringStream As StringStream) As JBoolean
-Attribute CreateBoolean.VB_Description = "Instanciate a new JBoolean object from a stream"
+Attribute CreateBoolean.VB_Description = "Instanciate a new JBoolean JSObject from a stream"
     Debug.Assert Not (StringStream Is Nothing)
 
     Const FunctionName As String = "CreateBoolean"
@@ -180,9 +180,9 @@ Attribute CreateBoolean.VB_Description = "Instanciate a new JBoolean object from
     Set CreateBoolean = JBool
 End Function
 
-'@Description "Instanciate a new JNull object from a stream"
+'@Description "Instanciate a new JNull JSObject from a stream"
 Friend Function CreateNull(ByVal StringStream As StringStream) As JNull
-Attribute CreateNull.VB_Description = "Instanciate a new JNull object from a stream"
+Attribute CreateNull.VB_Description = "Instanciate a new JNull JSObject from a stream"
         Debug.Assert Not (StringStream Is Nothing)
 
     Const FunctionName As String = "CreateNull"
@@ -196,9 +196,9 @@ Attribute CreateNull.VB_Description = "Instanciate a new JNull object from a str
     Set CreateNull = JNull
 End Function
 
-'@Description "Instaciate a new JNumber object from a stream"
+'@Description "Instaciate a new JNumber JSObject from a stream"
 Friend Function CreateNumber(ByVal StringStream As StringStream) As JNumber
-Attribute CreateNumber.VB_Description = "Instaciate a new JNumber object from a stream"
+Attribute CreateNumber.VB_Description = "Instaciate a new JNumber JSObject from a stream"
     Debug.Assert Not (StringStream Is Nothing)
 
     Const FunctionName As String = "CreateNumber"
@@ -212,9 +212,9 @@ Attribute CreateNumber.VB_Description = "Instaciate a new JNumber object from a 
     Set CreateNumber = Number
 End Function
 
-'@Description "Instanciate a new JString object from a stream"
+'@Description "Instanciate a new JString JSObject from a stream"
 Friend Function CreateString(ByVal StringStream As StringStream) As JString
-Attribute CreateString.VB_Description = "Instanciate a new JString object from a stream"
+Attribute CreateString.VB_Description = "Instanciate a new JString JSObject from a stream"
     Debug.Assert Not (StringStream Is Nothing)
 
     Const FunctionName As String = "CreateString"
@@ -228,9 +228,9 @@ Attribute CreateString.VB_Description = "Instanciate a new JString object from a
     Set CreateString = JString
 End Function
 
-'@Description "Instanciate a new JArray object from a stream"
+'@Description "Instanciate a new JArray JSObject from a stream"
 Friend Function CreateArray(ByVal StringStream As StringStream) As JArray
-Attribute CreateArray.VB_Description = "Instanciate a new JArray object from a stream"
+Attribute CreateArray.VB_Description = "Instanciate a new JArray JSObject from a stream"
     Debug.Assert Not (StringStream Is Nothing)    '// SS must be a valid instance
     Debug.Assert Not (StringStream.EOF)           '// SS must not be empty
 
@@ -245,9 +245,9 @@ Attribute CreateArray.VB_Description = "Instanciate a new JArray object from a s
     Set CreateArray = JArray
 End Function
 
-'@Description "Convert a generic JSON object to the requested type"
-Friend Function GetValueAs(ByVal Value As Object, ByVal DataType As JType) As Object
-Attribute GetValueAs.VB_Description = "Convert a generic JSON object to the requested type"
+'@Description "Convert a generic JSON JSObject to the requested type"
+Friend Function GetValueAs(ByVal Value As JSObject, ByVal DataType As JType) As JSObject
+Attribute GetValueAs.VB_Description = "Convert a generic JSON JSObject to the requested type"
     Const FunctionName As String = "GetValueAs"
     Dim ErrorLogger As ErrorLogger
     Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
@@ -269,7 +269,7 @@ Attribute GetValueAs.VB_Description = "Convert a generic JSON object to the requ
         Dim JNumber As JNumber
         Set JNumber = Value
         Set GetValueAs = JNumber
-    Case JType.JSobject
+    Case JType.JSObject
         Dim JObject As JObject
         Set JObject = Value
         Set GetValueAs = JObject
@@ -282,9 +282,9 @@ Attribute GetValueAs.VB_Description = "Convert a generic JSON object to the requ
     End Select
 End Function
 
-'@Description "Parse a JSON value and return the corresponding object"
-Friend Function ParseValue(ByVal StringStream As StringStream) As Object
-Attribute ParseValue.VB_Description = "Parse a JSON value and return the corresponding object"
+'@Description "Parse a JSON value and return the corresponding JSObject"
+Friend Function ParseValue(ByVal StringStream As StringStream) As JSObject
+Attribute ParseValue.VB_Description = "Parse a JSON value and return the corresponding JSObject"
     Debug.Assert Not (StringStream Is Nothing)    '// SS must be a valid instance
     Debug.Assert Not (StringStream.EOF)           '// SS must not be empty
 
@@ -358,9 +358,9 @@ Attribute IsNumber.VB_Description = "Check if the next value is a number"
     IsNumber = StringStream.GetStringFromRegEx("^(?:-?(?:0|[1-9][0-9]*)(?:\.[0-9]+)?(?:[eE][+-]?[0-9]+)?)") <> vbNullString
 End Function
 
-'@Description "Check if the next value is an object"
+'@Description "Check if the next value is an JSObject"
 Private Function IsObject(ByVal StringStream As StringStream) As Boolean
-Attribute IsObject.VB_Description = "Check if the next value is an object"
+Attribute IsObject.VB_Description = "Check if the next value is an JSObject"
     Debug.Assert Not (StringStream Is Nothing)
 
     Const FunctionName As String = "IsObject"
@@ -382,9 +382,9 @@ Attribute IsString.VB_Description = "Check if the next value is a string"
     IsString = StringStream.PeekCharacter = DOUBLEQUOTE
 End Function
 
-'@Description "Instanciate a new Pair object"
-Friend Function CreatePair(ByVal Name As String, ByVal Element As Object) As Pair
-Attribute CreatePair.VB_Description = "Instanciate a new Pair object"
+'@Description "Instanciate a new Pair JSObject"
+Friend Function CreatePair(ByVal Name As String, ByVal Element As JSObject) As Pair
+Attribute CreatePair.VB_Description = "Instanciate a new Pair JSObject"
     Const FunctionName As String = "CreatePair"
     Dim ErrorLogger As ErrorLogger
     Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
@@ -399,9 +399,9 @@ Attribute CreatePair.VB_Description = "Instanciate a new Pair object"
     End If
 End Function
 
-'@Description "Instanciate a new JObject object from a stream"
+'@Description "Instanciate a new JObject JSObject from a stream"
 Friend Function CreateObject(ByVal StringStream As StringStream) As JObject
-Attribute CreateObject.VB_Description = "Instanciate a new JObject object from a stream"
+Attribute CreateObject.VB_Description = "Instanciate a new JObject JSObject from a stream"
     Debug.Assert Not (StringStream Is Nothing)    '// SS must be a valid instance
     Debug.Assert Not (StringStream.EOF)           '// SS must not be empty
 

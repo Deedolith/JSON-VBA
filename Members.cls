@@ -8,7 +8,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
 '@IgnoreModule
-'@ModuleDescription "Represent all members of a JSON object."
+'@ModuleDescription "Represent all members of a JSON JSObject."
 '@Exposed
 '@IgnoreModule AssignmentNotUsed, VariableNotUsed
 '@Folder("JSON")

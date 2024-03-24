@@ -40,17 +40,17 @@ Attribute IReader_Execute.VB_Description = "Interface implementation"
     Dim ErrorLogger As ErrorLogger
     Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
-    Dim fso As Object       '// Scripting.FileSystemObject
-    Set fso = VBA.CreateObject("Scripting.FileSystemObject")
+    Dim Fso As Object       '// Scripting.FileSystemObject
+    Set Fso = VBA.CreateObject("Scripting.FileSystemObject")
     
-    Dim file As Object      '// Scripting.file
-    Set file = fso.GetFile(mPath)
+    Dim File As Object      '// Scripting.file
+    Set File = Fso.GetFile(mPath)
     
-    Dim iStream As Object       '// Scripting.TextStream
-    Set iStream = file.OpenAsTextStream(ForReading)
+    Dim IStream As Object       '// Scripting.TextStream
+    Set IStream = File.OpenAsTextStream(ForReading)
     
     Dim Data As String
-    Data = iStream.ReadAll
+    Data = IStream.ReadAll
     
     IReader_Execute = Data
 End Function

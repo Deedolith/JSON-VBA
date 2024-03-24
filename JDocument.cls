@@ -10,11 +10,12 @@ Attribute VB_Exposed = True
 '@Exposed
 '@Folder("JSON")
 Option Explicit
+Implements JSObject
 
 Private Const ModuleName As String = "JDocument"
 
 Private mData As StringStream
-Private mValue As Object
+Private mValue As JSObject
 
 '@Description "Acquire data from a source"
 Public Sub LoadFrom(ByVal Reader As IReader)
@@ -43,14 +44,14 @@ Attribute WriteTo.VB_Description = "Write Data to a target"
     Writer.Execute mValue.ToJSONString
 End Sub
 
-'@Description "Retrieve the document's root JSON object"
-Public Function GetValueAs(ByVal DataType As JType) As Object
-Attribute GetValueAs.VB_Description = "Retrieve the document's root JSON object"
+'@Description "Retrieve the document's root JSON JSObject"
+Public Function GetValueAs(ByVal DataType As JType) As JSObject
+Attribute GetValueAs.VB_Description = "Retrieve the document's root JSON JSObject"
     Const FunctionName As String = "GetValueAs"
     Dim ErrorLogger As ErrorLogger
     Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
-    Dim JObject As Object
+    Dim JObject As JSObject
     Set JObject = Services.GetValueAs(mValue, DataType)
     Set GetValueAs = JObject
 End Function
@@ -66,7 +67,7 @@ Attribute Parse.VB_Description = "Stream parsing"
 End Sub
 
 '@Description "Retrieve a JSON element by querying the document with a pseudo XPath (case sensitive)."
-Public Function Query(ByVal XPath As String) As Object
+Public Function Query(ByVal XPath As String) As JSObject
 Attribute Query.VB_Description = "Retrieve a JSON element by querying the document with a pseudo XPath (case sensitive)."
     Const FunctionName As String = "Query"
     Dim ErrorLogger As ErrorLogger
@@ -75,14 +76,14 @@ Attribute Query.VB_Description = "Retrieve a JSON element by querying the docume
     Dim Path As Collection
     Set Path = ParseXpath(XPath)
     
-    Dim JValue As Object
+    Dim JValue As JSObject
     Set JValue = mValue
     
     Dim Item As Variant
     For Each Item In Path
         If (Not IsNumeric(Item)) Then
             Dim JObject As JObject
-            Set JObject = Services.GetValueAs(JValue, JType.JSobject)
+            Set JObject = Services.GetValueAs(JValue, JType.JSObject)
             Set JValue = JObject.Members.Item(Item).Value
         Else
             Dim JArray As JArray
@@ -156,4 +157,20 @@ End Function
 
 Public Function ToString() As String
     ToString = mValue.ToString
+End Function
+
+Private Function JSObject_ToJSONString() As String
+    Const FunctionName As String = "JSObject_ToJSONString"
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
+
+    JSObject_ToJSONString = ToString
+End Function
+
+Private Function JSObject_ToString(Optional ByVal IndentMultiplier As Long = 0&) As String
+    Const FunctionName As String = "JSObject_ToString"
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
+
+    JSObject_ToString = ToString()
 End Function

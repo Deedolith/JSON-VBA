@@ -7,12 +7,13 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
-Attribute VB_Description = "Represent a JSON object."
+Attribute VB_Description = "Represent a JSON JSObject."
 '@Exposed
-'@ModuleDescription "Represent a JSON object."
+'@ModuleDescription "Represent a JSON JSObject."
 '@IgnoreModule AssignmentNotUsed, VariableNotUsed
 '@Folder("JSON")
 Option Explicit
+Implements JSObject
 
 Private Const ModuleName As String = "JObject"
 
@@ -65,9 +66,9 @@ Attribute Parse.VB_Description = "Stream parsing"
     mData.EatCharacter "}"
 End Sub
 
-'@Description "Parse elements within the object"
+'@Description "Parse elements within the JSObject"
 Private Sub ParseMembers(ByVal StringStream As StringStream)
-Attribute ParseMembers.VB_Description = "Parse elements within the object"
+Attribute ParseMembers.VB_Description = "Parse elements within the JSObject"
     Debug.Assert Not StringStream Is Nothing
     Const FunctionName As String = "ParseMembers"
     Dim ErrorLogger As ErrorLogger
@@ -84,7 +85,7 @@ Attribute ParseMembers.VB_Description = "Parse elements within the object"
     StringStream.EatCharacter SEMICOLON
     StringStream.DiscardSpaces
     
-    Dim Value As Object
+    Dim Value As JSObject
     Set Value = Services.ParseValue(StringStream)
     
     Dim Pair As Pair
@@ -99,22 +100,22 @@ Attribute DataType.VB_Description = "Class's data type."
     Dim ErrorLogger As ErrorLogger
     Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
-    DataType = JType.JSobject
+    DataType = JType.JSObject
 End Function
 
-'@Description "The object's default value"
+'@Description "The JSObject's default value"
 Public Property Get Value() As String
-Attribute Value.VB_Description = "The object's default value"
+Attribute Value.VB_Description = "The JSObject's default value"
     Const FunctionName As String = "Value"
     Dim ErrorLogger As ErrorLogger
     Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
-    Value = "[Object]"
+    Value = "[JSObject]"
 End Property
 
-'@Description "Return a human readable string representation of the object"
+'@Description "Return a human readable string representation of the JSObject"
 Public Function ToString(Optional ByVal IndentMultiplier As Long = 0) As String
-Attribute ToString.VB_Description = "Return a human readable string representation of the object"
+Attribute ToString.VB_Description = "Return a human readable string representation of the JSObject"
     Const FunctionName As String = "ToString"
     Dim ErrorLogger As ErrorLogger
     Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
@@ -144,9 +145,9 @@ Attribute ToString.VB_Description = "Return a human readable string representati
     ToString = Output
 End Function
 
-'@Description "Return a JSON string representation of the object"
+'@Description "Return a JSON string representation of the JSObject"
 Public Function ToJSONString() As String
-Attribute ToJSONString.VB_Description = "Return a JSON string representation of the object"
+Attribute ToJSONString.VB_Description = "Return a JSON string representation of the JSObject"
     Const FunctionName As String = "ToJSONString"
     Dim ErrorLogger As ErrorLogger
     Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
@@ -176,3 +177,19 @@ Public Property Get Members() As Members
 
     Set Members = mMembers
 End Property
+
+Private Function JSObject_ToJSONString() As String
+    Const FunctionName As String = "JSObject_ToJSONString"
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
+
+    JSObject_ToJSONString = ToJSONString
+End Function
+
+Private Function JSObject_ToString(Optional ByVal IndentMultiplier As Long = 0&) As String
+    Const FunctionName As String = "JSObject_ToString"
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
+
+    JSObject_ToString = ToString(IndentMultiplier)
+End Function
