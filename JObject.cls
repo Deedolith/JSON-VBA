@@ -14,46 +14,40 @@ Attribute VB_Description = "Represent a JSON object."
 '@Folder("JSON")
 Option Explicit
 
-Private mData As JSON.StringStream
-Private mMembers As JSON.Members
-#If DEV Then
-    Private Const ModuleName As String = "JObject"
-#End If
+Private Const ModuleName As String = "JObject"
+
+Private mData As StringStream
+Private mMembers As Members
 
 '@Description "Constructor"
-Friend Sub Create(ByVal StringStream As JSON.StringStream)
+Friend Sub Create(ByVal StringStream As StringStream)
 Attribute Create.VB_Description = "Constructor"
-#If DEV Then
     Debug.Assert Not (StringStream Is Nothing)      '// Data must be a valid instance
+    
     Const FunctionName As String = "Create"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
     Set mData = StringStream
     Parse
 End Sub
 
 Private Sub Class_Initialize()
-#If DEV Then
     Const FunctionName As String = "Class_Initialize"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
-    Set mMembers = New JSON.Members
+    Set mMembers = New Members
 End Sub
 
 '@Description "Stream parsing"
 Private Sub Parse()
 Attribute Parse.VB_Description = "Stream parsing"
-#If DEV Then
     Const FunctionName As String = "Parse"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
- mData.EatCharacter "{"
+    mData.EatCharacter "{"
     Do
         Dim DoLoop As Boolean
         DoLoop = False
@@ -72,14 +66,12 @@ Attribute Parse.VB_Description = "Stream parsing"
 End Sub
 
 '@Description "Parse elements within the object"
-Private Sub ParseMembers(ByVal StringStream As JSON.StringStream)
+Private Sub ParseMembers(ByVal StringStream As StringStream)
 Attribute ParseMembers.VB_Description = "Parse elements within the object"
-#If DEV Then
     Debug.Assert Not StringStream Is Nothing
     Const FunctionName As String = "ParseMembers"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
     StringStream.EatCharacter DOUBLEQUOTE
     
@@ -95,31 +87,27 @@ Attribute ParseMembers.VB_Description = "Parse elements within the object"
     Dim Value As Object
     Set Value = Services.ParseValue(StringStream)
     
-    Dim Pair As JSON.Pair
+    Dim Pair As Pair
     Set Pair = Services.CreatePair(Name, Value)
     mMembers.Add Pair
 End Sub
 
 '@Description "Class's data type."
-Public Function DataType() As JSON.JType
+Public Function DataType() As JType
 Attribute DataType.VB_Description = "Class's data type."
-#If DEV Then
     Const FunctionName As String = "DataType"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
-    DataType = JSON.JType.JSObject
+    DataType = JType.JSobject
 End Function
 
 '@Description "The object's default value"
 Public Property Get Value() As String
 Attribute Value.VB_Description = "The object's default value"
-#If DEV Then
     Const FunctionName As String = "Value"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
     Value = "[Object]"
 End Property
@@ -127,11 +115,9 @@ End Property
 '@Description "Return a human readable string representation of the object"
 Public Function ToString(Optional ByVal IndentMultiplier As Long = 0) As String
 Attribute ToString.VB_Description = "Return a human readable string representation of the object"
-#If DEV Then
     Const FunctionName As String = "ToString"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
     
     Dim Tabs As String
     Dim i As Long
@@ -145,7 +131,7 @@ Attribute ToString.VB_Description = "Return a human readable string representati
     Dim SecondLoop As Boolean
     SecondLoop = False
     
-    Dim Pair As JSON.Pair
+    Dim Pair As Pair
     For Each Pair In mMembers
         If (SecondLoop) Then
             Output = Output & "," & vbCrLf
@@ -161,11 +147,9 @@ End Function
 '@Description "Return a JSON string representation of the object"
 Public Function ToJSONString() As String
 Attribute ToJSONString.VB_Description = "Return a JSON string representation of the object"
-#If DEV Then
     Const FunctionName As String = "ToJSONString"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
     Dim Output As String
     Output = Output & "{"
@@ -173,7 +157,7 @@ Attribute ToJSONString.VB_Description = "Return a JSON string representation of 
     Dim SecondLoop As Boolean
     SecondLoop = False
     
-    Dim Pair As JSON.Pair
+    Dim Pair As Pair
     For Each Pair In mMembers
         If (SecondLoop) Then
             Output = Output & ","
@@ -185,12 +169,10 @@ Attribute ToJSONString.VB_Description = "Return a JSON string representation of 
     ToJSONString = Output
 End Function
 
-Public Property Get Members() As JSON.Members
-#If DEV Then
+Public Property Get Members() As Members
     Const FunctionName As String = "Members"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
     Set Members = mMembers
 End Property

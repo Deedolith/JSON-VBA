@@ -11,62 +11,53 @@ Attribute VB_Exposed = True
 '@Folder "JSON"
 Option Explicit
 
-#If DEV Then
-    Private Const ModuleName As String = "JNull"
-#End If
-Private mData As JSON.StringStream
+Private Const ModuleName As String = "JNull"
+
+Private mData As StringStream
 
 '@Description "Constructor"
-Friend Sub Create(ByVal StringStream As JSON.StringStream)
+Friend Sub Create(ByVal StringStream As StringStream)
 Attribute Create.VB_Description = "Constructor"
-#If DEV Then
     Debug.Assert Not (StringStream Is Nothing)
     Const FunctionName As String = "Create"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
     Set mData = StringStream
     Parse
 End Sub
 
 '@Description "Class's data type."
-Public Function DataType() As JSON.JType
+Public Function DataType() As JType
 Attribute DataType.VB_Description = "Class's data type."
-#If DEV Then
     Const FunctionName As String = "DataType"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
-    DataType = JSON.JType.JSNull
+    DataType = JType.JSNull
 End Function
 
 '@Description "Stream parsing"
 Private Sub Parse()
 Attribute Parse.VB_Description = "Stream parsing"
-#If DEV Then
     Const FunctionName As String = "Parse"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
     Dim Value As String
     Value = mData.GetStringFromRegEx("^null")
     If (Value = "null") Then
         mData.EatString Value
     Else
-        Err.Raise JSON.JException.JUnexpectedToken, "JNull.Parse", """null"" expected."
+        Err.Raise JException.JUnexpectedToken, "JNull.Parse", """null"" expected."
     End If
 End Sub
 
 '@Description return a Null value
 Public Property Get Value() As Variant
-#If DEV Then
     Const FunctionName As String = "Value (Get)"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
     Value = Null
 End Property
@@ -74,11 +65,9 @@ End Property
 '@Description "Return a JSON string representation of the object"
 Public Function ToJSONString() As String
 Attribute ToJSONString.VB_Description = "Return a JSON string representation of the object"
-#If DEV Then
     Const FunctionName As String = "ToJSONString"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
     Dim Output As String
     Output = ToString
@@ -88,12 +77,11 @@ End Function
 '@Description "Return a human readable string representation of the object"
 Public Function ToString(Optional ByVal IndentMultiplier As Long = 0) As String
 Attribute ToString.VB_Description = "Return a human readable string representation of the object"
-#If DEV Then
     Debug.Assert IndentMultiplier >= 0
+    
     Const FunctionName As String = "ToString"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
     Dim Output As String
     Output = "null"

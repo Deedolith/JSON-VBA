@@ -11,53 +11,47 @@ Attribute VB_Exposed = True
 '@Folder "JSON"
 Option Explicit
 
-Private mData As JSON.StringStream
+Private Const ModuleName As String = "JNumber"
+
+Private mData As StringStream
 Private mNumber As Double
-#If DEV Then
-    Private Const ModuleName As String = "JNumber"
-#End If
 
 '@Description "Constructor"
-Friend Sub Create(ByVal StringStream As JSON.StringStream)
+Friend Sub Create(ByVal StringStream As StringStream)
 Attribute Create.VB_Description = "Constructor"
-#If DEV Then
     Debug.Assert Not (StringStream Is Nothing)
+    
     Const FunctionName As String = "Create"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
     Set mData = StringStream
     Parse
 End Sub
 
 '@Description "Class's data type"
-Public Function DataType() As JSON.JType
+Public Function DataType() As JType
 Attribute DataType.VB_Description = "Class's data type"
-#If DEV Then
     Const FunctionName As String = "DataType"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
-    DataType = JSON.JType.JSNumber
+    DataType = JType.JSNumber
 End Function
 
 '@Description "Stream parsing"
 Private Sub Parse()
 Attribute Parse.VB_Description = "Stream parsing"
-#If DEV Then
     Const FunctionName As String = "Parse"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
     Dim Value As String
     Value = mData.GetStringFromRegEx("^(?:-?(?:0|[1-9][0-9]*)(?:\.[0-9]+)?(?:[eE][+-]?[0-9]+)?)")
     If (Value <> vbNullString) Then
         mData.EatString Value
     Else
-        Err.Raise JSON.JException.JUnexpectedToken, "JNumber.Parse", "Numeric character expected."
+        Err.Raise JException.JUnexpectedToken, "JNumber.Parse", "Numeric character expected."
     End If
 On Error GoTo RegionalError
     mNumber = CDbl(Value)
@@ -76,11 +70,9 @@ End Sub
 '@Description "Return the numeric value of the object."
 Public Property Get Value() As Double
 Attribute Value.VB_Description = "Return the numeric value of the object."
-#If DEV Then
     Const FunctionName As String = "Value (Get)"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
     Value = mNumber
 End Property
@@ -88,11 +80,9 @@ End Property
 '@Description "Set the numeric value of the object"
 Public Property Let Value(ByVal Data As Double)
 Attribute Value.VB_Description = "Set the numeric value of the object"
-#If DEV Then
     Const FunctionName As String = "Value (Let)"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
     mNumber = Data
 End Property
@@ -100,11 +90,9 @@ End Property
 '@Description "return a JSON string representation of the object"
 Public Function ToJSONString() As String
 Attribute ToJSONString.VB_Description = "return a JSON string representation of the object"
-#If DEV Then
     Const FunctionName As String = "ToJSONString"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
     Dim Output As String
     Output = ToString
@@ -115,12 +103,10 @@ End Function
 '@Description "Retrun a human readable string representation of the object"
 Public Function ToString(Optional ByVal IndentMultiplier As Long = 0) As String
 Attribute ToString.VB_Description = "Retrun a human readable string representation of the object"
-#If DEV Then
     Debug.Assert IndentMultiplier >= 0
     Const FunctionName As String = "ToString"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
     Dim Output As String
     Output = CStr(mNumber)

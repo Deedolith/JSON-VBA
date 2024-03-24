@@ -9,24 +9,20 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 '@PredeclaredId
 '@IgnoreModule SuspiciousPredeclaredInstanceAccess, AssignmentNotUsed, VariableNotUsed
-'@Folder "JSON.Services"
+'@Folder "Services"
 Option Explicit
 
-#If DEV Then
-    Private Const ModuleName As String = "Services"
-#End If
+Private Const ModuleName As String = "Services"
 
 '@Description "Instanciate a new StringStream object"
-Friend Function CreateStringStream(ByVal Data As String) As JSON.StringStream
+Friend Function CreateStringStream(ByVal Data As String) As StringStream
 Attribute CreateStringStream.VB_Description = "Instanciate a new StringStream object"
-#If DEV Then
     Const FunctionName As String = "CreateStringStream"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
-    Dim StringStream As JSON.StringStream
-    Set StringStream = New JSON.StringStream
+    Dim StringStream As StringStream
+    Set StringStream = New StringStream
 
     StringStream.Create Data
     Set CreateStringStream = StringStream
@@ -35,11 +31,9 @@ End Function
 '@Description "Unescape strings"
 Public Function Unescape(ByVal Data As String) As String
 Attribute Unescape.VB_Description = "Unescape strings"
-#If DEV Then
     Const FunctionName As String = "Unescape"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
     Dim Value As String
     Value = UnescapeUnicode(Data)                    '// unescape unicodes
@@ -62,11 +56,9 @@ End Function
 '@Description "Unescape unicode characters"
 Private Function UnescapeUnicode(ByVal Data As String) As String
 Attribute UnescapeUnicode.VB_Description = "Unescape unicode characters"
-#If DEV Then
     Const FunctionName As String = "UnescapeUnicode"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
     Dim RegEx As Object        '// VBScript_RegExp_55.RegExp
     Set RegEx = VBA.CreateObject("VBScript.RegExp")
@@ -90,11 +82,9 @@ End Function
 '@Description "Escape string"
 Public Function Escape(ByVal Data As String) As String
 Attribute Escape.VB_Description = "Escape string"
-#If DEV Then
     Const FunctionName As String = "Escape"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
         
     Dim RegEx As Object        '// VBScript_RegExp_55.RegExp
     Set RegEx = VBA.CreateObject("VBScript.RegExp")
@@ -121,11 +111,9 @@ End Function
 '@Description "Escape unicode characters"
 Private Function EscapeUnicode(ByVal Data As String) As String
 Attribute EscapeUnicode.VB_Description = "Escape unicode characters"
-#If DEV Then
     Const FunctionName As String = "EscapeUnicode"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
     Dim Value As String
     Value = vbNullString
@@ -148,11 +136,9 @@ End Function
 '@Description "Encode a string to base64"
 Friend Function ToBase64(ByVal text As String) As String
 Attribute ToBase64.VB_Description = "Encode a string to base64"
-#If DEV Then
     Const FunctionName As String = "ToBase64"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
     Dim Data() As Byte
     Data = StrConv(text, vbFromUnicode)
@@ -168,144 +154,127 @@ Attribute ToBase64.VB_Description = "Encode a string to base64"
     ToBase64 = Node.text
 End Function
 
-#If DEV Then
-    Public Property Get LibraryName() As String
-        LibraryName = "JSON"
-    End Property
-#End If
+Public Function CreateErrorLogger(ByVal ModuleName As String, ByVal FunctionName As String) As ErrorLogger
+#If DebugMode Then
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = New ErrorLogger
 
-#If DEV Then
-    Public Function CreateLogger(ByVal ModuleName As String, ByVal FunctionName As String) As Logger
-        Dim Logger As JSON.Logger
-        Set Logger = New Logger
-        Logger.Create ModuleName, FunctionName
-        Set CreateLogger = Logger
-    End Function
+    ErrorLogger.Create ModuleName, FunctionName
+    Set CreateErrorLogger = ErrorLogger
 #End If
+End Function
 
 '@Description "Instanciate a new JBoolean object from a stream"
-Friend Function CreateBoolean(ByVal StringStream As JSON.StringStream) As JSON.JBoolean
+Friend Function CreateBoolean(ByVal StringStream As StringStream) As JBoolean
 Attribute CreateBoolean.VB_Description = "Instanciate a new JBoolean object from a stream"
     Debug.Assert Not (StringStream Is Nothing)
 
-#If DEV Then
     Const FunctionName As String = "CreateBoolean"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
-    Dim JBool As JSON.JBoolean
-    Set JBool = New JSON.JBoolean
+    Dim JBool As JBoolean
+    Set JBool = New JBoolean
 
     JBool.Create StringStream
     Set CreateBoolean = JBool
 End Function
 
 '@Description "Instanciate a new JNull object from a stream"
-Friend Function CreateNull(ByVal StringStream As JSON.StringStream) As JSON.JNull
+Friend Function CreateNull(ByVal StringStream As StringStream) As JNull
 Attribute CreateNull.VB_Description = "Instanciate a new JNull object from a stream"
         Debug.Assert Not (StringStream Is Nothing)
 
-#If DEV Then
     Const FunctionName As String = "CreateNull"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
-    Dim JNull As JSON.JNull
-    Set JNull = New JSON.JNull
+    Dim JNull As JNull
+    Set JNull = New JNull
     
     JNull.Create StringStream
     Set CreateNull = JNull
 End Function
 
 '@Description "Instaciate a new JNumber object from a stream"
-Friend Function CreateNumber(ByVal StringStream As JSON.StringStream) As JSON.JNumber
+Friend Function CreateNumber(ByVal StringStream As StringStream) As JNumber
 Attribute CreateNumber.VB_Description = "Instaciate a new JNumber object from a stream"
     Debug.Assert Not (StringStream Is Nothing)
 
-#If DEV Then
     Const FunctionName As String = "CreateNumber"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
-    Dim Number As JSON.JNumber
-    Set Number = New JSON.JNumber
+    Dim Number As JNumber
+    Set Number = New JNumber
 
     Number.Create StringStream
     Set CreateNumber = Number
 End Function
 
 '@Description "Instanciate a new JString object from a stream"
-Friend Function CreateString(ByVal StringStream As JSON.StringStream) As JSON.JString
+Friend Function CreateString(ByVal StringStream As StringStream) As JString
 Attribute CreateString.VB_Description = "Instanciate a new JString object from a stream"
     Debug.Assert Not (StringStream Is Nothing)
 
-#If DEV Then
     Const FunctionName As String = "CreateString"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
-    Dim JString As JSON.JString
-    Set JString = New JSON.JString
+    Dim JString As JString
+    Set JString = New JString
 
     JString.Create StringStream
     Set CreateString = JString
 End Function
 
 '@Description "Instanciate a new JArray object from a stream"
-Friend Function CreateArray(ByVal StringStream As JSON.StringStream) As JSON.Jarray
+Friend Function CreateArray(ByVal StringStream As StringStream) As JArray
 Attribute CreateArray.VB_Description = "Instanciate a new JArray object from a stream"
     Debug.Assert Not (StringStream Is Nothing)    '// SS must be a valid instance
     Debug.Assert Not (StringStream.EOF)           '// SS must not be empty
 
-#If DEV Then
     Const FunctionName As String = "CreateArray"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
     
-    Dim Jarray As JSON.Jarray
-    Set Jarray = New JSON.Jarray
+    Dim JArray As JArray
+    Set JArray = New JArray
 
-    Jarray.Create StringStream
-    Set CreateArray = Jarray
+    JArray.Create StringStream
+    Set CreateArray = JArray
 End Function
 
 '@Description "Convert a generic JSON object to the requested type"
-Friend Function GetValueAs(ByVal Value As Object, ByVal DataType As JSON.JType) As Object
+Friend Function GetValueAs(ByVal Value As Object, ByVal DataType As JType) As Object
 Attribute GetValueAs.VB_Description = "Convert a generic JSON object to the requested type"
-#If DEV Then
     Const FunctionName As String = "GetValueAs"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
     Select Case DataType
-    Case JSON.JType.JSArray
-        Dim Jarray As JSON.Jarray
-        Set Jarray = Value
-        Set GetValueAs = Jarray
-    Case JSON.JSBoolean
-        Dim JBoolean As JSON.JBoolean
+    Case JType.JSArray
+        Dim JArray As JArray
+        Set JArray = Value
+        Set GetValueAs = JArray
+    Case JSBoolean
+        Dim JBoolean As JBoolean
         Set JBoolean = Value
         Set GetValueAs = JBoolean
-    Case JSON.JType.JSNull
-        Dim JNull As JSON.JNull
+    Case JType.JSNull
+        Dim JNull As JNull
         Set JNull = Value
         Set GetValueAs = JNull
-    Case JSON.JType.JSNumber
-        Dim JNumber As JSON.JNumber
+    Case JType.JSNumber
+        Dim JNumber As JNumber
         Set JNumber = Value
         Set GetValueAs = JNumber
-    Case JSON.JType.JSObject
-        Dim JObject As JSON.JObject
+    Case JType.JSobject
+        Dim JObject As JObject
         Set JObject = Value
         Set GetValueAs = JObject
-    Case JSON.JType.JSString
-        Dim JString As JSON.JString
+    Case JType.JSString
+        Dim JString As JString
         Set JString = Value
         Set GetValueAs = JString
     Case Else
@@ -314,16 +283,14 @@ Attribute GetValueAs.VB_Description = "Convert a generic JSON object to the requ
 End Function
 
 '@Description "Parse a JSON value and return the corresponding object"
-Friend Function ParseValue(ByVal StringStream As JSON.StringStream) As Object
+Friend Function ParseValue(ByVal StringStream As StringStream) As Object
 Attribute ParseValue.VB_Description = "Parse a JSON value and return the corresponding object"
     Debug.Assert Not (StringStream Is Nothing)    '// SS must be a valid instance
     Debug.Assert Not (StringStream.EOF)           '// SS must not be empty
 
-#If DEV Then
     Const FunctionName As String = "ParseValue"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
     StringStream.DiscardSpaces
     If (IsObject(StringStream)) Then
@@ -339,106 +306,92 @@ Attribute ParseValue.VB_Description = "Parse a JSON value and return the corresp
     ElseIf (IsNull(StringStream)) Then
         Set ParseValue = CreateNull(StringStream)
     Else
-        Err.Raise JSON.JException.JUnexpectedCharacter, "Services.ParseValue", "Unexpected token"
+        Err.Raise JException.JUnexpectedCharacter, "Services.ParseValue", "Unexpected token"
     End If
 End Function
 
 '@Description "Check if the next value as an array"
-Private Function IsArray(ByVal StringStream As JSON.StringStream) As Boolean
+Private Function IsArray(ByVal StringStream As StringStream) As Boolean
 Attribute IsArray.VB_Description = "Check if the next value as an array"
     Debug.Assert Not (StringStream Is Nothing)
 
-#If DEV Then
     Const FunctionName As String = "IsArray"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
     IsArray = StringStream.PeekCharacter = "["
 End Function
 
 '@Description "Check if the next value is a boolean"
-Private Function IsBoolean(ByVal StringStream As JSON.StringStream) As Boolean
+Private Function IsBoolean(ByVal StringStream As StringStream) As Boolean
 Attribute IsBoolean.VB_Description = "Check if the next value is a boolean"
     Debug.Assert Not (StringStream Is Nothing)
 
-#If DEV Then
     Const FunctionName As String = "IsBoolean"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
     IsBoolean = StringStream.GetStringFromRegEx("^(?:true|false)") <> vbNullString
 End Function
 
 '@Description "Check if the next value is a null"
-Private Function IsNull(ByVal StringStream As JSON.StringStream) As Boolean
+Private Function IsNull(ByVal StringStream As StringStream) As Boolean
 Attribute IsNull.VB_Description = "Check if the next value is a null"
     Debug.Assert Not (StringStream Is Nothing)
 
-#If DEV Then
     Const FunctionName As String = "IsNull"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
     IsNull = StringStream.GetStringFromRegEx("^null") <> vbNullString
 End Function
 
 '@Description "Check if the next value is a number"
-Private Function IsNumber(ByVal StringStream As JSON.StringStream) As Boolean
+Private Function IsNumber(ByVal StringStream As StringStream) As Boolean
 Attribute IsNumber.VB_Description = "Check if the next value is a number"
     Debug.Assert Not (StringStream Is Nothing)
 
-#If DEV Then
     Const FunctionName As String = "IsNumber"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
     IsNumber = StringStream.GetStringFromRegEx("^(?:-?(?:0|[1-9][0-9]*)(?:\.[0-9]+)?(?:[eE][+-]?[0-9]+)?)") <> vbNullString
 End Function
 
 '@Description "Check if the next value is an object"
-Private Function IsObject(ByVal StringStream As JSON.StringStream) As Boolean
+Private Function IsObject(ByVal StringStream As StringStream) As Boolean
 Attribute IsObject.VB_Description = "Check if the next value is an object"
     Debug.Assert Not (StringStream Is Nothing)
 
-#If DEV Then
     Const FunctionName As String = "IsObject"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
     IsObject = StringStream.PeekCharacter = "{"
 End Function
 
 '@Description "Check if the next value is a string"
-Private Function IsString(ByVal StringStream As JSON.StringStream) As Boolean
+Private Function IsString(ByVal StringStream As StringStream) As Boolean
 Attribute IsString.VB_Description = "Check if the next value is a string"
     Debug.Assert Not (StringStream Is Nothing)
 
-#If DEV Then
     Const FunctionName As String = "IsString"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
     IsString = StringStream.PeekCharacter = DOUBLEQUOTE
 End Function
 
 '@Description "Instanciate a new Pair object"
-Friend Function CreatePair(ByVal Name As String, ByVal Element As Object) As JSON.Pair
+Friend Function CreatePair(ByVal Name As String, ByVal Element As Object) As Pair
 Attribute CreatePair.VB_Description = "Instanciate a new Pair object"
-#If DEV Then
     Const FunctionName As String = "CreatePair"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
-    If ((TypeOf Element Is Jarray) Or (TypeOf Element Is JBoolean) Or (TypeOf Element Is JNull) Or (TypeOf Element Is JNumber) Or (TypeOf Element Is JString) Or (TypeOf Element Is JObject)) Then
-        Dim Pair As JSON.Pair
-        Set Pair = New JSON.Pair
+    If ((TypeOf Element Is JArray) Or (TypeOf Element Is JBoolean) Or (TypeOf Element Is JNull) Or (TypeOf Element Is JNumber) Or (TypeOf Element Is JString) Or (TypeOf Element Is JObject)) Then
+        Dim Pair As Pair
+        Set Pair = New Pair
         Pair.Create Name, Element
         Set CreatePair = Pair
     Else
@@ -447,19 +400,17 @@ Attribute CreatePair.VB_Description = "Instanciate a new Pair object"
 End Function
 
 '@Description "Instanciate a new JObject object from a stream"
-Friend Function CreateObject(ByVal StringStream As JSON.StringStream) As JSON.JObject
+Friend Function CreateObject(ByVal StringStream As StringStream) As JObject
 Attribute CreateObject.VB_Description = "Instanciate a new JObject object from a stream"
     Debug.Assert Not (StringStream Is Nothing)    '// SS must be a valid instance
     Debug.Assert Not (StringStream.EOF)           '// SS must not be empty
 
-#If DEV Then
     Const FunctionName As String = "CreateObject"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
     
-    Dim JObject As JSON.JObject
-    Set JObject = New JSON.JObject
+    Dim JObject As JObject
+    Set JObject = New JObject
 
     JObject.Create StringStream
     Set CreateObject = JObject
