@@ -41,8 +41,8 @@ End Function
 Public Function Version() As VersionNumber
     Dim VersionNumber As VersionNumber
     VersionNumber.Major = 1
-    VersionNumber.Minor = 0
-    VersionNumber.Revision = 16
+    VersionNumber.Minor = 1
+    VersionNumber.Revision = 0
     Version = VersionNumber
 End Function
 
