@@ -7,48 +7,53 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
-Attribute VB_Description = "Represent a JSON JSObject."
+Attribute VB_Description = "Represent a JSON object."
 '@Exposed
-'@ModuleDescription "Represent a JSON JSObject."
+'@ModuleDescription "Represent a JSON object."
 '@IgnoreModule AssignmentNotUsed, VariableNotUsed
 '@Folder("JSON")
 Option Explicit
-Implements JSObject
 
-Private Const ModuleName As String = "JObject"
-
-Private mData As StringStream
-Private mMembers As Members
+Private mData As JSON.StringStream
+Private mMembers As JSON.Members
+#If DEV Then
+    Private Const ModuleName As String = "JObject"
+#End If
 
 '@Description "Constructor"
-Friend Sub Create(ByVal StringStream As StringStream)
+Friend Sub Create(ByVal StringStream As JSON.StringStream)
 Attribute Create.VB_Description = "Constructor"
+#If DEV Then
     Debug.Assert Not (StringStream Is Nothing)      '// Data must be a valid instance
-    
     Const FunctionName As String = "Create"
-    Dim ErrorLogger As ErrorLogger
-    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
+    Dim Logger As JSON.Logger
+    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
+#End If
 
     Set mData = StringStream
     Parse
 End Sub
 
 Private Sub Class_Initialize()
+#If DEV Then
     Const FunctionName As String = "Class_Initialize"
-    Dim ErrorLogger As ErrorLogger
-    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
+    Dim Logger As JSON.Logger
+    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
+#End If
 
-    Set mMembers = New Members
+    Set mMembers = New JSON.Members
 End Sub
 
 '@Description "Stream parsing"
 Private Sub Parse()
 Attribute Parse.VB_Description = "Stream parsing"
+#If DEV Then
     Const FunctionName As String = "Parse"
-    Dim ErrorLogger As ErrorLogger
-    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
+    Dim Logger As JSON.Logger
+    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
+#End If
 
-    mData.EatCharacter "{"
+ mData.EatCharacter "{"
     Do
         Dim DoLoop As Boolean
         DoLoop = False
@@ -66,13 +71,15 @@ Attribute Parse.VB_Description = "Stream parsing"
     mData.EatCharacter "}"
 End Sub
 
-'@Description "Parse elements within the JSObject"
-Private Sub ParseMembers(ByVal StringStream As StringStream)
-Attribute ParseMembers.VB_Description = "Parse elements within the JSObject"
+'@Description "Parse elements within the object"
+Private Sub ParseMembers(ByVal StringStream As JSON.StringStream)
+Attribute ParseMembers.VB_Description = "Parse elements within the object"
+#If DEV Then
     Debug.Assert Not StringStream Is Nothing
     Const FunctionName As String = "ParseMembers"
-    Dim ErrorLogger As ErrorLogger
-    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
+    Dim Logger As JSON.Logger
+    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
+#End If
 
     StringStream.EatCharacter DOUBLEQUOTE
     
@@ -85,40 +92,46 @@ Attribute ParseMembers.VB_Description = "Parse elements within the JSObject"
     StringStream.EatCharacter SEMICOLON
     StringStream.DiscardSpaces
     
-    Dim Value As JSObject
+    Dim Value As Object
     Set Value = Services.ParseValue(StringStream)
     
-    Dim Pair As Pair
+    Dim Pair As JSON.Pair
     Set Pair = Services.CreatePair(Name, Value)
     mMembers.Add Pair
 End Sub
 
 '@Description "Class's data type."
-Public Function DataType() As JType
+Public Function DataType() As JSON.JType
 Attribute DataType.VB_Description = "Class's data type."
+#If DEV Then
     Const FunctionName As String = "DataType"
-    Dim ErrorLogger As ErrorLogger
-    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
+    Dim Logger As JSON.Logger
+    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
+#End If
 
-    DataType = JType.JSObject
+    DataType = JSON.JType.JSObject
 End Function
 
-'@Description "The JSObject's default value"
+'@Description "The object's default value"
 Public Property Get Value() As String
-Attribute Value.VB_Description = "The JSObject's default value"
+Attribute Value.VB_Description = "The object's default value"
+#If DEV Then
     Const FunctionName As String = "Value"
-    Dim ErrorLogger As ErrorLogger
-    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
+    Dim Logger As JSON.Logger
+    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
+#End If
 
-    Value = "[JSObject]"
+    Value = "[Object]"
 End Property
 
-'@Description "Return a human readable string representation of the JSObject"
+'@Description "Return a human readable string representation of the object"
 Public Function ToString(Optional ByVal IndentMultiplier As Long = 0) As String
-Attribute ToString.VB_Description = "Return a human readable string representation of the JSObject"
+Attribute ToString.VB_Description = "Return a human readable string representation of the object"
+#If DEV Then
     Const FunctionName As String = "ToString"
-    Dim ErrorLogger As ErrorLogger
-    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
+    Dim Logger As JSON.Logger
+    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
+#End If
     
     Dim Tabs As String
     Dim i As Long
@@ -132,7 +145,7 @@ Attribute ToString.VB_Description = "Return a human readable string representati
     Dim SecondLoop As Boolean
     SecondLoop = False
     
-    Dim Pair As Pair
+    Dim Pair As JSON.Pair
     For Each Pair In mMembers
         If (SecondLoop) Then
             Output = Output & "," & vbCrLf
@@ -145,12 +158,14 @@ Attribute ToString.VB_Description = "Return a human readable string representati
     ToString = Output
 End Function
 
-'@Description "Return a JSON string representation of the JSObject"
+'@Description "Return a JSON string representation of the object"
 Public Function ToJSONString() As String
-Attribute ToJSONString.VB_Description = "Return a JSON string representation of the JSObject"
+Attribute ToJSONString.VB_Description = "Return a JSON string representation of the object"
+#If DEV Then
     Const FunctionName As String = "ToJSONString"
-    Dim ErrorLogger As ErrorLogger
-    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
+    Dim Logger As JSON.Logger
+    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
+#End If
 
     Dim Output As String
     Output = Output & "{"
@@ -158,7 +173,7 @@ Attribute ToJSONString.VB_Description = "Return a JSON string representation of 
     Dim SecondLoop As Boolean
     SecondLoop = False
     
-    Dim Pair As Pair
+    Dim Pair As JSON.Pair
     For Each Pair In mMembers
         If (SecondLoop) Then
             Output = Output & ","
@@ -170,26 +185,12 @@ Attribute ToJSONString.VB_Description = "Return a JSON string representation of 
     ToJSONString = Output
 End Function
 
-Public Property Get Members() As Members
+Public Property Get Members() As JSON.Members
+#If DEV Then
     Const FunctionName As String = "Members"
-    Dim ErrorLogger As ErrorLogger
-    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
+    Dim Logger As JSON.Logger
+    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
+#End If
 
     Set Members = mMembers
 End Property
-
-Private Function JSObject_ToJSONString() As String
-    Const FunctionName As String = "JSObject_ToJSONString"
-    Dim ErrorLogger As ErrorLogger
-    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
-
-    JSObject_ToJSONString = ToJSONString
-End Function
-
-Private Function JSObject_ToString(Optional ByVal IndentMultiplier As Long = 0&) As String
-    Const FunctionName As String = "JSObject_ToString"
-    Dim ErrorLogger As ErrorLogger
-    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
-
-    JSObject_ToString = ToString(IndentMultiplier)
-End Function

@@ -11,16 +11,19 @@ Attribute VB_Exposed = False
 '@Folder "JSON"
 Option Explicit
 
-Private Const ModuleName As String = "StringStream"
-
 Private mData As String
+#If DEV Then
+    Private Const ModuleName As String = "StringStream"
+#End If
 
 '@Description "Constructor"
 Friend Sub Create(ByVal Data As String)
 Attribute Create.VB_Description = "Constructor"
+#If DEV Then
     Const FunctionName As String = "Create"
-    Dim ErrorLogger As ErrorLogger
-    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
+    Dim Logger As JSON.Logger
+    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
+#End If
 
     mData = Data
 End Sub
@@ -28,9 +31,11 @@ End Sub
 '@Description "Eat any possible space"
 Public Sub DiscardSpaces()
 Attribute DiscardSpaces.VB_Description = "Eat any possible space"
+#If DEV Then
     Const FunctionName As String = "DiscardSpaces"
-    Dim ErrorLogger As ErrorLogger
-    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
+    Dim Logger As JSON.Logger
+    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
+#End If
 
     Dim RegEx As Object        '// VBScript_RegExp_55.RegExp
     Set RegEx = VBA.CreateObject("VBScript.RegExp")
@@ -42,25 +47,28 @@ End Sub
 '@Description "Eat a single character"
 Public Sub EatCharacter(ByVal Character As String)
 Attribute EatCharacter.VB_Description = "Eat a single character"
+#If DEV Then
     Debug.Assert (Len(Character) = 1)   '// Expected single character
-    
     Const FunctionName As String = "EatCharacter"
-    Dim ErrorLogger As ErrorLogger
-    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
+    Dim Logger As JSON.Logger
+    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
+#End If
 
     If (Left$(mData, 1) = Character) Then
         mData = Right$(mData, Len(mData) - 1)
     Else
-        Err.Raise JException.JUnexpectedCharacter, "StringStream.EatCharacter", """" & Character & """ Expected"
+        Err.Raise JSON.JException.JUnexpectedCharacter, "StringStream.EatCharacter", """" & Character & """ Expected"
     End If
 End Sub
 
 '@Description "Lookup at the next character in the stream"
 Public Function PeekCharacter() As String
 Attribute PeekCharacter.VB_Description = "Lookup at the next character in the stream"
+#If DEV Then
     Const FunctionName As String = "PeekCharacter"
-    Dim ErrorLogger As ErrorLogger
-    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
+    Dim Logger As JSON.Logger
+    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
+#End If
 
     PeekCharacter = Left$(mData, 1)
 End Function
@@ -70,9 +78,11 @@ End Function
 Public Property Get Value() As String
 Attribute Value.VB_Description = "Return the current stream value"
 Attribute Value.VB_UserMemId = 0
+#If DEV Then
     Const FunctionName As String = "Value"
-    Dim ErrorLogger As ErrorLogger
-    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
+    Dim Logger As JSON.Logger
+    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
+#End If
 
     Value = mData
 End Property
@@ -80,9 +90,11 @@ End Property
 '@Description "Extract the first occurence matching the regex's first group"
 Public Function GetStringFromRegEx(ByVal Pattern As String) As String
 Attribute GetStringFromRegEx.VB_Description = "Extract the first occurence matching the regex's first group"
+#If DEV Then
     Const FunctionName As String = "GetStringFromRegEx"
-    Dim ErrorLogger As ErrorLogger
-    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
+    Dim Logger As JSON.Logger
+    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
+#End If
 
     Dim RegEx As Object        '// VBScript_RegExp_55.RegExp
     Set RegEx = VBA.CreateObject("VBScript.RegExp")
@@ -100,23 +112,27 @@ End Function
 '@Description "Eat a string"
 Public Sub EatString(ByVal Data As String)
 Attribute EatString.VB_Description = "Eat a string"
+#If DEV Then
     Const FunctionName As String = "EatString"
-    Dim ErrorLogger As ErrorLogger
-    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
+    Dim Logger As JSON.Logger
+    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
+#End If
 
     If (InStr(mData, Data) = 1) Then
         mData = Right$(mData, Len(mData) - Len(Data))
     Else
-        Err.Raise JException.JUnexpectedCharacter, "StringStream.EatString", "String Expected"
+        Err.Raise JSON.JException.JUnexpectedCharacter, "StringStream.EatString", "String Expected"
     End If
 End Sub
 
 '@Description "End of Stream indicator"
 Public Function EOF() As Boolean
 Attribute EOF.VB_Description = "End of Stream indicator"
+#If DEV Then
     Const FunctionName As String = "EOF"
-    Dim ErrorLogger As ErrorLogger
-    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
+    Dim Logger As JSON.Logger
+    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
+#End If
 
     EOF = mData = vbNullString
 End Function

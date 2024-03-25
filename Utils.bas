@@ -1,5 +1,5 @@
-Attribute VB_Name = "Utility"
-'@Folder "Utilities"
+Attribute VB_Name = "Utils"
+'@Folder "JSON.Utilities"
 Option Explicit
 
 Public Const DOUBLEQUOTE As String = """"
@@ -26,23 +26,27 @@ Public Enum JType
     JSNull
 End Enum
 
-Private Const ModuleName As String = "Utility"
+#If DEV Then
+    Private Const ModuleName As String = "Utils"
+#End If
 
-Public Function GetValueAs(ByVal Value As JSObject, ByVal DataType As JType) As JSObject
+Public Function GetValueAs(ByVal Value As Object, ByVal DataType As JSON.JType) As Object
+#If DEV Then
     Const FunctionName As String = "GetValueAs"
-    Dim ErrorLogger As ErrorLogger
-    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
+    Dim Logger As JSON.Logger
+    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
+#End If
 
-    Dim JObject As JSObject
+    Dim JObject As Object
     Set JObject = Services.GetValueAs(Value, DataType)
     Set GetValueAs = JObject
 End Function
 
 Public Function Version() As VersionNumber
-    Dim VersionNumber As VersionNumber
+    Dim VersionNumber As JSON.VersionNumber
     VersionNumber.Major = 1
-    VersionNumber.Minor = 1
-    VersionNumber.Revision = 0
+    VersionNumber.Minor = 0
+    VersionNumber.Revision = 16
     Version = VersionNumber
 End Function
 
