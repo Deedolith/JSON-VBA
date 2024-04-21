@@ -1,4 +1,3 @@
 
 *.doccls
-~$JSON-VBA.xlsm
-JSON-VBA.xlsm
+*.xlsm
