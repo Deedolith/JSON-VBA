@@ -11,25 +11,22 @@ Attribute VB_Description = "A simple text file reader, provided for conveniance.
 '@ModuleDescription "A simple text file reader, provided for conveniance."
 '@IgnoreModule AssignmentNotUsed, VariableNotUsed
 '@Exposed
-'@Folder "JSON.Providers"
+'@Folder "Providers"
 Option Explicit
-Implements JSON.IReader
+Implements IReader
+
+Private Const ModuleName As String = "FileReader"
 
 Private mPath As String
-#If DEV Then
-    Private Const ModuleName As String = "FileReader"
-#End If
 
 '@Description "Constructor"
 Friend Sub Create(ByVal Path As String)
 Attribute Create.VB_Description = "Constructor"
     Debug.Assert Path <> vbNullString   '// path must not be empty
 
-#If DEV Then
     Const FunctionName As String = "Create"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
     mPath = Path
 End Sub
@@ -39,23 +36,21 @@ Private Function IReader_Execute() As String
 Attribute IReader_Execute.VB_Description = "Interface implementation"
     Const ForReading As Long = 1
 
-#If DEV Then
     Const FunctionName As String = "IReader_Execute"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
-    Dim fso As Object       '// Scripting.FileSystemObject
-    Set fso = VBA.CreateObject("Scripting.FileSystemObject")
+    Dim Fso As Object       '// Scripting.FileSystemObject
+    Set Fso = VBA.CreateObject("Scripting.FileSystemObject")
     
-    Dim file As Object      '// Scripting.file
-    Set file = fso.GetFile(mPath)
+    Dim File As Object      '// Scripting.file
+    Set File = Fso.GetFile(mPath)
     
-    Dim iStream As Object       '// Scripting.TextStream
-    Set iStream = file.OpenAsTextStream(ForReading)
+    Dim IStream As Object       '// Scripting.TextStream
+    Set IStream = File.OpenAsTextStream(ForReading)
     
     Dim Data As String
-    Data = iStream.ReadAll
+    Data = IStream.ReadAll
     
     IReader_Execute = Data
 End Function

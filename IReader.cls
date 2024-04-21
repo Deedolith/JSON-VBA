@@ -11,10 +11,9 @@ Attribute VB_Description = "Base class for data readers."
 '@ModuleDescription "Base class for data readers."
 '@Exposed
 '@Interface
-'@Folder "JSON.Providers"
+'@Folder "Providers"
 Option Explicit
 
 '@Description "Data reading interface"
-Public Function Execute() As String
+Public Function Execute() As String: End Function
 Attribute Execute.VB_Description = "Data reading interface"
-End Function

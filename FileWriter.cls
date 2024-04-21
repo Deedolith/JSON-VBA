@@ -11,25 +11,22 @@ Attribute VB_Description = "A simple text file writer, provided for conveniance.
 '@ModuleDescription "A simple text file writer, provided for conveniance."
 '@IgnoreModule AssignmentNotUsed, VariableNotUsed
 '@Exposed
-'@Folder "JSON.Providers"
+'@Folder "Providers"
 Option Explicit
-Implements JSON.IWriter
+Implements IWriter
+
+Private Const ModuleName As String = "FileReader"
 
 Private mPath As String
-#If DEV Then
-    Private Const ModuleName As String = "FileReader"
-#End If
 
 '@Description "Constructor"
 Friend Sub Create(ByVal Path As String)
 Attribute Create.VB_Description = "Constructor"
     Debug.Assert Path <> vbNullString   '// path must not be empty
 
-#If DEV Then
     Const FunctionName As String = "Create"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
     mPath = Path
 End Sub
@@ -39,16 +36,14 @@ Private Sub IWriter_Execute(Data As String)
 Attribute IWriter_Execute.VB_Description = "Interface implementation"
     Const ForWriting As Long = 2
 
-#If DEV Then
     Const FunctionName As String = "IWriter_Execute"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
-    Dim fso As Object       '// Scripting.FileSystemObject
-    Set fso = VBA.CreateObject("Scripting.FileSystemObject")
+    Dim Fso As Object       '// Scripting.FileSystemObject
+    Set Fso = VBA.CreateObject("Scripting.FileSystemObject")
     
-    Dim oStream As Object       '// Scripting.TextStream
-    Set oStream = fso.OpenTextFile(mPath, ForWriting, True)
-    oStream.Write Data
+    Dim OStream As Object       '// Scripting.TextStream
+    Set OStream = Fso.OpenTextFile(mPath, ForWriting, True)
+    OStream.Write Data
 End Sub

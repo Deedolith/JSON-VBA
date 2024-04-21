@@ -10,47 +10,42 @@ Attribute VB_Exposed = True
 '@Exposed
 '@Folder "JSON"
 Option Explicit
+Implements JSObject
 
-#If DEV Then
-    Const ModuleName As String = "JBoolean"
-#End If
+Const ModuleName As String = "JBoolean"
+
 Private mValue As Boolean
-Private mData As JSON.StringStream
+Private mData As StringStream
 
 '@Description "Constructor"
-Friend Sub Create(ByVal StringStream As JSON.StringStream)
+Friend Sub Create(ByVal StringStream As StringStream)
 Attribute Create.VB_Description = "Constructor"
-#If DEV Then
     Debug.Assert Not (StringStream Is Nothing)
+    
     Const FunctionName As String = "Create"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
     Set mData = StringStream
     Parse
 End Sub
 
 '@Description "Class's data type."
-Public Property Get DataType() As JSON.JType
+Public Property Get DataType() As JType
 Attribute DataType.VB_Description = "Class's data type."
-#If DEV Then
     Const FunctionName As String = "DataType"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
-    DataType = JSON.JType.JSBoolean
+    DataType = JType.JSBoolean
 End Property
 
-'@Description "Return a human readable string representation of the object"
+'@Description "Return a human readable string representation of the JSObject"
 Public Function ToString(Optional ByVal IndentMultiplier As Long = 0) As String
-Attribute ToString.VB_Description = "Return a human readable string representation of the object"
-#If DEV Then
+Attribute ToString.VB_Description = "Return a human readable string representation of the JSObject"
     Const FunctionName As String = "ToString"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
     Dim Output As String
     If (mValue) Then
@@ -61,14 +56,12 @@ Attribute ToString.VB_Description = "Return a human readable string representati
     ToString = Output
 End Function
 
-'@Description "Return a JSON string representation of the object"
+'@Description "Return a JSON string representation of the JSObject"
 Public Function ToJSONString() As String
-Attribute ToJSONString.VB_Description = "Return a JSON string representation of the object"
-#If DEV Then
+Attribute ToJSONString.VB_Description = "Return a JSON string representation of the JSObject"
     Const FunctionName As String = "ToJSONString"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
     Dim Output As String
     Output = ToString
@@ -78,11 +71,9 @@ End Function
 '@Description "true or false"
 Public Property Get Value() As Boolean
 Attribute Value.VB_Description = "true or false"
-#If DEV Then
     Const FunctionName As String = "Value (Get)"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
     Value = mValue
 End Property
@@ -90,11 +81,9 @@ End Property
 '@Description "true or false"
 Public Property Let Value(ByVal Data As Boolean)
 Attribute Value.VB_Description = "true or false"
-#If DEV Then
     Const FunctionName As String = "Value (Let)"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
     mValue = Data
 End Property
@@ -102,11 +91,9 @@ End Property
 '@Description "Stream parsing"
 Private Sub Parse()
 Attribute Parse.VB_Description = "Stream parsing"
-#If DEV Then
     Const FunctionName As String = "Parse"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
 
     Dim Value As String
     Value = mData.GetStringFromRegEx("^(?:true|false)")
@@ -114,6 +101,22 @@ Attribute Parse.VB_Description = "Stream parsing"
         mData.EatString Value
         mValue = Value = "true"
     Else
-        Err.Raise JSON.JException.JUnexpectedToken, "JBoolean.Parse", """true"" or ""false"" expected."
+        Err.Raise JException.JUnexpectedToken, "JBoolean.Parse", """true"" or ""false"" expected."
     End If
 End Sub
+
+Private Function JSObject_ToJSONString() As String
+    Const FunctionName As String = "JSObject_ToJSONString"
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
+
+    JSObject_ToJSONString = ToJSONString
+End Function
+
+Private Function JSObject_ToString(Optional ByVal IndentMultiplier As Long = 0&) As String
+    Const FunctionName As String = "JSObject_ToString"
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Services.CreateErrorLogger(ModuleName, FunctionName)
+
+    JSObject_ToString = ToString(IndentMultiplier)
+End Function
