@@ -30,7 +30,7 @@ End Enum
     Private Const ModuleName As String = "Utils"
 #End If
 
-Public Function GetValueAs(ByVal Value As Object, ByVal DataType As JSON.JType) As Object
+Public Function GetValueAs(ByVal Value As Object, ByVal DataType As JType) As Object
 #If DEV Then
     Const FunctionName As String = "GetValueAs"
     Dim Logger As JSON.Logger
@@ -43,7 +43,7 @@ Public Function GetValueAs(ByVal Value As Object, ByVal DataType As JSON.JType) 
 End Function
 
 Public Function Version() As VersionNumber
-    Dim VersionNumber As JSON.VersionNumber
+    Dim VersionNumber As VersionNumber
     VersionNumber.Major = 1
     VersionNumber.Minor = 0
     VersionNumber.Revision = 16
