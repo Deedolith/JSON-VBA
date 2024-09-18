@@ -6,133 +6,134 @@ Attribute VB_Name = "StringStream"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
-Attribute VB_Exposed = False
-'@IgnoreModule AssignmentNotUsed, VariableNotUsed
-'@Folder "JSON"
+Attribute VB_Exposed = True
+'@Exposed
+'@Folder("JSON.DataReaders")
 Option Explicit
 
-Private mData As String
-#If DEV Then
-    Private Const ModuleName As String = "StringStream"
-#End If
+Private Const ModuleName As String = "StringStream"
+
+Private Type TData
+    Value As String
+End Type
+
+Private This As TData
 
 '@Description "Constructor"
 Friend Sub Create(ByVal Data As String)
 Attribute Create.VB_Description = "Constructor"
-#If DEV Then
     Const FunctionName As String = "Create"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
-
-    mData = Data
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Factory.CreateErrorLogger(ModuleName, FunctionName)
+    
+    This.Value = Data
 End Sub
 
-'@Description "Eat any possible space"
-Public Sub DiscardSpaces()
-Attribute DiscardSpaces.VB_Description = "Eat any possible space"
-#If DEV Then
-    Const FunctionName As String = "DiscardSpaces"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
-
-    Dim RegEx As Object        '// VBScript_RegExp_55.RegExp
-    Set RegEx = VBA.CreateObject("VBScript.RegExp")
-
-    RegEx.Pattern = "\s*([\s\S]*)"
-    mData = RegEx.Replace(mData, "$1")
+'@Description "Eat any possible spaces"
+Public Sub EatSpaces()
+Attribute EatSpaces.VB_Description = "Eat any possible spaces"
+    Const FunctionName As String = "EatSpaces"
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Factory.CreateErrorLogger(ModuleName, FunctionName)
+    
+    Dim Rx As VBScript_RegExp_55.RegExp
+    Set Rx = CreateObject("VBScript.RegExp")
+    Rx.Pattern = "^[\s]*([\s\S]+)"
+    This.Value = Rx.Replace(This.Value, "$1")
 End Sub
 
 '@Description "Eat a single character"
 Public Sub EatCharacter(ByVal Character As String)
 Attribute EatCharacter.VB_Description = "Eat a single character"
-#If DEV Then
-    Debug.Assert (Len(Character) = 1)   '// Expected single character
     Const FunctionName As String = "EatCharacter"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
-
-    If (Left$(mData, 1) = Character) Then
-        mData = Right$(mData, Len(mData) - 1)
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Factory.CreateErrorLogger(ModuleName, FunctionName)
+    
+    Debug.Assert Len(Character) = 1     '// Expected single character
+    
+    If (PeekCharacter = Character) Then
+        This.Value = Right$(This.Value, Len(This.Value) - 1)
     Else
-        Err.Raise JSON.JException.JUnexpectedCharacter, "StringStream.EatCharacter", """" & Character & """ Expected"
+        Err.Raise JsonExceptionUnexpectedCharacter, ModuleName & "." & FunctionName, "Character """ & Character & """ excpected."
     End If
 End Sub
 
-'@Description "Lookup at the next character in the stream"
+'@Description "Lookup the next character in the stream"
 Public Function PeekCharacter() As String
-Attribute PeekCharacter.VB_Description = "Lookup at the next character in the stream"
-#If DEV Then
+Attribute PeekCharacter.VB_Description = "Lookup the next character in the stream"
     Const FunctionName As String = "PeekCharacter"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
-
-    PeekCharacter = Left$(mData, 1)
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Factory.CreateErrorLogger(ModuleName, FunctionName)
+    
+    PeekCharacter = Left$(This.Value, 1)
 End Function
 
-'@DefaultMember
-'@Description "Return the current stream value"
-Public Property Get Value() As String
-Attribute Value.VB_Description = "Return the current stream value"
-Attribute Value.VB_UserMemId = 0
-#If DEV Then
+'@Description "Get the stream's current value"
+Public Function Value() As String
+Attribute Value.VB_Description = "Get the stream's current value"
     Const FunctionName As String = "Value"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
-
-    Value = mData
-End Property
-
-'@Description "Extract the first occurence matching the regex's first group"
-Public Function GetStringFromRegEx(ByVal Pattern As String) As String
-Attribute GetStringFromRegEx.VB_Description = "Extract the first occurence matching the regex's first group"
-#If DEV Then
-    Const FunctionName As String = "GetStringFromRegEx"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
-
-    Dim RegEx As Object        '// VBScript_RegExp_55.RegExp
-    Set RegEx = VBA.CreateObject("VBScript.RegExp")
-    RegEx.Pattern = Pattern
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Factory.CreateErrorLogger(ModuleName, FunctionName)
     
-    Dim Matchs As Object        '// VBScript_RegExp_55.MatchCollection
-    Set Matchs = RegEx.Execute(mData)
-    If Not (Matchs Is Nothing) Then
-        If (Matchs.Count) Then
-            GetStringFromRegEx = Matchs.Item(0).Value
-        End If
-    End If
+    Value = This.Value
+End Function
+
+'@Description "End of stream indicator"
+Public Function EOF() As Boolean
+Attribute EOF.VB_Description = "End of stream indicator"
+    Const FunctionName As String = "EOF"
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Factory.CreateErrorLogger(ModuleName, FunctionName)
+    
+    EOF = This.Value = vbNullString
+End Function
+
+'@Description "Check wether the stream's value match the given regular expression"
+Public Function Match(ByVal RegEx As String) As Boolean
+Attribute Match.VB_Description = "Check wether the stream's value match the given regular expression"
+    Const FunctionName As String = "Match"
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Factory.CreateErrorLogger(ModuleName, FunctionName)
+    
+    Dim Rx As VBScript_RegExp_55.RegExp
+    Set Rx = CreateObject("VBScript.RegExp")
+    Rx.Global = True
+    Rx.IgnoreCase = False
+    Rx.Pattern = RegEx
+    Match = Rx.test(This.Value)
 End Function
 
 '@Description "Eat a string"
 Public Sub EatString(ByVal Data As String)
 Attribute EatString.VB_Description = "Eat a string"
-#If DEV Then
     Const FunctionName As String = "EatString"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
-
-    If (InStr(mData, Data) = 1) Then
-        mData = Right$(mData, Len(mData) - Len(Data))
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Factory.CreateErrorLogger(ModuleName, FunctionName)
+    
+    If (InStr(This.Value, Data) = 1) Then
+        This.Value = Right$(This.Value, Len(This.Value) - Len(Data))
     Else
-        Err.Raise JSON.JException.JUnexpectedCharacter, "StringStream.EatString", "String Expected"
+        Err.Raise JsonExceptionUnexpectedCharacter, ModuleName & "." & FunctionName, "String like """ & Left$(This.Value, 20) & """ expected."
     End If
 End Sub
 
-'@Description "End of Stream indicator"
-Public Function EOF() As Boolean
-Attribute EOF.VB_Description = "End of Stream indicator"
-#If DEV Then
-    Const FunctionName As String = "EOF"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
-
-    EOF = mData = vbNullString
+'@Description "Return the 1st value matching the given regular expression"
+Public Function PeekString(ByVal RegEx As String) As String
+Attribute PeekString.VB_Description = "Return the 1st value matching the given regular expression"
+    Const FunctionName As String = "EatString"
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Factory.CreateErrorLogger(ModuleName, FunctionName)
+    
+    Dim Rx As VBScript_RegExp_55.RegExp
+    Set Rx = CreateObject("VBScript.RegExp")
+    Rx.Global = True
+    Rx.IgnoreCase = False
+    Rx.Pattern = RegEx
+    
+    Dim Matchs As VBScript_RegExp_55.MatchCollection
+    Set Matchs = Rx.Execute(This.Value)
+    
+    Debug.Assert Matchs.Count > 0    '// Provided regex did not match
+    
+    PeekString = Matchs.Item(0).Value
 End Function

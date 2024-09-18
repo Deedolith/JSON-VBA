@@ -7,48 +7,37 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
-Attribute VB_Description = "A simple text file writer, provided for conveniance."
-'@ModuleDescription "A simple text file writer, provided for conveniance."
-'@IgnoreModule AssignmentNotUsed, VariableNotUsed
 '@Exposed
-'@Folder "JSON.Providers"
+'@Folder("JSON.DataWriters")
 Option Explicit
-Implements JSON.IWriter
+Implements IWriter
 
-Private mPath As String
-#If DEV Then
-    Private Const ModuleName As String = "FileReader"
-#End If
+Private Const ModuleName As String = "FileWriter"
 
-'@Description "Constructor"
+Private Type TData
+    Path As String
+End Type
+
+Private This As TData
+
 Friend Sub Create(ByVal Path As String)
-Attribute Create.VB_Description = "Constructor"
-    Debug.Assert Path <> vbNullString   '// path must not be empty
-
-#If DEV Then
     Const FunctionName As String = "Create"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
-
-    mPath = Path
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Factory.CreateErrorLogger(ModuleName, FunctionName)
+    
+    This.Path = Path
 End Sub
 
-'@Description "Interface implementation"
-Private Sub IWriter_Execute(Data As String)
-Attribute IWriter_Execute.VB_Description = "Interface implementation"
-    Const ForWriting As Long = 2
-
-#If DEV Then
+Private Sub IWriter_Execute(ByVal Data As String)
     Const FunctionName As String = "IWriter_Execute"
-    Dim Logger As JSON.Logger
-    Set Logger = Services.CreateLogger(Services.LibraryName & "." & ModuleName, FunctionName)
-#End If
-
-    Dim fso As Object       '// Scripting.FileSystemObject
-    Set fso = VBA.CreateObject("Scripting.FileSystemObject")
+    Dim ErrorLogger As ErrorLogger
+    Set ErrorLogger = Factory.CreateErrorLogger(ModuleName, FunctionName)
     
-    Dim oStream As Object       '// Scripting.TextStream
-    Set oStream = fso.OpenTextFile(mPath, ForWriting, True)
-    oStream.Write Data
+    Dim Fso As Scripting.FileSystemObject
+    Set Fso = CreateObject("Scripting.FileSystemObject")
+    
+    Dim OStream As Scripting.TextStream
+    Set OStream = Fso.OpenTextFile(This.Path, ForWriting, True)
+    
+    OStream.Write Data
 End Sub

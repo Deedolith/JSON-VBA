@@ -1,5 +1,6 @@
 Attribute VB_Name = "Test_StringStream"
 '@IgnoreModule
+'@IgnoreModule
 Option Explicit
 Option Private Module
 
@@ -12,8 +13,8 @@ Private Fakes As Rubberduck.FakesProvider
 '@ModuleInitialize
 Private Sub ModuleInitialize()
     'cette procédure s'exécute une seule fois par module.
-    Set Assert = CreateObject("Rubberduck.AssertClass")
-    Set Fakes = CreateObject("Rubberduck.FakesProvider")
+    Set Assert = New Rubberduck.AssertClass
+    Set Fakes = New Rubberduck.FakesProvider
 End Sub
 
 '@ModuleCleanup
@@ -33,17 +34,18 @@ Private Sub TestCleanup()
     'cette procédure s'exécute après chaque test dans le module.
 End Sub
 
-'@TestMethod("StringStream")
-Private Sub Value()
+'@TestMethod("Non-catégorisés")
+Private Sub Insanciation_AvecValeur()
     On Error GoTo TestFail
     
     'Arrange:
-        Dim SS As JSON.StringStream
-        Set SS = Services.CreateStringStream("abcdefjhijklmnopqrstuvwxyz")
+        Dim Stream As StringStream
+        Set Stream = Service.CreateStringStream("SomeData")
+        
     'Act:
 
     'Assert:
-        Assert.AreEqual "abcdefjhijklmnopqrstuvwxyz", SS.Value
+        Assert.Succeed
 
 TestExit:
     Exit Sub
@@ -52,17 +54,18 @@ TestFail:
     Resume TestExit
 End Sub
 
-'@TestMethod("StringStream")
-Private Sub PeekCharacter()
+'@TestMethod("Non-catégorisés")
+Private Sub PeekCharacter_SansValeur()
     On Error GoTo TestFail
     
     'Arrange:
-        Dim SS As JSON.StringStream
-        Set SS = Services.CreateStringStream("abcdefjhijklmnopqrstuvwxyz")
+        Dim Stream As StringStream
+        Set Stream = Service.CreateStringStream(vbNullString)
+        
     'Act:
 
     'Assert:
-        Assert.AreEqual "a", SS.PeekCharacter()
+        Assert.Succeed
 
 TestExit:
     Exit Sub
@@ -71,17 +74,25 @@ TestFail:
     Resume TestExit
 End Sub
 
-'@TestMethod("StringStream")
-Private Sub GetStringFromRegEx()
+
+'@TestMethod("Non-catégorisés")
+Private Sub PeekCharacter()                        'TODO Renommer le test
     On Error GoTo TestFail
     
     'Arrange:
-        Dim SS As JSON.StringStream
-        Set SS = Services.CreateStringStream("abcdefghijklmnopqrstuvwxyz")
+        Const Value As String = "SomeData"
+        Dim Stream As StringStream
+        Set Stream = Service.CreateStringStream(Value)
+        
+        Dim Expected As String
+        Expected = Left$(Value, 1)
+
     'Act:
+        Dim Observed As String
+        Observed = Stream.PeekCharacter
 
     'Assert:
-        Assert.AreEqual "fghi", SS.GetStringFromRegEx("(fghi)")
+    Assert.IsTrue Observed = Expected, "Expected result is """ & Expected & """ but """ & Observed & """ was found instead."
 
 TestExit:
     Exit Sub
@@ -90,36 +101,29 @@ TestFail:
     Resume TestExit
 End Sub
 
-'@TestMethod("StringStream")
-Private Sub DiscardSpaces()
-    On Error GoTo TestFail
-    
-    'Arrange:
-        Dim SS As JSON.StringStream
-        Set SS = Services.CreateStringStream(" " & vbTab & vbCr & vbLf & vbCrLf & vbNewLine & vbFormFeed & vbVerticalTab & "abcdefghijklmnopqrstuvwxyz")
-    'Act:
-        SS.DiscardSpaces
-    'Assert:
-        Assert.AreEqual "abcdefghijklmnopqrstuvwxyz", SS.Value
 
-TestExit:
-    Exit Sub
-TestFail:
-    Assert.Fail "Le test a produit une erreur: #" & Err.Number & " - " & Err.Description
-    Resume TestExit
-End Sub
-
-'@TestMethod("StringStream")
+'@TestMethod("Non-catégorisés")
 Private Sub EatCharacter()
     On Error GoTo TestFail
     
     'Arrange:
-        Dim SS As JSON.StringStream
-        Set SS = Services.CreateStringStream("abcdefghijklmnopqrstuvwxyz")
+        Const Value As String = "SomeData"
+        Dim Stream As StringStream
+        Set Stream = Service.CreateStringStream(Value)
+
     'Act:
-        SS.EatCharacter "a"
+        Dim Expected As String
+        Expected = Right$(Value, Len(Value) - 1)
+        
+        Dim Character As String
+        Character = Left$(Value, 1)
+        Stream.EatCharacter Character
+        
+        Dim Observed As String
+        Observed = Stream.Value
+
     'Assert:
-        Assert.AreEqual "bcdefghijklmnopqrstuvwxyz", SS.Value
+    Assert.IsTrue Observed = Expected, "Expected result is """ & Expected & """ but """ & Observed & """ was found instead."
 
 TestExit:
     Exit Sub
@@ -128,40 +132,150 @@ TestFail:
     Resume TestExit
 End Sub
 
-'@TestMethod("StringStream")
-Private Sub EatCharacter_fail()
-    Const ExpectedError As Long = JSON.JException.JUnexpectedCharacter
+'@TestMethod("Non-catégorisés")
+Private Sub Value()
     On Error GoTo TestFail
     
     'Arrange:
-        Dim SS As JSON.StringStream
-        Set SS = Services.CreateStringStream("abcdefghijklmnopqrstuvwxyz")
+        Const Value As String = "SomeData"
+        Dim Stream As StringStream
+        Set Stream = Service.CreateStringStream(Value)
+
     'Act:
-        SS.EatCharacter "b"
-Assert:
-    Assert.Fail "L'erreur attendue ne s'est pas produite"
+        Dim Expected As String
+        Expected = Value
+        
+        Dim Observed As String
+        Observed = Stream.Value
+
+    'Assert:
+    Assert.IsTrue Observed = Expected, "Expected result is """ & Expected & """ but """ & Observed & """ was found instead."
 
 TestExit:
     Exit Sub
 TestFail:
-    If Err.Number = ExpectedError Then
-        Resume TestExit
-    Else
-        Resume Assert
-    End If
+    Assert.Fail "Le test a produit une erreur: #" & Err.Number & " - " & Err.Description
+    Resume TestExit
 End Sub
 
-'@TestMethod("StringStream")
+'@TestMethod("Non-catégorisés")
+Private Sub EOF_True()                        'TODO Renommer le test
+    On Error GoTo TestFail
+    
+    'Arrange:
+        Dim Stream As StringStream
+        Set Stream = Service.CreateStringStream(vbNullString)
+
+    'Act:
+        Const Expected As Boolean = True
+        
+        Dim Observed As Boolean
+        Observed = Stream.EOF
+
+    'Assert:
+    Assert.IsTrue Observed = Expected, "Expected result is """ & Expected & """ but """ & Observed & """ was found instead."
+
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Le test a produit une erreur: #" & Err.Number & " - " & Err.Description
+    Resume TestExit
+End Sub
+
+'@TestMethod("Non-catégorisés")
+Private Sub EOF_False()                        'TODO Renommer le test
+    On Error GoTo TestFail
+    
+    'Arrange:
+        Const Value As String = "SomeData"
+        Dim Stream As StringStream
+        Set Stream = Service.CreateStringStream(Value)
+
+    'Act:
+        Const Expected As Boolean = False
+        
+        Dim Observed As Boolean
+        Observed = Stream.EOF
+
+    'Assert:
+    Assert.IsTrue Observed = Expected, "Expected result is """ & Expected & """ but """ & Observed & """ was found instead."
+
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Le test a produit une erreur: #" & Err.Number & " - " & Err.Description
+    Resume TestExit
+End Sub
+
+'@TestMethod("Non-catégorisés")
+Private Sub Match_True()
+    On Error GoTo TestFail
+    
+    'Arrange:
+        Const Value As String = "SomeData"
+        Dim Stream As StringStream
+        Set Stream = Service.CreateStringStream(Value)
+
+    'Act:
+        Const RegEx As String = "^Some[\D]+$"
+        Const Expected As Boolean = True
+        
+        Dim Observed As Boolean
+        Observed = Stream.Match(RegEx)
+    'Assert:
+    Assert.IsTrue Observed = Expected, "Expected result is """ & Expected & """ but """ & Observed & """ was found instead."
+
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Le test a produit une erreur: #" & Err.Number & " - " & Err.Description
+    Resume TestExit
+End Sub
+
+'@TestMethod("Non-catégorisés")
+Private Sub Match_False()
+    On Error GoTo TestFail
+    
+    'Arrange:
+        Const Value As String = "DataSome"
+        Dim Stream As StringStream
+        Set Stream = Service.CreateStringStream(Value)
+
+    'Act:
+        Const RegEx As String = "^Some[\D]+$"
+        Const Expected As Boolean = False
+        
+        Dim Observed As Boolean
+        Observed = Stream.Match(RegEx)
+    'Assert:
+    Assert.IsTrue Observed = Expected, "Expected result is """ & Expected & """ but """ & Observed & """ was found instead."
+
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Le test a produit une erreur: #" & Err.Number & " - " & Err.Description
+    Resume TestExit
+End Sub
+
+
+'@TestMethod("Non-catégorisés")
 Private Sub EatString()
     On Error GoTo TestFail
     
     'Arrange:
-        Dim SS As JSON.StringStream
-        Set SS = Services.CreateStringStream("abcdefghijklmnopqrstuvwxyz")
+        Const Value As String = "SomeData"
+        Dim Stream As StringStream
+        Set Stream = Service.CreateStringStream(Value)
+    
     'Act:
-        SS.EatString "abcdef"
+        Const Expected As String = "Data"
+        
+        Stream.EatString "Some"
+
+        Dim Observed As String
+        Observed = Stream.Value
     'Assert:
-    Assert.AreEqual "ghijklmnopqrstuvwxyz", SS.Value
+    Assert.IsTrue Observed = Expected, "Expected result is """ & Expected & """ but """ & Observed & """ was found instead."
 
 TestExit:
     Exit Sub
@@ -170,16 +284,19 @@ TestFail:
     Resume TestExit
 End Sub
 
-'@TestMethod("StringStream")
-Private Sub EatString_fail()
-    Const ExpectedError As Long = JSON.JException.JUnexpectedCharacter
+'@TestMethod("Non-catégorisés")
+Private Sub EatCharacter_Exception()
+    Const ExpectedError As Long = JsonExceptionUnexpectedCharacter
     On Error GoTo TestFail
     
     'Arrange:
-        Dim SS As JSON.StringStream
-        Set SS = Services.CreateStringStream("abcdefghijklmnopqrstuvwxyz")
+        Const Value As String = "SomeData"
+        Dim Stream As StringStream
+        Set Stream = Service.CreateStringStream(Value)
+
     'Act:
-        SS.EatString "xyz"
+        Stream.EatCharacter "A"
+
 Assert:
     Assert.Fail "L'erreur attendue ne s'est pas produite"
 
@@ -193,17 +310,49 @@ TestFail:
     End If
 End Sub
 
-'@TestMethod("StringStream")
-Private Sub EOF()
+'@TestMethod("Non-catégorisés")
+Private Sub EatString_Exception()
+    Const ExpectedError As Long = JsonExceptionUnexpectedCharacter
     On Error GoTo TestFail
     
     'Arrange:
-        Dim SS As JSON.StringStream
-        Set SS = Services.CreateStringStream(vbNullString)
-    'Act:
+        Const Value As String = "SomeData"
+        Dim Stream As StringStream
+        Set Stream = Service.CreateStringStream(Value)
 
+    'Act:
+        Stream.EatString "Data"
+
+Assert:
+    Assert.Fail "L'erreur attendue ne s'est pas produite"
+
+TestExit:
+    Exit Sub
+TestFail:
+    If Err.Number = ExpectedError Then
+        Resume TestExit
+    Else
+        Resume Assert
+    End If
+End Sub
+
+'@TestMethod("Non-catégorisés")
+Private Sub PeekString()
+    On Error GoTo TestFail
+    
+    'Arrange:
+        Const Value As String = "SomeData"
+        Dim Stream As StringStream
+        Set Stream = Service.CreateStringStream(Value)
+    
+    'Act:
+         Const Expected As String = "Some"
+        
+        Dim Observed As String
+        Observed = Stream.PeekString("^Some")
+        
     'Assert:
-    Assert.AreEqual True, SS.EOF
+    Assert.IsTrue Observed = Expected, "Expected result is """ & Expected & """ but """ & Observed & """ was found instead."
 
 TestExit:
     Exit Sub

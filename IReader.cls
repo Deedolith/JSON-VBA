@@ -7,14 +7,10 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
-Attribute VB_Description = "Base class for data readers."
-'@ModuleDescription "Base class for data readers."
 '@Exposed
+'@IgnoreModule
 '@Interface
-'@Folder "JSON.Providers"
+'@Folder("JSON.DataReaders")
 Option Explicit
 
-'@Description "Data reading interface"
-Public Function Execute() As String
-Attribute Execute.VB_Description = "Data reading interface"
-End Function
+Public Function Execute() As String: End Function
